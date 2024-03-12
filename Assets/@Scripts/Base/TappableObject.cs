@@ -9,16 +9,28 @@ public class TappableObject : MonoBehaviour
     [SerializeField] private Vector3 tapShrinkScale = new Vector3(.95f,.95f,.95f);
     [SerializeField] private float shrinkDuration = 0.05f;
 
+    public Func<bool> canTap;
+
     public Action onTap;
+    public Action onTapTimed;
+    
+    public Action onComplete;
 
     protected virtual void Start()
     { }
 
     public virtual void Tap(bool useShrink = true)
     {
+        
         if(useShrink) ShrinkEffect();
+        
         onTap?.Invoke();
     }
+    public virtual void TapWithTime()
+    {
+        onTapTimed?.Invoke();
+    }
+
 
     private void ShrinkEffect()
     {

@@ -5,7 +5,6 @@ using UnityEngine;
 public class AutomaticTapper : MonoBehaviour
 {
     protected TappableObject tappable;
-    protected float tick;
 
     protected Coroutine tapper;
 
@@ -15,15 +14,24 @@ public class AutomaticTapper : MonoBehaviour
         tappable = GetComponent<TappableObject>();
     }
 
-    public virtual void ChangeTick(float newTick) => tick = newTick;
+    private void Start()
+    {
+        tappable.canTap += ()=>
+        {
+            if (tapper == null)
+            {
+                StartTapper();
+                return false;
+            }
+            return true;
+        };
+        tappable.onComplete += StopTapper;
+    }
 
     public virtual void StartTapper()
     {
         if(tapper != null)
         {
-            #if UNITY_EDITOR 
-            Debug.LogWarning("Tapper " + gameObject.name + " já estava ativo", this.gameObject) ;
-            #endif
             return;
         }
 
@@ -32,7 +40,7 @@ public class AutomaticTapper : MonoBehaviour
 
     public virtual void StopTapper()
     {
-        StopCoroutine(ETapper());
+        StopCoroutine(tapper);
         tapper = null;
     }
 
@@ -41,8 +49,8 @@ public class AutomaticTapper : MonoBehaviour
     {
         while(true)
         {
-            tappable.Tap(false);
-            yield return new WaitForSeconds(tick);
+            tappable.TapWithTime();
+            yield return new WaitForEndOfFrame();
         }
     }
 }

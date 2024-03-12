@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class GameCurrency : Singleton<GameCurrency>
 {
-    private BigInteger currency
+    private BigInteger currency;
+    public BigInteger Currency
     {
         get => currency;
         set
@@ -54,7 +55,7 @@ public class GameCurrency : Singleton<GameCurrency>
 
     private void Start()
     {
-        currency = 0;
+        AddCurrency(0);
     }
 
 
@@ -65,7 +66,7 @@ public class GameCurrency : Singleton<GameCurrency>
 
     public void AddCurrency(BigInteger value)
     {
-        currency += value;
+        Currency += value;
     }
 
     private string GetSuffix()

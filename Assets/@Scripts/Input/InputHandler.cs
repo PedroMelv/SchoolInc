@@ -35,7 +35,7 @@ public class InputHandler : Singleton<InputHandler>
     {
         #if UNITY_EDITOR
 
-        EditorInput();
+        //EditorInput();
 
         #endif
 
@@ -46,43 +46,33 @@ public class InputHandler : Singleton<InputHandler>
             doubleTouch = false;
         }
 
-        switch (Input.touchCount)
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            case 1:
-                if(!doubleTouch) SingleTouch(); else onSingleTouchStart?.Invoke(Input.GetTouch(0));
-                doubleTouch = false;
-            break;
-
-            case 2:
-                DoubleTouch();
-            break;
+            SingleTouch(i);
         }
     }
 
-    private void SingleTouch()
+    private void SingleTouch(int i)
     {
-        switch (Input.GetTouch(0).phase)
+        switch (Input.GetTouch(i).phase)
         {
             case TouchPhase.Began:
-                onSingleTouchStart?.Invoke(Input.GetTouch(0));
+                onSingleTouchStart?.Invoke(Input.GetTouch(i));
                 break;
             case TouchPhase.Moved:
-                if (EventSystem.current.IsPointerOverGameObject(0)) return;
-                onSingleTouchMove?.Invoke(Input.GetTouch(0));
+                if (EventSystem.current.IsPointerOverGameObject(i)) return;
+                onSingleTouchMove?.Invoke(Input.GetTouch(i));
                 break;
             case TouchPhase.Stationary:
                 break;
             case TouchPhase.Ended:
-                onSingleTouchEnded?.Invoke(Input.GetTouch(0));
+                onSingleTouchEnded?.Invoke(Input.GetTouch(i));
 
-                if (tapBuffer > 0f)
-                {
-                    onTap?.Invoke(Input.GetTouch(0));
-                }
-
+                onTap?.Invoke(Input.GetTouch(i));
+                
                 break;
             case TouchPhase.Canceled:
-                onSingleTouchEnded?.Invoke(Input.GetTouch(0));
+                onSingleTouchEnded?.Invoke(Input.GetTouch(i));
                 break;
         }
     }

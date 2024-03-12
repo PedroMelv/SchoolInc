@@ -14,10 +14,6 @@ public class AutomaticSchool : AutomaticTapper
 
     public override void StartTapper()
     {
-        if (data == null || data.hasProfessor == false) return;
-        
-        ChangeTick(data.AutomaticTick);
-
         base.StartTapper();
     }
 

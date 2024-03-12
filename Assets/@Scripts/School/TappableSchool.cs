@@ -8,7 +8,11 @@ public class TappableSchool : TappableObject
     [SerializeField] private GameObject schoolSliderPrefab;
     private Transform sliderSchool;
 
-    private int tapCounter;
+    private float fillCurrent;
+    private int tapCount;
+    private int tapMax = 10;
+
+    private float timer = 1f;
 
     private SchoolData data;
 
@@ -21,27 +25,68 @@ public class TappableSchool : TappableObject
         GameObject schoolObj = Instantiate(schoolSliderPrefab, transform.position + Vector3.up * 13, Quaternion.identity);
         sliderSchool = schoolObj.transform.Find("Fill");
         sliderSchool.localScale = new Vector3(0f, 1f, 1f);
+
+        onComplete += CalculateMoney;
+    }
+
+    private void Update()
+    {
+        if (tapCount > 0)
+            if (timer <= 0f)
+            {
+                tapCount -= 1;
+                timer = 1f;
+            }
+            else timer -= Time.deltaTime;
     }
 
     public override void Tap(bool useShrink = true)
     {
-        if (data.TapMax == 0) return;
+        bool tapWillWork = true;
+        if (canTap != null) { tapWillWork = canTap.Invoke(); }
 
-        base.Tap(useShrink);
-        tapCounter++;
+        if (!tapWillWork) return;
 
-        float tapPercentage = (float)tapCounter / data.TapMax;
-
-        if(tapPercentage >= 1f)
+        if (tapCount >= tapMax)
         {
-            tapCounter = 0;
-            tapPercentage = 0;
+            return;
+        }
+        base.Tap(useShrink);
+
+        fillCurrent += 1 + data.TimeToFill * .01f;
+        tapCount++;
+        UpdateSlider();
+    }
+
+    public override void TapWithTime()
+    {
+        base.TapWithTime();
+        fillCurrent += Time.deltaTime;
+        UpdateSlider();
+    }
+
+    private void UpdateSlider()
+    {
+        float fillPercentage = fillCurrent / data.TimeToFill;
+
+        if (fillPercentage >= 1f)
+        {
+            fillCurrent = 0;
+            fillPercentage = 0;
 
             sliderSchool.localScale = new Vector3(0f, 1f, 1f);
 
+            onComplete?.Invoke();
         }
 
         sliderSchool.DOKill(true);
-        sliderSchool.DOScaleX(tapPercentage, .1f);
+        sliderSchool.DOScaleX(fillPercentage, .1f);
+    }
+
+    private void CalculateMoney()
+    {
+        int moneyMade = data.studentCount * 100;
+
+        GameCurrency.Instance.AddCurrency(moneyMade);
     }
 }

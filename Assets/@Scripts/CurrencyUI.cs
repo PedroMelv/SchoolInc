@@ -14,6 +14,7 @@ public class CurrencyUI : MonoBehaviour
 
     private void UpdateCurrencyText(string text)
     {
+        Debug.Log(text);
         currencyText.SetText(text);
     }
 }
