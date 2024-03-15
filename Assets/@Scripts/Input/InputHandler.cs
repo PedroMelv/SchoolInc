@@ -6,10 +6,6 @@ using UnityEngine.EventSystems;
 
 public class InputHandler : Singleton<InputHandler>
 {
-    private float tapBuffer = .33f;
-    private bool doubleTouch = false;
-
-    private bool onSingleStart = false;
 
     public Action<Touch> onTap;
     public Action<Vector3> onReleaseClick;
@@ -27,72 +23,105 @@ public class InputHandler : Singleton<InputHandler>
     public Action<Touch, Touch> onTwoTouchesStart;
     public Action<Touch, Touch> onTwoTouchesChanged;
 
+    private Dictionary<int, TouchInfo> touchesOnScreen = new Dictionary<int, TouchInfo>();
+
+    private class TouchInfo
+    {
+        public float touchTime;
+        public bool touchIsOnUI;
+    
+        public TouchInfo(float touchTime, bool touchIsOnUI)
+        {
+            this.touchTime = touchTime;
+            this.touchIsOnUI = touchIsOnUI;
+        }
+    }
+
     #if UNITY_EDITOR
-    public float clickBuffer = .33f;    
-    #endif
+    public float clickBuffer = .33f;
+#endif
+
+    public CameraInput cameraInput;
+
+    private void Start()
+    {
+        if (cameraInput == null) cameraInput = FindObjectOfType<CameraInput>();
+    }
 
     private void Update()
     {
-        #if UNITY_EDITOR
-
-        //EditorInput();
-
-        #endif
-
-        if (Input.touchCount > 0) tapBuffer -= Time.deltaTime;
-        else
+        foreach (var touch in Input.touches)
         {
-            tapBuffer = .33f;
-            doubleTouch = false;
-        }
-
-        for (int i = 0; i < Input.touchCount; i++)
-        {
-            SingleTouch(i);
+            SingleTouch(touch);
         }
     }
 
-    private void SingleTouch(int i)
+    private void SingleTouch(Touch touch)
     {
-        switch (Input.GetTouch(i).phase)
+        int fingerID = touch.fingerId;
+
+        bool touchUI = EventSystem.current.IsPointerOverGameObject(fingerID);
+
+        switch (touch.phase)
         {
             case TouchPhase.Began:
-                onSingleTouchStart?.Invoke(Input.GetTouch(i));
+
+                if (!touchesOnScreen.ContainsKey(fingerID)) touchesOnScreen.Add(fingerID, new TouchInfo(0f, touchUI));
+
+                if (!touchesOnScreen[fingerID].touchIsOnUI) 
+                    onSingleTouchStart?.Invoke(touch);
+
                 break;
             case TouchPhase.Moved:
-                if (EventSystem.current.IsPointerOverGameObject(i)) return;
-                onSingleTouchMove?.Invoke(Input.GetTouch(i));
+
+                if (touchesOnScreen.ContainsKey(fingerID))
+                {
+                    touchesOnScreen[fingerID].touchTime += Time.deltaTime;
+
+                    touchesOnScreen[fingerID].touchIsOnUI = touchUI;
+
+
+                    if (!touchesOnScreen[fingerID].touchIsOnUI)
+                        onSingleTouchMove?.Invoke(touch);
+                }
+
+                
+
                 break;
             case TouchPhase.Stationary:
+
+                if (touchesOnScreen.ContainsKey(fingerID))
+                {
+                    touchesOnScreen[fingerID].touchTime += Time.deltaTime;
+
+                    touchesOnScreen[fingerID].touchIsOnUI = touchUI;
+                }
+
                 break;
             case TouchPhase.Ended:
-                onSingleTouchEnded?.Invoke(Input.GetTouch(i));
 
-                onTap?.Invoke(Input.GetTouch(i));
-                
+                if (touchesOnScreen.ContainsKey(fingerID))
+                {
+                    if (!touchesOnScreen[fingerID].touchIsOnUI)
+                    {
+                        onSingleTouchEnded?.Invoke(touch);
+                        if (touchesOnScreen[fingerID].touchTime <= .33f) onTap?.Invoke(touch);
+                    }
+                    touchesOnScreen.Remove(fingerID);
+                }
                 break;
             case TouchPhase.Canceled:
-                onSingleTouchEnded?.Invoke(Input.GetTouch(i));
+                if (touchesOnScreen.ContainsKey(fingerID))
+                { 
+                    if (!touchesOnScreen[fingerID].touchIsOnUI)
+                        onSingleTouchEnded?.Invoke(touch);
+
+                    touchesOnScreen.Remove(fingerID);
+                }
+
                 break;
         }
     }
-
-    private void DoubleTouch()
-    {
-        if (EventSystem.current.IsPointerOverGameObject(0) || EventSystem.current.IsPointerOverGameObject(1)) return;
-
-        if (!doubleTouch)
-        {
-            onTwoTouchesStart?.Invoke(Input.GetTouch(0), Input.GetTouch(1));
-            doubleTouch = true;
-        }
-        else
-        {
-            onTwoTouchesChanged?.Invoke(Input.GetTouch(0), Input.GetTouch(1));
-        }
-        
-    }
-
 
     #if UNITY_EDITOR
 

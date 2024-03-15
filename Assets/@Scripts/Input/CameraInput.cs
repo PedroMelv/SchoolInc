@@ -14,23 +14,33 @@ public class CameraInput : MonoBehaviour
     private Vector3 moveStartPos;
     private Vector3 moveCurrentPos;
 
-    private int touchHandling;
+    private int touchHandling = -1;
+
+    private CameraState currentState;
+    private CameraState lastState;
 
     private void Start()
     {
-        InitializeInput();
-
         cameraPosition = transform.position;
+
+        ChangeState(new CameraState_InputHandled());
     }
 
     private void LateUpdate()
     {
-        Vector3 pos = cameraPosition;
-        pos.y = transform.position.y;
-        cameraPosition = pos;
+        currentState?.OnLateUpdate();
+    }
 
-        if (Vector3.Distance(transform.position, cameraPosition) > .1f)
-            transform.position = Vector3.Lerp(transform.position, cameraPosition, cameraLerpSpeed * Time.deltaTime);
+    public void ChangeState(CameraState targetState)
+    {
+        if (currentState == targetState) return;
+
+        currentState?.OnExit();
+
+        lastState = currentState;
+        currentState = targetState;
+
+        currentState?.OnEnter(this);
     }
 
     [ContextMenu("Validate Position")]
@@ -43,91 +53,7 @@ public class CameraInput : MonoBehaviour
         transform.position = cameraPosition;
     }
 
-    private void InitializeInput()
-    {
-        InputHandler input = InputHandler.Instance;
-
-        input.onSingleTouchStart += SetupMoveCamera;
-        input.onSingleTouchMove += MoveCamera;
-        input.onSingleTouchEnded += ReleaseCamera;
-
-        #if UNITY_EDITOR
-
-        input.onBeginDrag += SetupDragCamera;
-        input.onMoveDrag += UpdateDragCamera;
-
-        #endif
-
-    }
-
-    private void SetupMoveCamera(Touch touch)
-    {
-        if (touchHandling != -1) return;
-        moveStartPos = touch.position;
-        touchHandling = touch.fingerId;
-    }
-    private void MoveCamera(Touch touch)
-    {
-        if (touchHandling != touch.fingerId) return;
-        moveCurrentPos = touch.position;
-        if (Vector3.Distance(moveStartPos, moveCurrentPos) < 10f) return;
-
-        Vector3 moveDiff = moveStartPos - moveCurrentPos;
-
-        moveDiff = moveDiff.x * transform.right + moveDiff.y * transform.forward;
-
-        Debug.Log(moveDiff);
-        //moveDiff *= .75f;
-
-        cameraPosition += (moveDiff * moveStrength);
-
-        float clampedX = Mathf.Clamp(cameraPosition.x, minPosition.x, maxPosition.x);
-        float clampedZ = Mathf.Clamp(cameraPosition.z, minPosition.z, maxPosition.z);
-
-        cameraPosition = new Vector3(clampedX, transform.position.y, clampedZ);
-
-        moveStartPos = touch.position;
-    }
-
-    private void ReleaseCamera(Touch touch)
-    {
-        if (touchHandling != touch.fingerId) return;
-        touchHandling = -1;
-    }
-
-    #if UNITY_EDITOR
-
-    private void SetupDragCamera(Vector3 mousePos)
-    {
-        moveStartPos = mousePos;
-    }
-    private void UpdateDragCamera(Vector3 mousePos)
-    {
-        moveCurrentPos = mousePos;
-
-        if (Vector3.Distance(moveStartPos, moveCurrentPos) < 10f) return;
-
-        Vector3 moveDiff = moveStartPos - moveCurrentPos;
-
-        moveDiff = transform.TransformDirection(moveDiff);
-
-        moveDiff.y = 0;
-        //moveDiff *= .75f;
-
-        cameraPosition += moveDiff * moveStrength;
-
-        float clampedX = Mathf.Clamp(cameraPosition.x, minPosition.x, maxPosition.x);
-        float clampedZ = Mathf.Clamp(cameraPosition.z, minPosition.z, maxPosition.z);
-
-        cameraPosition = new Vector3(clampedX, transform.position.y, clampedZ);
-
-        moveStartPos = mousePos;
-    }
-
-
-#endif
-
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Vector3 boxCenter = (minPosition + maxPosition) / 2f;
         boxCenter.y = transform.position.y / 2f;
@@ -137,5 +63,121 @@ public class CameraInput : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCenter, boxSize);
+    }
+
+
+    public abstract class CameraState
+    {
+        protected CameraInput camera;
+        public virtual void OnEnter(CameraInput camera)
+        {
+            this.camera = camera;
+        }
+        public virtual void OnExit()
+        {
+
+        }
+
+        public virtual void OnUpdate()
+        {
+
+        }
+        public virtual void OnLateUpdate()
+        {
+
+        }
+    }
+
+    public class CameraState_InputHandled : CameraState
+    {
+
+        public override void OnEnter(CameraInput camera)
+        {
+            base.OnEnter(camera);
+
+            camera.touchHandling = -1;
+            
+            InitializeInput();
+        }
+
+        public override void OnLateUpdate()
+        {
+            UpdateCameraPosition();
+        }
+
+        private void UpdateCameraPosition()
+        {
+            if (Vector3.Distance(camera.transform.position, camera.cameraPosition) > .1f)
+                camera.transform.position = Vector3.Lerp(camera.transform.position, camera.cameraPosition, camera.cameraLerpSpeed * Time.deltaTime);
+        }
+
+        private void InitializeInput()
+        {
+            InputHandler input = InputHandler.Instance;
+
+            input.onSingleTouchStart += SetupMoveCamera;
+            input.onSingleTouchMove += MoveCamera;
+            input.onSingleTouchEnded += ReleaseCamera;
+        }
+
+        private void SetupMoveCamera(Touch touch)
+        {
+            if (camera.touchHandling != -1) return;
+            camera.moveStartPos = touch.position;
+            camera.moveCurrentPos = touch.position;
+            camera.touchHandling = touch.fingerId;
+        }
+        private void MoveCamera(Touch touch)
+        {
+            if (camera.touchHandling != touch.fingerId) return;
+            camera.moveCurrentPos = touch.position;
+            if (Vector3.Distance(camera.moveStartPos, camera.moveCurrentPos) < 10f) return;
+
+            Vector3 moveDiff = camera.moveStartPos - camera.moveCurrentPos;
+
+            moveDiff = moveDiff.x * camera.transform.right + moveDiff.y * camera.transform.forward;
+            //moveDiff *= .75f;
+
+            camera.cameraPosition += (moveDiff * camera.moveStrength);
+
+            float clampedX = Mathf.Clamp(camera.cameraPosition.x, camera.minPosition.x, camera.maxPosition.x);
+            float clampedZ = Mathf.Clamp(camera.cameraPosition.z, camera.minPosition.z, camera.maxPosition.z);
+
+            camera.cameraPosition = new Vector3(clampedX, camera.transform.position.y, clampedZ);
+
+            camera.moveStartPos = touch.position;
+        }
+
+        private void ReleaseCamera(Touch touch)
+        {
+            if (camera.touchHandling != touch.fingerId) return;
+            camera.touchHandling = -1;
+        }
+    }
+
+    public class CameraState_StoreFocused : CameraState
+    {
+        private Vector3 savedRotation;
+
+        public override void OnEnter(CameraInput camera)
+        {
+            base.OnEnter(camera);
+
+            savedRotation = camera.transform.eulerAngles;
+        }
+        public override void OnLateUpdate()
+        {
+            UpdateFocusStore();
+        }
+
+        private void UpdateFocusStore()
+        {
+            if (SchoolsManager.Instance.SchoolSelected == null) return;
+            Vector3 targetPosition = SchoolsManager.Instance.SchoolSelected.Visual.CameraOffsetPosition;
+            targetPosition += SchoolsManager.Instance.SchoolSelected.transform.position;
+
+            if (Vector3.Distance(camera.transform.position, targetPosition) > .1f)
+                camera.transform.position = Vector3.Lerp(camera.transform.position, targetPosition, 10f * Time.deltaTime);
+        }
     }
 }

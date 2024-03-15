@@ -10,11 +10,16 @@ public class AutomaticSchool : AutomaticTapper
     {
         base.Awake(); 
         data = GetComponent<SchoolData>();
+        data.OnHasProfessorChanged += CheckProfessor;
     }
 
-    public override void StartTapper()
+    private void CheckProfessor(bool hasProfessor)
     {
-        base.StartTapper();
+        if (hasProfessor)
+        {
+            SetInfinity(true);
+            StartTapper();
+        }
     }
 
 }

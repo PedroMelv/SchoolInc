@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TapHandler : MonoBehaviour
 {
+    public GameObject currentObject;
+
     private void Start()
     {
         InitializeInput();
@@ -22,24 +24,12 @@ public class TapHandler : MonoBehaviour
 
     private void HandleTap(Touch touch)
     {
-        Ray camRay = Camera.main.ScreenPointToRay(touch.position);
-
-        if(Physics.Raycast(camRay, out RaycastHit hit))
-        {
-            if(hit.collider != null)
-            {
-                TappableObject tap = hit.collider.GetComponent<TappableObject>();
-                if(tap == null) tap = hit.collider.GetComponentInParent<TappableObject>();
-                if(tap == null) tap = hit.collider.GetComponentInChildren<TappableObject>();
-
-                tap?.Tap();
-            }
-        }
+        HandleTap(touch.position);
     }
 
-    private void HandleTap(Vector3 mousePos)
+    private void HandleTap(Vector3 position)
     {
-        Ray camRay = Camera.main.ScreenPointToRay(mousePos);
+        Ray camRay = Camera.main.ScreenPointToRay(position);
 
         if (Physics.Raycast(camRay, out RaycastHit hit))
         {
@@ -50,6 +40,8 @@ public class TapHandler : MonoBehaviour
                 if (tap == null) tap = hit.collider.GetComponentInChildren<TappableObject>();
 
                 tap?.Tap();
+
+                currentObject = hit.collider.gameObject;
             }
         }
     }

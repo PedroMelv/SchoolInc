@@ -8,6 +8,9 @@ public class AutomaticTapper : MonoBehaviour
 
     protected Coroutine tapper;
 
+    protected bool isInfinity = false;
+    
+    public bool IsInfinity { get { return isInfinity; } }
 
     protected virtual void Awake()
     {
@@ -37,13 +40,19 @@ public class AutomaticTapper : MonoBehaviour
 
         tapper = StartCoroutine(ETapper());
     }
-
     public virtual void StopTapper()
     {
+        if (isInfinity) return;
+
         StopCoroutine(tapper);
         tapper = null;
     }
 
+    public virtual void SetInfinity(bool isInfinity)
+    {
+        this.isInfinity = isInfinity;
+
+    }
 
     protected virtual IEnumerator ETapper()
     {
