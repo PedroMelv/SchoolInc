@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,28 +13,42 @@ public class BuyNode : MonoBehaviour
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI quantityText;
 
-    private Func<(string, string)> OnBuyUpdate;
+    private UpgradeDatabase.Upgrade upgrade;
 
-    public void Initialize(string upgradeName, string quantity, string price, Action OnBuyAction, Func<(string,string)> OnBuyUpdate)
+    public Action onButtonClickCallback;
+
+    public void Initialize(UpgradeDatabase.Upgrade upgrade)
     {
-        buyButton.onClick.RemoveAllListeners();
-        buyButton.onClick.AddListener(() => OnBuyAction?.Invoke());
-        buyButton.onClick.AddListener(() => OnBuy());
+        string quantity = upgrade.currentQuantity + "x";
+        string price = MoneyUtils.MoneyString(upgrade.Price);
+        bool isMaxed = upgrade.currentQuantity >= upgrade.maxQuantity;
 
-        nameText.SetText(upgradeName);
+        nameText.SetText(upgrade.name);
+
+        buyButton.interactable = !isMaxed;
+
+        if (isMaxed)
+        {
+            quantityText.SetText("Maxed");
+            priceText.SetText("Maxed");
+            return;
+        }
+
+        this.upgrade = upgrade;
+
         priceText.SetText(price);
         quantityText.SetText(quantity);
 
-        this.OnBuyUpdate = OnBuyUpdate;
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(() => GameCurrency.Instance.RemoveCurrency(upgrade.Price, null, OnBuy));
+        buyButton.onClick.AddListener(() => onButtonClickCallback?.Invoke());
     }
 
     private void OnBuy()
     {
-        if (OnBuyUpdate == null) return;
+        upgrade.currentQuantity++;
 
-        (string price, string quantity) = OnBuyUpdate.Invoke();
-
-        priceText.SetText(price);
-        quantityText.SetText(quantity);
+        if (upgrade.triggerAutomatic) 
+            SchoolsManager.Instance.SchoolSelected.Tappable.Automatic.SetInfinity(true);
     }
 }

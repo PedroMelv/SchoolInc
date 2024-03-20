@@ -10,16 +10,6 @@ public class AutomaticSchool : AutomaticTapper
     {
         base.Awake(); 
         data = GetComponent<SchoolData>();
-        data.OnHasProfessorChanged += CheckProfessor;
-    }
-
-    private void CheckProfessor(bool hasProfessor)
-    {
-        if (hasProfessor)
-        {
-            SetInfinity(true);
-            StartTapper();
-        }
     }
 
 }

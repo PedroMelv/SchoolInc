@@ -42,10 +42,11 @@ public class MoneyUtils
     public static string MoneyString(BigInteger value)
     {
         string number = value.ToString("N0");
+        string fullNumber = number;
 
-        number = number.Substring(0, Mathf.Min(number.Length, 6));
-
+        number = fullNumber.Substring(0, Mathf.Min(number.Length, 7));
         if (number[number.Length - 1] == '.') number = number.Remove(number.Length - 1);
+
 
         return "$" + number + GetSuffix(value);
     }

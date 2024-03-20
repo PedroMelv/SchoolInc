@@ -6,32 +6,27 @@ using UnityEngine;
 public class SchoolData : MonoBehaviour
 {
     public bool isUnlocked;
+    [Space]
+
+    public int initialCost = 1;
+    public int initialRevenue = 1;
+    public float incomeMultiplier = 1;
+    public ulong maxMoneyHold = 500;
 
     [Space]
-    public ulong initialCost;
-    public ulong initialRevenue;
+    [Range(0f, 1f)] public float tapBoostStrength = .01f;
+    public int tapBoostMax = 10;
+    public float tapBoostFillSpeed = 1f;
 
+    [Space]
+
+    public float fillTimeSpeed = 1f;
     public float timeToFillInSeconds = 10;
 
-    [Space]
-    public ulong studentCount;
-    [Range(1f, 1.2f)] public float growthRate;
-    [Space]
-    public float directorMultiplier = 1f;
-
-    [Space]
-    public bool hasProfessor;
-    public float assistantMultiplier = 1f;
-
-    public bool HasProfessor { get { return hasProfessor; } set 
-        {
-            hasProfessor = value;
-            OnHasProfessorChanged?.Invoke(hasProfessor);
-        } 
-    }
     public float TimeToFill { get => timeToFillInSeconds; }
 
-
+    public Dictionary<string, UpgradeDatabase.Upgrade> upgrades;
+    
     public Action<bool> OnHasProfessorChanged;
 
     private TappableSchool tappable;
@@ -47,10 +42,14 @@ public class SchoolData : MonoBehaviour
 
     private IEnumerator Start()
     {
+        upgrades = UpgradeDatabase.Instance.GetUpgrades();
         yield return new WaitForEndOfFrame();
+
+        if (!isUnlocked) yield break;
+
         visual.SetCostText(false);
         visual.SetProgressionSlider(true);
-        studentCount = 1;
+        upgrades["Students"].currentQuantity = 1;
         isUnlocked = true;
 
         SchoolsManager.Instance.boughtSchools.Add(this);

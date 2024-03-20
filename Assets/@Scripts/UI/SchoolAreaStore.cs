@@ -1,4 +1,4 @@
-using UnityEditor.Build;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SchoolAreaStore : MonoBehaviour
@@ -8,6 +8,10 @@ public class SchoolAreaStore : MonoBehaviour
 
     [SerializeField] private Transform storeContainer;
     [SerializeField] private BuyNode buyPrefab;
+
+    private List<BuyNode> nodesOnScreen = new List<BuyNode>();
+
+    private SchoolData currentSchool;
 
     public void InitializeArea()
     {
@@ -21,6 +25,7 @@ public class SchoolAreaStore : MonoBehaviour
 
     public void CloseArea()
     {
+        currentSchool = null;
         InputHandler.Instance.cameraInput.ChangeState(new CameraInput.CameraState_InputHandled());
     }
 
@@ -28,29 +33,101 @@ public class SchoolAreaStore : MonoBehaviour
     {
         if (schoolSelected == -1) return;
 
-        foreach (Transform child in storeContainer)
+        currentSchool = SchoolsManager.Instance.SchoolSelected;
+
+        if (nodesOnScreen.Count > 0)
         {
-            Destroy(child.gameObject);
+            UpdateBuyNodes();
+            return;
         }
 
-        SchoolData data = SchoolsManager.Instance.SchoolSelected;
+        InitializeBuyNodes();
+    }
 
-        string studentCount = data.studentCount + "x";
-        string price = data.studentCount + "x";
+    private void InitializeBuyNodes()
+    {
+        UpgradeDatabase.Upgrades allUpgrades = UpgradeDatabase.Instance.upgrades;
 
-        Instantiate(buyPrefab, storeContainer).Initialize
-            ("Alunos",
-            studentCount,
-            price,
-            () => data.studentCount++,
-            () =>
+        for (int i = 0; i < allUpgrades.upgrades.Length; i++)
+        {
+            UpgradeDatabase.Upgrade upgrade = null;
+
+            if (!currentSchool.upgrades.TryGetValue(allUpgrades.upgrades[i].name, out upgrade))
             {
-                string studentCount = data.studentCount + "x";
-                string price = data.studentCount + "x";
-
-                return (price, studentCount);
+                continue;
             }
-            ); ;
+
+            bool nodeIsActive = true;
+
+            if (upgrade.mustHave.Length > 0)
+            {
+                bool mustHaveIsCompleted = false;
+                for (int l = 0; l < upgrade.mustHave.Length; l++)
+                {
+                    UpgradeDatabase.Upgrade upgradeMustHave = null;
+                    if (currentSchool.upgrades.TryGetValue(upgrade.mustHave[l].name, out upgradeMustHave))
+                        if (upgradeMustHave.currentQuantity >= upgrade.mustHave[l].amount)
+                        {
+                            mustHaveIsCompleted = true;
+                        }
+                        else
+                        {
+                            mustHaveIsCompleted = false;
+                            break;
+                        }
+                }
+
+                if (!mustHaveIsCompleted) nodeIsActive = false;
+            }
+
+            BuyNode node = Instantiate(buyPrefab, storeContainer);
+
+            node.onButtonClickCallback += UpdateBuyNodes;
+            node.Initialize(upgrade);
+            nodesOnScreen.Add(node);
+
+            node.gameObject.SetActive(nodeIsActive);
+        }
+    }
+    private void UpdateBuyNodes()
+    {
+        UpgradeDatabase.Upgrades allUpgrades = UpgradeDatabase.Instance.upgrades;
+
+        for (int i = 0; i < allUpgrades.upgrades.Length; i++)
+        {
+            UpgradeDatabase.Upgrade upgrade = null;
+
+            if (!currentSchool.upgrades.TryGetValue(allUpgrades.upgrades[i].name, out upgrade))
+            {
+                continue;
+            }
+
+            bool nodeIsActive = true;
+
+            if (upgrade.mustHave.Length > 0)
+            {
+                bool mustHaveIsCompleted = false;
+                for (int l = 0; l < upgrade.mustHave.Length; l++)
+                {
+                    UpgradeDatabase.Upgrade upgradeMustHave = null;
+                    if (currentSchool.upgrades.TryGetValue(upgrade.mustHave[l].name, out upgradeMustHave))
+                        if (upgradeMustHave.currentQuantity >= upgrade.mustHave[l].amount)
+                        {
+                            mustHaveIsCompleted = true;
+                        }
+                        else
+                        {
+                            mustHaveIsCompleted = false;
+                            break;
+                        }
+                }
+
+                if (!mustHaveIsCompleted) nodeIsActive = false;
+            }
+
+            nodesOnScreen[i].Initialize(upgrade);
+            nodesOnScreen[i].gameObject.SetActive(nodeIsActive);
+        }
     }
 
     public void ChangeSchoolSelected(int amount)

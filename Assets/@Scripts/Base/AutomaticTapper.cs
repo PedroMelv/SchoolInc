@@ -17,12 +17,15 @@ public class AutomaticTapper : MonoBehaviour
         tappable = GetComponent<TappableObject>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         tappable.canTap += ()=>
         {
+            if (isInfinity) return true;
+
             if (tapper == null)
             {
+                Debug.Log("Starting");
                 StartTapper();
                 return false;
             }
@@ -43,7 +46,7 @@ public class AutomaticTapper : MonoBehaviour
     public virtual void StopTapper()
     {
         if (isInfinity) return;
-
+        if (tapper == null) return;
         StopCoroutine(tapper);
         tapper = null;
     }
@@ -51,7 +54,7 @@ public class AutomaticTapper : MonoBehaviour
     public virtual void SetInfinity(bool isInfinity)
     {
         this.isInfinity = isInfinity;
-
+        StartTapper();
     }
 
     protected virtual IEnumerator ETapper()

@@ -10,7 +10,6 @@ public class TappableSchool : TappableObject
 {
     private float fillCurrent;
     private int tapCount;
-    private int tapMax = 10;
 
     private float tapTimer = 1f;
 
@@ -20,10 +19,14 @@ public class TappableSchool : TappableObject
     private SchoolData data;
     private SchoolVisual visual;
 
+    private BigInteger holdingMoney;
+    
+
     public Action<int, int> OnTapCountChanged;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         data = GetComponent<SchoolData>();
         visual = GetComponent<SchoolVisual>();
     }
@@ -31,6 +34,8 @@ public class TappableSchool : TappableObject
     {
         base.Start();
         onComplete += CalculateMoney;
+        onComplete += () => visual.SetCollectButtonActive(true);
+        visual.AddCollectButtonEvent(CollectMoney);
     }
 
     private void Update()
@@ -51,11 +56,11 @@ public class TappableSchool : TappableObject
 
         if (tapCooldown)
         {
-            tapTimer -= Time.deltaTime;
+            tapTimer -= Time.deltaTime * data.tapBoostFillSpeed;
             if (tapTimer < 0f)
             {
                 tapCount -= 1;
-                OnTapCountChanged?.Invoke(tapCount, tapMax);
+                OnTapCountChanged?.Invoke(tapCount, data.tapBoostMax);
                 tapTimer = 1f;
             }
             return;
@@ -65,11 +70,11 @@ public class TappableSchool : TappableObject
         tapRecoverTimer -= Time.deltaTime;
         if (tapRecoverTimer <= 0f)
         {
-            tapTimer -= Time.deltaTime;
+            tapTimer -= Time.deltaTime * data.tapBoostFillSpeed;
             if (tapTimer < 0f)
             {
                 tapCount -= 1;
-                OnTapCountChanged?.Invoke(tapCount, tapMax);
+                OnTapCountChanged?.Invoke(tapCount, data.tapBoostMax);
                 tapTimer = 1f;
             }
         }
@@ -78,7 +83,7 @@ public class TappableSchool : TappableObject
 
     public void UpdateTapCount()
     {
-        OnTapCountChanged?.Invoke(tapCount, tapMax);
+        OnTapCountChanged?.Invoke(tapCount, data.tapBoostMax);
     }
 
     private void BuySchool()
@@ -96,46 +101,47 @@ public class TappableSchool : TappableObject
         //TODO: SFX e Efeitos visuais de compra
         visual.SetCostText(false);
         visual.SetProgressionSlider(true);
-        data.studentCount = 1;
+        data.upgrades["Students"].currentQuantity = 1;
         data.isUnlocked = true;
 
+        SchoolsManager.Instance.SchoolSelected = data;
         SchoolsManager.Instance.boughtSchools.Add(data);
     }
 
     #region Income_Generators
     public override void Tap(bool useShrink = true)
     {
-        SchoolsManager.Instance.SchoolSelected = data;
-
         if (data.isUnlocked == false)
         {
             BuySchool();
             return;
         }
+        SchoolsManager.Instance.SchoolSelected = data;
 
         bool tapWillWork = true;
         if (canTap != null) { tapWillWork = canTap.Invoke(); }
 
-        if (tapCount >= tapMax || !tapWillWork || tapCooldown) return;
+        if (tapCount >= data.tapBoostMax || !tapWillWork || tapCooldown) return;
 
         tapRecoverTimer = 1;
 
 
         base.Tap(useShrink);
 
-        fillCurrent += 1 + data.TimeToFill * .01f;
+        fillCurrent += 1 + data.TimeToFill * data.tapBoostStrength;
         tapCount++;
-        OnTapCountChanged?.Invoke(tapCount, tapMax);
+        OnTapCountChanged?.Invoke(tapCount, data.tapBoostMax);
         UpdateSlider();
 
-        if(tapCount == tapMax) tapCooldown = true;
+        if(tapCount == data.tapBoostMax) tapCooldown = true;
     }
 
     public override void TapWithTime()
     {
         if (data.isUnlocked == false) return;
         base.TapWithTime();
-        fillCurrent += Time.deltaTime * data.assistantMultiplier;
+        Debug.Log("AssistentsSpeed: " + data.upgrades["Professor"].multiplier);
+        fillCurrent += Time.deltaTime * data.fillTimeSpeed * Mathf.Max(data.upgrades["Professor"].multiplier, 1f);
         UpdateSlider();
     }
 
@@ -158,9 +164,28 @@ public class TappableSchool : TappableObject
 
     private void CalculateMoney()
     {
-        BigInteger moneyMade = (((BigInteger)data.initialRevenue * (BigInteger)data.studentCount) * (BigInteger)data.directorMultiplier);
+        BigInteger moneyMade = 
+            (BigInteger)data.initialRevenue * 
+            (BigInteger)Mathf.Max(data.incomeMultiplier, 1) * 
+            (BigInteger)Mathf.Max(data.upgrades["Students"].currentQuantity, 1) *
+            (BigInteger)Mathf.Max(data.upgrades["Directors"].multiplier,1);
 
-        GameCurrency.Instance.AddCurrency(moneyMade);
+        if(holdingMoney + moneyMade > data.maxMoneyHold)
+        {
+            BigInteger rest = holdingMoney + moneyMade - data.maxMoneyHold;
+            holdingMoney = rest;
+            return;
+        }
+
+        holdingMoney += moneyMade;
     }
+
+    public void CollectMoney()
+    {
+        GameCurrency.Instance.AddCurrency(holdingMoney);
+        holdingMoney = 0;
+        visual.SetCollectButtonActive(false);
+    }
+
     #endregion
 }

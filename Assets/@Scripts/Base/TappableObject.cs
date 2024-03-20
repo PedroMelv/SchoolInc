@@ -18,16 +18,23 @@ public class TappableObject : MonoBehaviour
     
     public Action onComplete;
 
+    protected AutomaticTapper automatic;
+    public AutomaticTapper Automatic { get => automatic; }
+
+
+    protected virtual void Awake()
+    {
+        automatic = GetComponent<AutomaticTapper>();
+    }
+
     protected virtual void Start()
     {
+        onComplete += ShrinkEffect;
         defaultScale = transform.localScale;
     }
 
     public virtual void Tap(bool useShrink = true)
     {
-        
-        if(useShrink) ShrinkEffect();
-        
         onTap?.Invoke();
     }
     public virtual void TapWithTime()
