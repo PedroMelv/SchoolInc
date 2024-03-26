@@ -39,7 +39,7 @@ public class MoneyUtils
         return result;
     }
 
-    public static string MoneyString(BigInteger value)
+    public static string MoneyString(BigInteger value, string suffix)
     {
         string number = value.ToString("N0");
         string fullNumber = number;
@@ -48,8 +48,13 @@ public class MoneyUtils
         if (number[number.Length - 1] == '.') number = number.Remove(number.Length - 1);
 
 
-        return "$" + number + GetSuffix(value);
+        return suffix + number + GetSuffix(value);
     }
 
-    
+    public static string MoneyString(BigInteger value)
+    {
+        return MoneyString(value, "");
+    }
+
+
 }

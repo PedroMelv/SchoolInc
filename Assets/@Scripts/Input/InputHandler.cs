@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InputHandler : Singleton<InputHandler>
 {
@@ -27,13 +28,52 @@ public class InputHandler : Singleton<InputHandler>
 
     private class TouchInfo
     {
+        public int touchIndex;
         public float touchTime;
+        public float touchSpeedTime;
         public bool touchIsOnUI;
-    
-        public TouchInfo(float touchTime, bool touchIsOnUI)
+        public bool speedTapping;
+
+        public bool dragging;
+
+        public TouchInfo(int touchIndex, float touchTime, bool touchIsOnUI)
         {
+            touchSpeedTime = 0f;
+            this.touchIndex = touchIndex;
             this.touchTime = touchTime;
             this.touchIsOnUI = touchIsOnUI;
+        }
+
+        public void StartSpeedTapping()
+        {
+            if(!speedTapping)InputHandler.Instance.StartCoroutine(ESpeedTapping());
+        }
+
+        public void StopSpeedTapping()
+        {
+            touchSpeedTime = 0f;
+            speedTapping = false;
+        }
+
+        private IEnumerator ESpeedTapping()
+        {
+            if(!EventSystem.current.IsPointerOverGameObject(touchIndex)) yield break;
+
+            GameObject currentObject = EventSystem.current.currentSelectedGameObject;
+            if (currentObject == null) yield break;
+
+            Button button = currentObject.GetComponent<Button>();
+            if (button == null) yield break;
+
+            speedTapping = true;
+            float tapTimming = .25f;
+            while(speedTapping)
+            {
+                if(button.interactable)button.onClick?.Invoke();
+                yield return new WaitForSeconds(tapTimming);
+                tapTimming -= .05f;
+                tapTimming = Mathf.Clamp(tapTimming, 0.05f, 1f);
+            }
         }
     }
 
@@ -66,10 +106,12 @@ public class InputHandler : Singleton<InputHandler>
         {
             case TouchPhase.Began:
 
-                if (!touchesOnScreen.ContainsKey(fingerID)) touchesOnScreen.Add(fingerID, new TouchInfo(0f, touchUI));
+                if (!touchesOnScreen.ContainsKey(fingerID)) touchesOnScreen.Add(fingerID, new TouchInfo(fingerID, 0f, touchUI));
 
-                if (!touchesOnScreen[fingerID].touchIsOnUI) 
+                if (!touchesOnScreen[fingerID].touchIsOnUI)
+                {
                     onSingleTouchStart?.Invoke(touch);
+                }
 
                 break;
             case TouchPhase.Moved:
@@ -77,15 +119,16 @@ public class InputHandler : Singleton<InputHandler>
                 if (touchesOnScreen.ContainsKey(fingerID))
                 {
                     touchesOnScreen[fingerID].touchTime += Time.deltaTime;
-
+                    
                     touchesOnScreen[fingerID].touchIsOnUI = touchUI;
 
 
-                    if (!touchesOnScreen[fingerID].touchIsOnUI)
+                    if (!touchesOnScreen[fingerID].touchIsOnUI || touchesOnScreen[fingerID].dragging)
+                    {
+                        touchesOnScreen[fingerID].dragging = true;
                         onSingleTouchMove?.Invoke(touch);
+                    }
                 }
-
-                
 
                 break;
             case TouchPhase.Stationary:
@@ -95,26 +138,40 @@ public class InputHandler : Singleton<InputHandler>
                     touchesOnScreen[fingerID].touchTime += Time.deltaTime;
 
                     touchesOnScreen[fingerID].touchIsOnUI = touchUI;
-                }
 
+                    if (touchesOnScreen[fingerID].dragging) return;
+
+                    if (touchesOnScreen[fingerID].touchIsOnUI && touchesOnScreen[fingerID].touchSpeedTime >= .5f)
+                    {
+                        touchesOnScreen[fingerID].StartSpeedTapping();
+                    }else if(touchesOnScreen[fingerID].touchIsOnUI)
+                    {
+                        touchesOnScreen[fingerID].touchSpeedTime += Time.deltaTime;
+                    }
+                    else
+                    {
+                        touchesOnScreen[fingerID].touchSpeedTime = 0f;
+                    }
+                }
                 break;
             case TouchPhase.Ended:
 
                 if (touchesOnScreen.ContainsKey(fingerID))
                 {
-                    if (!touchesOnScreen[fingerID].touchIsOnUI)
-                    {
-                        onSingleTouchEnded?.Invoke(touch);
-                        if (touchesOnScreen[fingerID].touchTime <= .33f) onTap?.Invoke(touch);
-                    }
+                    touchesOnScreen[fingerID].StopSpeedTapping();
+
+                    onSingleTouchEnded?.Invoke(touch);
+                    if (touchesOnScreen[fingerID].touchTime <= .33f && !touchesOnScreen[fingerID].touchIsOnUI) onTap?.Invoke(touch);
+                    
                     touchesOnScreen.Remove(fingerID);
                 }
                 break;
             case TouchPhase.Canceled:
                 if (touchesOnScreen.ContainsKey(fingerID))
-                { 
-                    if (!touchesOnScreen[fingerID].touchIsOnUI)
-                        onSingleTouchEnded?.Invoke(touch);
+                {
+                    touchesOnScreen[fingerID].StopSpeedTapping();
+
+                    onSingleTouchEnded?.Invoke(touch);
 
                     touchesOnScreen.Remove(fingerID);
                 }

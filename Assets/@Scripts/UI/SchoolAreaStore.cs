@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SchoolAreaStore : MonoBehaviour
@@ -7,6 +8,7 @@ public class SchoolAreaStore : MonoBehaviour
     private int maxSchools = 0;
 
     [SerializeField] private Transform storeContainer;
+    [SerializeField] private TextMeshProUGUI tierPrefab;
     [SerializeField] private BuyNode buyPrefab;
 
     private List<BuyNode> nodesOnScreen = new List<BuyNode>();
@@ -46,87 +48,39 @@ public class SchoolAreaStore : MonoBehaviour
 
     private void InitializeBuyNodes()
     {
-        UpgradeDatabase.Upgrades allUpgrades = UpgradeDatabase.Instance.upgrades;
+        UpgradeDatabase.Upgrades[] tiers = UpgradeDatabase.Instance.tiers;
 
-        for (int i = 0; i < allUpgrades.upgrades.Length; i++)
+        for (int i = 0; i < tiers.Length; i++)
         {
-            UpgradeDatabase.Upgrade upgrade = null;
+            Instantiate(tierPrefab, storeContainer).text = "Tier " + (i+1);
 
-            if (!currentSchool.upgrades.TryGetValue(allUpgrades.upgrades[i].name, out upgrade))
+            bool isCurrentTier = (i + 1) == currentSchool.currentTier;
+
+            for (int l = 0; l < tiers[i].upgrades.Length; l++)
             {
-                continue;
+                nodesOnScreen.Add(Instantiate(buyPrefab, storeContainer));
+                nodesOnScreen[l + i * 3].Initialize(currentSchool.GetUpgrade(tiers[i].upgrades[l].nameID));
+
+                nodesOnScreen[l + i * 3].onButtonClickCallback += UpdateBuyNodes;
+                nodesOnScreen[l + i * 3].interactable = isCurrentTier;
             }
-
-            bool nodeIsActive = true;
-
-            if (upgrade.mustHave.Length > 0)
-            {
-                bool mustHaveIsCompleted = false;
-                for (int l = 0; l < upgrade.mustHave.Length; l++)
-                {
-                    UpgradeDatabase.Upgrade upgradeMustHave = null;
-                    if (currentSchool.upgrades.TryGetValue(upgrade.mustHave[l].name, out upgradeMustHave))
-                        if (upgradeMustHave.currentQuantity >= upgrade.mustHave[l].amount)
-                        {
-                            mustHaveIsCompleted = true;
-                        }
-                        else
-                        {
-                            mustHaveIsCompleted = false;
-                            break;
-                        }
-                }
-
-                if (!mustHaveIsCompleted) nodeIsActive = false;
-            }
-
-            BuyNode node = Instantiate(buyPrefab, storeContainer);
-
-            node.onButtonClickCallback += UpdateBuyNodes;
-            node.Initialize(upgrade);
-            nodesOnScreen.Add(node);
-
-            node.gameObject.SetActive(nodeIsActive);
         }
     }
     private void UpdateBuyNodes()
     {
-        UpgradeDatabase.Upgrades allUpgrades = UpgradeDatabase.Instance.upgrades;
-
-        for (int i = 0; i < allUpgrades.upgrades.Length; i++)
+        for (int i = 0; i < nodesOnScreen.Count; i++)
         {
-            UpgradeDatabase.Upgrade upgrade = null;
-
-            if (!currentSchool.upgrades.TryGetValue(allUpgrades.upgrades[i].name, out upgrade))
+            bool isCurrentTier = UpgradeDatabase.Instance.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
+            if(isCurrentTier && currentSchool.IsTierCompleted(currentSchool.currentTier))
             {
-                continue;
+                currentSchool.currentTier++;
+                isCurrentTier = UpgradeDatabase.Instance.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
             }
+            nodesOnScreen[i].Initialize(currentSchool.GetUpgrade(nodesOnScreen[i].Upgrade.nameID));
 
-            bool nodeIsActive = true;
-
-            if (upgrade.mustHave.Length > 0)
-            {
-                bool mustHaveIsCompleted = false;
-                for (int l = 0; l < upgrade.mustHave.Length; l++)
-                {
-                    UpgradeDatabase.Upgrade upgradeMustHave = null;
-                    if (currentSchool.upgrades.TryGetValue(upgrade.mustHave[l].name, out upgradeMustHave))
-                        if (upgradeMustHave.currentQuantity >= upgrade.mustHave[l].amount)
-                        {
-                            mustHaveIsCompleted = true;
-                        }
-                        else
-                        {
-                            mustHaveIsCompleted = false;
-                            break;
-                        }
-                }
-
-                if (!mustHaveIsCompleted) nodeIsActive = false;
-            }
-
-            nodesOnScreen[i].Initialize(upgrade);
-            nodesOnScreen[i].gameObject.SetActive(nodeIsActive);
+                
+            nodesOnScreen[i].interactable = isCurrentTier;
+        
         }
     }
 

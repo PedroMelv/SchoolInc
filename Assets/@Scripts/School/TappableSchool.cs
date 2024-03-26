@@ -34,7 +34,7 @@ public class TappableSchool : TappableObject
     {
         base.Start();
         onComplete += CalculateMoney;
-        onComplete += () => visual.SetCollectButtonActive(true);
+        onComplete += () => visual.SetCollectButtonActive(true, MoneyUtils.MoneyString(holdingMoney, "$"));
         visual.AddCollectButtonEvent(CollectMoney);
     }
 
@@ -101,7 +101,6 @@ public class TappableSchool : TappableObject
         //TODO: SFX e Efeitos visuais de compra
         visual.SetCostText(false);
         visual.SetProgressionSlider(true);
-        data.upgrades["Students"].currentQuantity = 1;
         data.isUnlocked = true;
 
         SchoolsManager.Instance.SchoolSelected = data;
@@ -140,8 +139,8 @@ public class TappableSchool : TappableObject
     {
         if (data.isUnlocked == false) return;
         base.TapWithTime();
-        Debug.Log("AssistentsSpeed: " + data.upgrades["Professor"].multiplier);
-        fillCurrent += Time.deltaTime * data.fillTimeSpeed * Mathf.Max(data.upgrades["Professor"].multiplier, 1f);
+
+        fillCurrent += Time.deltaTime * data.fillTimeSpeed;
         UpdateSlider();
     }
 
@@ -164,16 +163,16 @@ public class TappableSchool : TappableObject
 
     private void CalculateMoney()
     {
+        if (holdingMoney == data.maxMoneyHold) return;
+
         BigInteger moneyMade = 
             (BigInteger)data.initialRevenue * 
-            (BigInteger)Mathf.Max(data.incomeMultiplier, 1) * 
-            (BigInteger)Mathf.Max(data.upgrades["Students"].currentQuantity, 1) *
-            (BigInteger)Mathf.Max(data.upgrades["Directors"].multiplier,1);
+            (BigInteger)Mathf.Max(data.incomeMultiplier, 1);
 
         if(holdingMoney + moneyMade > data.maxMoneyHold)
         {
-            BigInteger rest = holdingMoney + moneyMade - data.maxMoneyHold;
-            holdingMoney = rest;
+            BigInteger rest = (holdingMoney + moneyMade) - data.maxMoneyHold;
+            holdingMoney = data.maxMoneyHold;
             return;
         }
 

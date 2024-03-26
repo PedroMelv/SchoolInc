@@ -27,7 +27,7 @@ public class GameCurrency : Singleton<GameCurrency>
     
     public string CurrencyString
     {
-        get => MoneyUtils.MoneyString(currency);
+        get => MoneyUtils.MoneyString(currency, "$");
     }
 
     private void Start()

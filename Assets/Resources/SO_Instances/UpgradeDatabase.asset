@@ -12,31 +12,164 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e581f146e754f4fbce0b24198db91a, type: 3}
   m_Name: UpgradeDatabase
   m_EditorClassIdentifier: 
-  upgrades:
+  tiers:
+  - upgradesBrought: 0
     upgrades:
-    - name: Students
-      maxQuantity: 5000
-      costBase: 3.736
-      costGrowth: 1.07
-      multiplierGrowth: 0
+    - name: More Chairs
+      nameID: MORECHAIRS
+      maxQuantity: 6
+      costBase: 10
+      costGrowth: 0
+      upgradeType: 2
+      increaseType: 0
+      increaseValue: 2
       triggerAutomatic: 0
-      mustHave: []
-      currentQuantity: 1
-    - name: Professor
-      maxQuantity: 5000
-      costBase: 40
-      costGrowth: 1.5
-      multiplierGrowth: 1
+      currentQuantity: 0
+    - name: Better Materials
+      nameID: BETTERMATERIALS
+      maxQuantity: 4
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 1
+      increaseType: 1
+      increaseValue: 50
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Adapted Content
+      nameID: ADAPTEDCONTENT
+      maxQuantity: 5
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 4
+      increaseType: 1
+      increaseValue: 12.5
+      triggerAutomatic: 0
+      currentQuantity: 0
+  - upgradesBrought: 0
+    upgrades:
+    - name: Bigger Classrooms
+      nameID: BIGGERCLASSROOMS
+      maxQuantity: 6
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 2
+      increaseType: 0
+      increaseValue: 3
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Intensity
+      nameID: INTENSITY
+      maxQuantity: 4
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 6
+      increaseType: 0
+      increaseValue: 2
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Bigger Safes
+      nameID: BIGGERSAFES
+      maxQuantity: 4
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 5
+      increaseType: 1
+      increaseValue: 25
+      triggerAutomatic: 0
+      currentQuantity: 0
+  - upgradesBrought: 0
+    upgrades:
+    - name: Professors
+      nameID: PROFESSOR
+      maxQuantity: 6
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 3
+      increaseType: 1
+      increaseValue: 10
       triggerAutomatic: 1
-      mustHave: []
-      currentQuantity: 10
-    - name: Directors
-      maxQuantity: 5000
-      costBase: 100
-      costGrowth: 1.14
-      multiplierGrowth: 0.1
+      currentQuantity: 0
+    - name: Tecnologic Materials
+      nameID: TECNOLOGICMATERIALS
+      maxQuantity: 4
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 1
+      increaseType: 1
+      increaseValue: 100
       triggerAutomatic: 0
-      mustHave:
-      - name: Students
-        amount: 50
+      currentQuantity: 0
+    - name: Insentive
+      nameID: INSENTIVE
+      maxQuantity: 6
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 7
+      increaseType: 1
+      increaseValue: 10
+      triggerAutomatic: 0
+      currentQuantity: 0
+  - upgradesBrought: 0
+    upgrades:
+    - name: Emotional Support
+      nameID: EMOTIONALSUPPORT
+      maxQuantity: 4
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 6
+      increaseType: 0
+      increaseValue: 3
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Ultra Big Safes
+      nameID: ULTRABIGSAFES
+      maxQuantity: 4
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 5
+      increaseType: 1
+      increaseValue: 33
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Renegotiation
+      nameID: RENEGOTIATION
+      maxQuantity: 3
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 0
+      increaseType: 2
+      increaseValue: 2
+      triggerAutomatic: 0
+      currentQuantity: 0
+  - upgradesBrought: 0
+    upgrades:
+    - name: Super Class
+      nameID: SUPERCLASS
+      maxQuantity: 4
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 1
+      increaseType: 1
+      increaseValue: 150
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Super Classrooms
+      nameID: SUPERCLASSROOMS
+      maxQuantity: 6
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 2
+      increaseType: 0
+      increaseValue: 10
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Super Professors
+      nameID: SUPERPROFESSORS
+      maxQuantity: 5
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 4
+      increaseType: 1
+      increaseValue: 20
+      triggerAutomatic: 1
       currentQuantity: 0

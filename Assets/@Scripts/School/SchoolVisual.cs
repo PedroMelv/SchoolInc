@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SchoolVisual : MonoBehaviour
 {
+    [HideInInspector]public bool editOffset;
+
     [SerializeField] private TextMeshPro costTextPrefab;
     [SerializeField] private WorldButton collectMoneyButtonPrefab;
     [SerializeField] private GameObject progressionSliderPrefab;
@@ -18,8 +20,9 @@ public class SchoolVisual : MonoBehaviour
     public Vector3 CostTextOffset { get => costTextOffset; set => costTextOffset = value; }
     public Vector3 CollectMoneyOffset { get => collectMoneyOffset; set => collectMoneyOffset = value; }
     public Vector3 ProgressionSliderOffset { get => progressionSliderOffset; set => progressionSliderOffset = value; }
-    
+
     [Space]
+    private TextMeshPro collectMoneyText;
     private TextMeshPro costText;
     [Space]
     private GameObject progressionSlider;
@@ -47,6 +50,7 @@ public class SchoolVisual : MonoBehaviour
 
         spawnPos += collectMoneyOffset;
         collectMoneyButton = Instantiate(collectMoneyButtonPrefab, spawnPos, Quaternion.identity);
+        collectMoneyText = collectMoneyButton.GetComponentInChildren<TextMeshPro>();
         spawnPos -= collectMoneyOffset;
 
         progressionSlider_fill = progressionSlider.transform.Find("Fill");
@@ -72,7 +76,7 @@ public class SchoolVisual : MonoBehaviour
     }
     public void SetCostText()
     {
-        costText.text = "Buy Cost: " + MoneyUtils.MoneyString(data.initialCost);
+        costText.text = "Buy Cost: " + MoneyUtils.MoneyString(data.initialCost, "$");
     }
 
     public void SetProgressionSlider(bool visible, float amount)
@@ -94,8 +98,10 @@ public class SchoolVisual : MonoBehaviour
         progressionSlider.SetActive(visible);
     }
 
-    public void SetCollectButtonActive(bool isActive)
+    public void SetCollectButtonActive(bool isActive, string amount = "")
     {
+        collectMoneyText.text = amount;
+
         collectMoneyButton.gameObject.SetActive(isActive);
     }
 

@@ -25,7 +25,6 @@ public class AutomaticTapper : MonoBehaviour
 
             if (tapper == null)
             {
-                Debug.Log("Starting");
                 StartTapper();
                 return false;
             }
