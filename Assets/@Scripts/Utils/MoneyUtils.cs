@@ -51,6 +51,11 @@ public class MoneyUtils
         return suffix + number + GetSuffix(value);
     }
 
+    public static string MoneyString(double value, string suffix)
+    {
+        return MoneyString(new BigInteger(value), suffix);
+    }
+
     public static string MoneyString(BigInteger value)
     {
         return MoneyString(value, "");

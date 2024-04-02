@@ -19,7 +19,15 @@ public class TappableObject : MonoBehaviour
     public Action onComplete;
 
     protected AutomaticTapper automatic;
-    public AutomaticTapper Automatic { get => automatic; }
+    public AutomaticTapper Automatic
+    {
+        get
+        {
+            if (automatic == null)
+                return GetComponent<AutomaticTapper>();
+            return automatic;
+        }
+    }
 
 
     protected virtual void Awake()

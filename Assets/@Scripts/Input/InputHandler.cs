@@ -24,6 +24,8 @@ public class InputHandler : Singleton<InputHandler>
     public Action<Touch, Touch> onTwoTouchesStart;
     public Action<Touch, Touch> onTwoTouchesChanged;
 
+    private const string k_speedTapTag = "SpeedTap";
+
     private Dictionary<int, TouchInfo> touchesOnScreen = new Dictionary<int, TouchInfo>();
 
     private class TouchInfo
@@ -46,7 +48,7 @@ public class InputHandler : Singleton<InputHandler>
 
         public void StartSpeedTapping()
         {
-            if(!speedTapping)InputHandler.Instance.StartCoroutine(ESpeedTapping());
+            if(!speedTapping)Instance.StartCoroutine(ESpeedTapping());
         }
 
         public void StopSpeedTapping()
@@ -60,7 +62,7 @@ public class InputHandler : Singleton<InputHandler>
             if(!EventSystem.current.IsPointerOverGameObject(touchIndex)) yield break;
 
             GameObject currentObject = EventSystem.current.currentSelectedGameObject;
-            if (currentObject == null) yield break;
+            if (currentObject == null || !currentObject.CompareTag(k_speedTapTag)) yield break;
 
             Button button = currentObject.GetComponent<Button>();
             if (button == null) yield break;

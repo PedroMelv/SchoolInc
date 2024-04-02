@@ -21,7 +21,11 @@ public class AutomaticTapper : MonoBehaviour
     {
         tappable.canTap += ()=>
         {
-            if (isInfinity) return true;
+            if (isInfinity)
+            {
+                StartTapper();
+                return true;
+            }
 
             if (tapper == null)
             {
@@ -53,7 +57,7 @@ public class AutomaticTapper : MonoBehaviour
     public virtual void SetInfinity(bool isInfinity)
     {
         this.isInfinity = isInfinity;
-        StartTapper();
+        if(isInfinity)StartTapper();
     }
 
     protected virtual IEnumerator ETapper()

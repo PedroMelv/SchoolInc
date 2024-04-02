@@ -18,10 +18,20 @@ public class BannerSpacing : MonoBehaviour
     {
         canvas = GetComponentInParent<Canvas>();
         AdsSystem.Instance.OnShowingBannerChanged += OnBannerChanged;
+
+        OnBannerChanged(AdsSystem.Instance.ShowingBanner);
+    }
+
+
+    private void OnDestroy()
+    {
+        if(AdsSystem.Instance != null)
+            AdsSystem.Instance.OnShowingBannerChanged -= OnBannerChanged;
     }
 
     private void OnBannerChanged(bool showing)
     {
+        if(rectTransform == null) rectTransform = GetComponent<RectTransform>();
         rectTransform.anchoredPosition = Vector2.down * (showing ? spacing : 0);
     }
 }

@@ -19,7 +19,6 @@ public class TappableSchool : TappableObject
     private SchoolData data;
     private SchoolVisual visual;
 
-    private BigInteger holdingMoney;
     
 
     public Action<int, int> OnTapCountChanged;
@@ -34,7 +33,7 @@ public class TappableSchool : TappableObject
     {
         base.Start();
         onComplete += CalculateMoney;
-        onComplete += () => visual.SetCollectButtonActive(true, MoneyUtils.MoneyString(holdingMoney, "$"));
+        onComplete += () => visual.SetCollectButtonActive(true, MoneyUtils.MoneyString(data.holdingMoney, "$"));
         visual.AddCollectButtonEvent(CollectMoney);
     }
 
@@ -163,26 +162,33 @@ public class TappableSchool : TappableObject
 
     private void CalculateMoney()
     {
-        if (holdingMoney == data.maxMoneyHold) return;
+        if (data.holdingMoney == data.maxMoneyHold) return;
 
         BigInteger moneyMade = 
-            (BigInteger)data.initialRevenue * 
-            (BigInteger)Mathf.Max(data.incomeMultiplier, 1);
+            (BigInteger)data.initialRevenue * data.studentsCount;
 
-        if(holdingMoney + moneyMade > data.maxMoneyHold)
+        moneyMade = new BigInteger((double)moneyMade * data.incomeMultiplier);
+
+        if (data.holdingMoney + moneyMade > data.maxMoneyHold)
         {
-            BigInteger rest = (holdingMoney + moneyMade) - data.maxMoneyHold;
-            holdingMoney = data.maxMoneyHold;
+            data.holdingMoney = data.maxMoneyHold;
             return;
         }
 
-        holdingMoney += moneyMade;
+        data.holdingMoney += moneyMade;
     }
 
     public void CollectMoney()
     {
-        GameCurrency.Instance.AddCurrency(holdingMoney);
-        holdingMoney = 0;
+        if (UnityEngine.Random.value < .25f)
+        {
+            DoubleMoneyWindow.Instance.OfferDoubleMoney((double)data.holdingMoney);
+            data.holdingMoney = 0;
+            visual.SetCollectButtonActive(false);
+            return;
+        }
+        GameCurrency.Instance.AddCurrency(data.holdingMoney);
+        data.holdingMoney = 0;
         visual.SetCollectButtonActive(false);
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraInput : MonoBehaviour
 {
+    [SerializeField] private InputHandler input;
+    [SerializeField] private SchoolsManager schoolsManager;
     [SerializeField] private float cameraLerpSpeed;
     [SerializeField] private float moveStrength;
     [SerializeField] private Vector3 maxPosition;
@@ -29,6 +31,12 @@ public class CameraInput : MonoBehaviour
     private void LateUpdate()
     {
         currentState?.OnLateUpdate();
+    }
+
+    private void OnDisable()
+    {
+        if(currentState != null)
+            currentState.OnExit();
     }
 
     public void ChangeState(CameraState targetState)
@@ -100,6 +108,11 @@ public class CameraInput : MonoBehaviour
             InitializeInput();
         }
 
+        public override void OnExit()
+        {
+            base.OnExit();
+            DeinitializeInput();
+        }
         public override void OnLateUpdate()
         {
             UpdateCameraPosition();
@@ -113,12 +126,18 @@ public class CameraInput : MonoBehaviour
 
         private void InitializeInput()
         {
-            InputHandler input = InputHandler.Instance;
-
-            input.onSingleTouchStart += SetupMoveCamera;
-            input.onSingleTouchMove += MoveCamera;
-            input.onSingleTouchEnded += ReleaseCamera;
+            camera.input.onSingleTouchStart += SetupMoveCamera;
+            camera.input.onSingleTouchMove += MoveCamera;
+            camera.input.onSingleTouchEnded += ReleaseCamera;
         }
+
+        private void DeinitializeInput()
+        {
+            camera.input.onSingleTouchStart -= SetupMoveCamera;
+            camera.input.onSingleTouchMove -= MoveCamera;
+            camera.input.onSingleTouchEnded -= ReleaseCamera;
+        }
+
 
         private void SetupMoveCamera(Touch touch)
         {
@@ -172,9 +191,9 @@ public class CameraInput : MonoBehaviour
 
         private void UpdateFocusStore()
         {
-            if (SchoolsManager.Instance.SchoolSelected == null) return;
-            Vector3 targetPosition = SchoolsManager.Instance.SchoolSelected.Visual.CameraOffsetPosition;
-            targetPosition += SchoolsManager.Instance.SchoolSelected.transform.position;
+            if (camera.schoolsManager.SchoolSelected == null) return;
+            Vector3 targetPosition = camera.schoolsManager.SchoolSelected.Visual.CameraOffsetPosition;
+            targetPosition += camera.schoolsManager.SchoolSelected.transform.position;
 
             if (Vector3.Distance(camera.transform.position, targetPosition) > .1f)
                 camera.transform.position = Vector3.Lerp(camera.transform.position, targetPosition, 10f * Time.deltaTime);

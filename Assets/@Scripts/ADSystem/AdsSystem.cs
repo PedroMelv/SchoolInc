@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
 {
@@ -12,6 +14,8 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
 
     [Header("Banner")]
     [SerializeField] private BannerPosition _bannerPosition = BannerPosition.BOTTOM_CENTER;
+    [SerializeField] private int _bannerHeight = 50;
+    public int BannerHeight => _bannerHeight;
 
     private bool showingBanner;
     public bool ShowingBanner { get { return showingBanner; } set 
@@ -20,6 +24,7 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
             OnShowingBannerChanged?.Invoke(showingBanner);
         } 
     }
+
     public event BannerChanged OnShowingBannerChanged;
 
     public delegate void BannerChanged(bool showing);
@@ -40,7 +45,6 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
         base.Awake();
         InitializeAds();
     }
-
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.O))
@@ -70,20 +74,30 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
             Advertisement.Initialize(_gameId, true, this);
         }
     }
-
-
     public void OnInitializationComplete()
     {
 
         LoadBanner();
         //LoadAd();
     }
-
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
         
     }
 
+    private void OnEnable()
+    {
+        SceneManager.activeSceneChanged += OnSceneLoaded;
+    }
+    private void OnDisable()
+    {
+        SceneManager.activeSceneChanged -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene cur, Scene next)
+    {
+        OnShowingBannerChanged?.Invoke(ShowingBanner);
+    }
 
     #region Banner
     public void LoadBanner()
@@ -137,6 +151,24 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
 
     #region Rewarded
 
+    private UnityEvent onRewardedComplete;
+    private UnityEvent onRewardedFailed;
+
+    public static void PlayRewarded(UnityAction completeCallback = null, UnityAction failCallback = null)
+    {
+        if (Instance.onRewardedComplete == null) Instance.onRewardedComplete = new UnityEvent();
+        else Instance.onRewardedComplete.RemoveAllListeners();
+
+        Instance.onRewardedComplete.AddListener(completeCallback);
+
+        if (Instance.onRewardedFailed == null) Instance.onRewardedFailed = new UnityEvent();
+        else Instance.onRewardedFailed.RemoveAllListeners();
+
+        Instance.onRewardedFailed.AddListener(failCallback);
+
+        Instance.LoadAd();
+    }
+
     public void LoadAd()
     {
         Advertisement.Load(_adRewardedId, this);
@@ -161,18 +193,19 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
         if (adUnitId.Equals(_adRewardedId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             ShowBannerAd();
+            Instance.onRewardedComplete?.Invoke();
         }
     }
 
     // Implement Load and Show Listener error callbacks:
     public void OnUnityAdsFailedToLoad(string adUnitId, UnityAdsLoadError error, string message)
     {
-        
+        Instance.onRewardedFailed?.Invoke();
     }
 
     public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
     {
-        
+        Instance.onRewardedFailed?.Invoke();
     }
 
     public void OnUnityAdsShowStart(string adUnitId) { }

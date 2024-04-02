@@ -5,15 +5,24 @@ using UnityEngine;
 
 public class CurrencyUI : MonoBehaviour
 {
+    [SerializeField] private GameCurrency gameCurrency;
+
     [SerializeField] private TextMeshProUGUI currencyText;
+    [SerializeField] private TextMeshProUGUI coinsText;
 
     private void Start()
     {
-        GameCurrency.Instance.OnCurrencyChanged_String += UpdateCurrencyText;
+        gameCurrency.OnCurrencyChanged_String += UpdateCurrencyText;
     }
 
-    private void UpdateCurrencyText(string text)
+    private void OnDisable()
     {
-        currencyText.SetText(text);
+        gameCurrency.OnCurrencyChanged_String -= UpdateCurrencyText;
+    }
+
+    private void UpdateCurrencyText(string currency, string coins)
+    {
+        coinsText.SetText(coins);
+        currencyText.SetText(currency);
     }
 }

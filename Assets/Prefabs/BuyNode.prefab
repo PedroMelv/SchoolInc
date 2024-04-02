@@ -185,7 +185,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 135, y: 59.733}
-  m_SizeDelta: {x: 369.164, y: 63.272}
+  m_SizeDelta: {x: 182.8845, y: 63.272}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4001403373048638599
 CanvasRenderer:
@@ -217,8 +217,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Alunos
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4dea44f8e2a973c46abc5465d5ffca9f, type: 2}
+  m_sharedMaterial: {fileID: 5087334865187987948, guid: 4dea44f8e2a973c46abc5465d5ffca9f,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -242,7 +243,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.6
+  m_fontSize: 43.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -298,7 +299,7 @@ GameObject:
   - component: {fileID: 1371724340825787418}
   m_Layer: 5
   m_Name: BuyButton
-  m_TagString: Untagged
+  m_TagString: SpeedTap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -318,10 +319,10 @@ RectTransform:
   - {fileID: 5033561346212087131}
   m_Father: {fileID: 7851951918364812875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103.025, y: -66.91}
-  m_SizeDelta: {x: 206.05, y: 89.425}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.914}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2160179631234890175
 CanvasRenderer:
@@ -440,7 +441,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.000061035156, y: 0}
-  m_SizeDelta: {x: 226.05, y: 0}
+  m_SizeDelta: {x: 318.534, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &6429133166239041672
 MonoBehaviour:
@@ -508,7 +509,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 199.237}
+  m_SizeDelta: {x: 1000, y: 199.237}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8174371386748298295
 CanvasRenderer:
@@ -598,7 +599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000076293945, y: 0}
+  m_AnchoredPosition: {x: -0.000015258789, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &819177588124600608
@@ -631,8 +632,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: $211,50L
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4dea44f8e2a973c46abc5465d5ffca9f, type: 2}
+  m_sharedMaterial: {fileID: 5087334865187987948, guid: 4dea44f8e2a973c46abc5465d5ffca9f,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -656,13 +658,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47.65
+  m_fontSize: 62.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -765,8 +767,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: X100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3e82da748c94d0a4c9ed5437b4e1c0ac, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 3e82da748c94d0a4c9ed5437b4e1c0ac, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6d6d388c7d77d024297af35ee9b5772d, type: 2}
+  m_sharedMaterial: {fileID: 5087334865187987948, guid: 6d6d388c7d77d024297af35ee9b5772d,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -790,7 +793,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.45
+  m_fontSize: 34.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

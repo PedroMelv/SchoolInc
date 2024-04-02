@@ -13,8 +13,12 @@ public class DebugResource : MonoBehaviour
 
             if (schools.Length > 0)
             {
-                SchoolsManager.Instance.SchoolSelected = schools[0].GetComponent<SchoolData>();
-                schools[0].Tap();
+                for (int i = 0; i < schools.Length; i++)
+                {
+                    SchoolsManager.Instance.SchoolSelected = schools[i].GetComponent<SchoolData>();
+                    schools[i].Tap();
+                }
+                
             }
         }
     }

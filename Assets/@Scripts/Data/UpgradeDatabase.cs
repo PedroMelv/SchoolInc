@@ -28,21 +28,16 @@ public class UpgradeDatabase : SingletonObject<UpgradeDatabase>
 {
     public Upgrades[] tiers;
 
-    public Dictionary<string, Upgrade> GetUpgrades()
+    public Upgrades[] GetUpgrades()
     {
-        Dictionary<string, Upgrade> dictionary = new Dictionary<string, Upgrade>();
+        Upgrades[] ups = new Upgrades[tiers.Length];
 
-        for (int i = 0; i < tiers.Length; i++)
+        for (int i = 0; i < ups.Length; i++)
         {
-            for (int l = 0; l < tiers[i].upgrades.Length; l++)
-            {
-                dictionary.Add(tiers[i].upgrades[l].nameID, new Upgrade(tiers[i].upgrades[l]));
-            }
+            ups[i] = new Upgrades(tiers[i]);
         }
 
-        
-
-        return dictionary;
+        return ups;
     }
 
     public int GetTierFromUpgrade(string upgradeID)
@@ -63,6 +58,20 @@ public class UpgradeDatabase : SingletonObject<UpgradeDatabase>
     {
         public int upgradesBrought;
         public Upgrade[] upgrades;
+        public Upgrade prize;
+        public bool prizeGot;
+
+        public Upgrades(Upgrades copy)
+        {
+            upgradesBrought = copy.upgradesBrought;
+            upgrades = new Upgrade[copy.upgrades.Length];
+            for (int i = 0; i < upgrades.Length; i++)
+            {
+                upgrades[i] = new Upgrade(copy.upgrades[i]);
+            }
+            prize = copy.prize;
+            prizeGot = copy.prizeGot;
+        }
     }
 
     [System.Serializable]

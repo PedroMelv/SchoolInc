@@ -4,11 +4,26 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 
-public class GameCurrency : Singleton<GameCurrency>
+public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.CurrencyData>
 {
-    public ulong debug_StartMoney;
+    public string debug_StartMoney;
 
-
+    private BigInteger coinCurrency;
+    public BigInteger CoinCurrency
+    {
+        get => coinCurrency;
+        set
+        {
+            coinCurrency = value;
+            OnCurrencyChanged?.Invoke(coinCurrency, coinCurrency);
+            OnCurrencyChanged_String?.Invoke(CurrencyString, CoinCurrencyString);
+        }
+    }
+    public string CoinCurrencyString
+    {
+        get => MoneyUtils.MoneyString(coinCurrency);
+    }
+    
     private BigInteger currency;
     public BigInteger Currency
     {
@@ -16,39 +31,54 @@ public class GameCurrency : Singleton<GameCurrency>
         set
         {
             currency = value;
-            OnCurrencyChanged?.Invoke(currency);
-            OnCurrencyChanged_String?.Invoke(CurrencyString);
+            OnCurrencyChanged?.Invoke(coinCurrency, coinCurrency);
+            OnCurrencyChanged_String?.Invoke(CurrencyString, CoinCurrencyString);
         }
     }
 
-    public Action<BigInteger> OnCurrencyChanged;
-    public Action<string> OnCurrencyChanged_String;
+    public Action<BigInteger, BigInteger> OnCurrencyChanged;
+    public Action<string, string> OnCurrencyChanged_String;
 
-    
     public string CurrencyString
     {
         get => MoneyUtils.MoneyString(currency, "$");
     }
+    [field: SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
+    [SerializeField] private CurrencyData data;
 
     private void Start()
     {
-        AddCurrency(debug_StartMoney);
+        OnCurrencyChanged?.Invoke(currency, coinCurrency);
+        OnCurrencyChanged_String?.Invoke(CurrencyString, CoinCurrencyString);
     }
-
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha1)) AddCurrency(10);
+        data.currency = currency.ToString();
+        data.coinCurrency = coinCurrency.ToString();
+        if (Input.GetKey(KeyCode.Alpha1)) AddCurrency(10d);
     }
 
     public void AddCurrency(BigInteger value)
     {
         Currency += value;
     }
-
+    public void AddCurrency(double value)
+    {
+        AddCurrency(new BigInteger(value));
+    }
+    
     public void RemoveCurrency(BigInteger value)
     {
         RemoveCurrency(value,null,null);
+    }
+    public void RemoveCurrency(double value)
+    {
+        RemoveCurrency(new BigInteger(value), null, null);
+    }
+    public void RemoveCurrency(double value, Action onFailBuy, Action onSuccessBuy)
+    {
+        RemoveCurrency(new BigInteger(value), onFailBuy, onSuccessBuy);
     }
     public void RemoveCurrency(BigInteger value, Action onFailBuy, Action onSuccessBuy)
     {
@@ -61,5 +91,32 @@ public class GameCurrency : Singleton<GameCurrency>
         onSuccessBuy?.Invoke();
     }
 
-    
+    public void Bind(CurrencyData data)
+    {
+        this.data = data;
+        this.data.Id = Id;
+        if (BigInteger.TryParse(data.currency, out BigInteger currency))
+            Currency = currency;
+        else 
+            Currency = 0;
+
+        if (BigInteger.TryParse(data.coinCurrency, out currency))
+            CoinCurrency = currency;
+        else 
+            CoinCurrency = 0;
+    }
+
+    [Serializable]
+    public class CurrencyData : ISaveable
+    {
+        [field: SerializeField] public SerializableGuid Id { get; set; }
+        public string currency;
+        public string coinCurrency;
+
+        public void Reset()
+        {
+            currency = "reseted";
+            coinCurrency = "reseted";
+        }
+    }
 }

@@ -2,53 +2,39 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class SchoolAreaStore : MonoBehaviour
+public class SchoolAreaStore : StoreUI<SchoolAreaStore>
 {
     private int schoolSelected = 0;
     private int maxSchools = 0;
 
-    [SerializeField] private Transform storeContainer;
-    [SerializeField] private TextMeshProUGUI tierPrefab;
-    [SerializeField] private BuyNode buyPrefab;
-
-    private List<BuyNode> nodesOnScreen = new List<BuyNode>();
-
     private SchoolData currentSchool;
 
-    public void InitializeArea()
+    public override void InitializeArea()
     {
         maxSchools = SchoolsManager.Instance.boughtSchools.Count;
         schoolSelected = SchoolsManager.Instance.schoolSelectedIndex;
 
-        InputHandler.Instance.cameraInput.ChangeState(new CameraInput.CameraState_StoreFocused());
+        inputHandler.cameraInput.ChangeState(new CameraInput.CameraState_StoreFocused());
 
-        UpdateVisualSchool();
+        base.InitializeArea();
     }
-
-    public void CloseArea()
+    public override void CloseArea()
     {
         currentSchool = null;
-        InputHandler.Instance.cameraInput.ChangeState(new CameraInput.CameraState_InputHandled());
+        inputHandler.cameraInput.ChangeState(new CameraInput.CameraState_InputHandled());
     }
-
-    public void UpdateVisualSchool()
+    public override void UpdateStoreContainer()
     {
         if (schoolSelected == -1) return;
 
-        currentSchool = SchoolsManager.Instance.SchoolSelected;
+        currentSchool = currentSchool.SchoolsManager.SchoolSelected;
 
-        if (nodesOnScreen.Count > 0)
-        {
-            UpdateBuyNodes();
-            return;
-        }
-
-        InitializeBuyNodes();
+        base.UpdateStoreContainer();
     }
 
-    private void InitializeBuyNodes()
+    protected override void InitializeBuyNodes()
     {
-        UpgradeDatabase.Upgrades[] tiers = UpgradeDatabase.Instance.tiers;
+        UpgradeDatabase.Upgrades[] tiers = currentSchool.UpgradeDatabase.tiers;
 
         for (int i = 0; i < tiers.Length; i++)
         {
@@ -56,28 +42,36 @@ public class SchoolAreaStore : MonoBehaviour
 
             bool isCurrentTier = (i + 1) == currentSchool.currentTier;
 
+
             for (int l = 0; l < tiers[i].upgrades.Length; l++)
             {
                 nodesOnScreen.Add(Instantiate(buyPrefab, storeContainer));
-                nodesOnScreen[l + i * 3].Initialize(currentSchool.GetUpgrade(tiers[i].upgrades[l].nameID));
+                nodesOnScreen[l + i * 3].Initialize(currentSchool.GetUpgrade(tiers[i].upgrades[l].nameID), currentSchool.priceScaling);
+
+                if (tiers[i].upgrades[l].currentQuantity == tiers[i].upgrades[l].maxQuantity) 
+                    isCurrentTier = false;
+
 
                 nodesOnScreen[l + i * 3].onButtonClickCallback += UpdateBuyNodes;
                 nodesOnScreen[l + i * 3].interactable = isCurrentTier;
             }
         }
     }
-    private void UpdateBuyNodes()
+    protected override void UpdateBuyNodes()
     {
         for (int i = 0; i < nodesOnScreen.Count; i++)
         {
-            bool isCurrentTier = UpgradeDatabase.Instance.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
+            bool isCurrentTier = currentSchool.UpgradeDatabase.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
+            
             if(isCurrentTier && currentSchool.IsTierCompleted(currentSchool.currentTier))
             {
                 currentSchool.currentTier++;
-                isCurrentTier = UpgradeDatabase.Instance.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
+                isCurrentTier = currentSchool.UpgradeDatabase.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
             }
-            nodesOnScreen[i].Initialize(currentSchool.GetUpgrade(nodesOnScreen[i].Upgrade.nameID));
+            nodesOnScreen[i].Initialize(currentSchool.GetUpgrade(nodesOnScreen[i].Upgrade.nameID), currentSchool.priceScaling);
 
+            if (nodesOnScreen[i].Upgrade.currentQuantity == nodesOnScreen[i].Upgrade.maxQuantity) 
+                isCurrentTier = false;
                 
             nodesOnScreen[i].interactable = isCurrentTier;
         
@@ -92,8 +86,8 @@ public class SchoolAreaStore : MonoBehaviour
         if (schoolSelected < 0) schoolSelected = maxSchools - 1;
         if (schoolSelected >= maxSchools) schoolSelected = 0;
 
-        SchoolsManager.Instance.SetSelected(schoolSelected);
+        currentSchool.SchoolsManager.SetSelected(schoolSelected);
 
-        UpdateVisualSchool();
+        UpdateStoreContainer();
     }
 }

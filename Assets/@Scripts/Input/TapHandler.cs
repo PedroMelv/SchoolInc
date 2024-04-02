@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TapHandler : MonoBehaviour
 {
+    [SerializeField] private InputHandler inputHandler;
     public GameObject currentObject;
 
     private void Start()
@@ -13,13 +14,12 @@ public class TapHandler : MonoBehaviour
 
     private void InitializeInput()
     {
-        InputHandler.Instance.onTap += HandleTap;
+        inputHandler.onTap += HandleTap;
+    }
 
-#if UNITY_EDITOR
-
-        InputHandler.Instance.onReleaseClick += HandleTap;
-
-#endif
+    private void OnDisable()
+    {
+        inputHandler.onTap -= HandleTap;
     }
 
     private void HandleTap(Touch touch)

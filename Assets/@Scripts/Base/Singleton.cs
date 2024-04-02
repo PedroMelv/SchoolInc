@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -9,11 +11,27 @@ public class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
 
     public static T Instance { get { return GetInstance(); } }
 
-    protected static bool isDestroying;
+    protected static bool isQuitting;
 
     protected virtual void Awake()
     {
         _instance = this as T;
+
+        Application.quitting += () =>
+        {
+            Debug.Log("Application is quitting");
+            isQuitting = true;
+        };
+
+#if UNITY_EDITOR
+        EditorApplication.playModeStateChanged += (PlayModeStateChange) => {
+            if (PlayModeStateChange == PlayModeStateChange.ExitingPlayMode)
+            {
+                Debug.Log("PlayMode Changed to ExitingPlayMode");
+                isQuitting = true;
+            }
+        };
+#endif
     }
 
     public static bool Exists()
@@ -23,7 +41,7 @@ public class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
 
     protected static T GetInstance()
     {
-        if (isDestroying) return null;
+        if(isQuitting) return null;
 
         if (_instance == null) _instance = FindObjectOfType<T>();
 
@@ -38,7 +56,14 @@ public class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
 
     private void OnDestroy()
     {
-        isDestroying = true;
+        if(_instance == this)
+            _instance = null;
+    }
+
+    private void OnApplicationQuit()
+    {
+        Debug.Log("OnApplicationQuit");
+        isQuitting = true;
     }
 }
 
