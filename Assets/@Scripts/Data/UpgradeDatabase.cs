@@ -23,8 +23,8 @@ public enum IncreaseType
     MULTIPLY
 }
 
-[CreateAssetMenu(fileName = "UpgradeDatabase", menuName = "StaticScriptableObjects/UpgradeDatabase")]
-public class UpgradeDatabase : SingletonObject<UpgradeDatabase>
+[CreateAssetMenu(fileName = "UpgradeDatabase", menuName = "UpgradeDatabase")]
+public class UpgradeDatabase : ScriptableObject
 {
     public Upgrades[] tiers;
 
@@ -89,13 +89,7 @@ public class UpgradeDatabase : SingletonObject<UpgradeDatabase>
         public float increaseValue;
         public bool triggerAutomatic;
 
-        public BigInteger Price 
-        { 
-            get 
-            {
-                return new BigInteger(costBase * Mathf.Pow(costGrowth, currentQuantity));
-            } 
-        }
+        public BigInteger Price => new BigInteger(costBase * Mathf.Pow(costGrowth, currentQuantity));
 
         [HideInInspector] public int currentQuantity = 0;
 

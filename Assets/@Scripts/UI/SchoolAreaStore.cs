@@ -16,6 +16,8 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
 
         inputHandler.cameraInput.ChangeState(new CameraInput.CameraState_StoreFocused());
 
+        currentSchool = SchoolsManager.Instance.SchoolSelected;
+
         base.InitializeArea();
     }
     public override void CloseArea()
@@ -25,7 +27,7 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
     }
     public override void UpdateStoreContainer()
     {
-        if (schoolSelected == -1) return;
+        if (schoolSelected == -1 || currentSchool == null) return;
 
         currentSchool = currentSchool.SchoolsManager.SchoolSelected;
 

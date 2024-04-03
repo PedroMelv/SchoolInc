@@ -51,7 +51,7 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
 
     private void Start()
     {
-        //InitializeMinigame(Random.Range(1000, 100000));
+        InitializeMinigame(Random.Range(1000, 100000));
     }
 
     private void Update()

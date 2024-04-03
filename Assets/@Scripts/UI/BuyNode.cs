@@ -13,7 +13,7 @@ public class BuyNode : MonoBehaviour
     [SerializeField] private Button buyButton;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI priceText;
-    [SerializeField] private TextMeshProUGUI quantityText;
+    [SerializeField] private SliderUI quantitySlider;
 
     private float scaling;
     public bool interactable 
@@ -66,13 +66,13 @@ public class BuyNode : MonoBehaviour
 
         if (isMaxed)
         {
-            quantityText.SetText("Maxed");
+            quantitySlider.SetFill(1f);
             priceText.SetText("Maxed");
             return;
         }
 
         priceText.SetText(price);
-        quantityText.SetText(quantity);
+        quantitySlider.SetFill(upgrade.currentQuantity, upgrade.maxQuantity);
     }
 
     private void OnBuy()

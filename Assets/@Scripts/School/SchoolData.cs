@@ -281,16 +281,21 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
         fillTimeSpeed = data.fillTimeSpeed != 0 ? data.fillTimeSpeed : fillTimeSpeed;
         currentTier = data.currentTier != 0 ? data.currentTier : currentTier;
 
-        if (data.savedUpgrades != null)
+        if (data != null && data.savedUpgrades != null)
         {
-            
             upgrades = upgradeDatabase.GetUpgrades();
+            
+            if(data.savedUpgrades.Length != upgrades.Length)
+            {
+                data.savedUpgrades = new SchoolDataSave.UpgradeSave[upgrades.Length];
+            }
             
             for (int l = 0; l < upgrades.Length; l++)
             {
                 upgrades[l].upgradesBrought = data.savedUpgrades[l].TotalPurchased();
                 for (int y = 0; y < upgrades[l].upgrades.Length; y++)
                 {
+                    data.savedUpgrades[l] = new SchoolDataSave.UpgradeSave(new int[upgrades[l].upgrades.Length]);
                     upgrades[l].upgrades[y].currentQuantity = data.savedUpgrades[l].purchasedAmount[y];
                 }
             }
@@ -338,6 +343,8 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
             public int TotalPurchased()
             {
                 int total = 0;
+                if(purchasedAmount == null) return total;
+
                 for (int i = 0; i < purchasedAmount.Length; i++)
                 {
                     total += purchasedAmount[i];
