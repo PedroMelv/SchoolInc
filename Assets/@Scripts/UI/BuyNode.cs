@@ -10,12 +10,12 @@ using UnityEngine.UI;
 
 public class BuyNode : MonoBehaviour
 {
-    [SerializeField] private Button buyButton;
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI priceText;
-    [SerializeField] private SliderUI quantitySlider;
+    [SerializeField] protected Button buyButton;
+    [SerializeField] protected TextMeshProUGUI nameText;
+    [SerializeField] protected TextMeshProUGUI priceText;
+    [SerializeField] protected SliderUI quantitySlider;
 
-    private float scaling;
+    protected float scaling;
     public bool interactable 
     { 
         get
@@ -29,7 +29,7 @@ public class BuyNode : MonoBehaviour
         }
     }
 
-    private UpgradeDatabase.Upgrade upgrade;
+    protected UpgradeDatabase.Upgrade upgrade;
     public UpgradeDatabase.Upgrade Upgrade
     {
         get => upgrade;
@@ -37,7 +37,7 @@ public class BuyNode : MonoBehaviour
 
     public Action onButtonClickCallback;
 
-    public void Initialize(UpgradeDatabase.Upgrade upgrade, float scaling = 1f)
+    public virtual void Initialize(UpgradeDatabase.Upgrade upgrade, float scaling = 1f)
     {
         this.scaling = scaling;
         this.upgrade = upgrade;
@@ -48,13 +48,17 @@ public class BuyNode : MonoBehaviour
 
         if (isMaxed) return;
 
+        InitializeOnBuyEvent();
+    }
+
+    protected virtual void InitializeOnBuyEvent()
+    {
         buyButton.onClick.RemoveAllListeners();
         buyButton.onClick.AddListener(() => GameCurrency.Instance.RemoveCurrency(new BigInteger((double)upgrade.Price * scaling), null, OnBuy));
         buyButton.onClick.AddListener(() => onButtonClickCallback?.Invoke());
-        //buyButton.onClick.AddListener(UpdateNodeUI);
     }
 
-    private void UpdateNodeUI()
+    protected virtual void UpdateNodeUI()
     {
         string quantity = upgrade.currentQuantity + "x";
         string price = MoneyUtils.MoneyString(new BigInteger((double)upgrade.Price * scaling), "$");
@@ -75,12 +79,9 @@ public class BuyNode : MonoBehaviour
         quantitySlider.SetFill(upgrade.currentQuantity, upgrade.maxQuantity);
     }
 
-    private void OnBuy()
+    protected virtual void OnBuy()
     {
-        SchoolData data = SchoolsManager.Instance.SchoolSelected;
-
-        data.OnBuy(upgrade);
-
+        
     }
 
 }

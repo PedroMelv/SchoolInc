@@ -13,11 +13,20 @@ public class GameData
 {
     public string Name;
     public GameCurrency.CurrencyData currencyData;
+    public AscendedHandler.AscendedUpgradeData ascendedData;
     public List<SchoolData.SchoolDataSave> schoolData = new List<SchoolData.SchoolDataSave>();
+
+    public void ResetAscended()
+    {
+        currencyData.Reset_Ascended();
+        ascendedData.Reset_Ascended();
+        schoolData.ForEach(s => s.Reset_Ascended());
+    }
 
     public void Reset()
     {
         currencyData.Reset();
+        ascendedData.Reset();
         schoolData.ForEach(s => s.Reset());
     }
 }
@@ -26,6 +35,7 @@ public interface ISaveable
 {
     SerializableGuid Id { get; set; }
 
+    void Reset_Ascended();
     void Reset();
 }
 
@@ -49,12 +59,12 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
 
     private void Start()
     {
-        NewOrLoadGame("PaulinhoBacana");
+        NewOrLoadGame("Retro");
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K)) NewOrLoadGame("PaulinhoBacana");
+        if(Input.GetKeyDown(KeyCode.K)) NewOrLoadGame("Retro");
     }
 
     private void OnEnable()
@@ -98,6 +108,7 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
     {
         Bind<GameCurrency, GameCurrency.CurrencyData>(gameData.currencyData);
         Bind<SchoolData, SchoolData.SchoolDataSave>(gameData.schoolData);
+        Bind<AscendedHandler, AscendedHandler.AscendedUpgradeData>(gameData.ascendedData);
     }
 
     private void OnDisable()
@@ -147,7 +158,7 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
 
     public void SaveGame()
     {
-        _dataService.Save(gameData);
+        gameData = _dataService.Save(gameData);
     }
 
     public void LoadGame(string gameName)
@@ -177,6 +188,11 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
     public void ResetGame()
     {
         gameData.Reset();
+    }
+
+    public void ResetAscendGame()
+    {
+        gameData.ResetAscended();
     }
 }
 

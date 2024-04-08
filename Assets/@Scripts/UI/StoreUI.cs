@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class StoreUI<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class StoreUI<T> : MonoBehaviour where T : MonoBehaviour
 {
+    [SerializeField] protected GameObject storeObject;
     [SerializeField] protected InputHandler inputHandler;
     [SerializeField] protected Transform storeContainer;
     [SerializeField] protected TextMeshProUGUI tierPrefab;
     [SerializeField] protected BuyNode buyPrefab;
 
     protected List<BuyNode> nodesOnScreen = new List<BuyNode>();
+    protected List<TextMeshProUGUI> tiersOnScreen = new List<TextMeshProUGUI>();
 
     public virtual void InitializeArea()
     {
-        UpdateStoreContainer();
+        storeObject.SetActive(true);
     }
     public virtual void CloseArea()
     {

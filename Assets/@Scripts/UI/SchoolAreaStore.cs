@@ -11,6 +11,8 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
 
     public override void InitializeArea()
     {
+        base.InitializeArea();
+        
         maxSchools = SchoolsManager.Instance.boughtSchools.Count;
         schoolSelected = SchoolsManager.Instance.schoolSelectedIndex;
 
@@ -18,7 +20,7 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
 
         currentSchool = SchoolsManager.Instance.SchoolSelected;
 
-        base.InitializeArea();
+        UpdateStoreContainer();
     }
     public override void CloseArea()
     {
@@ -40,20 +42,36 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
 
         for (int i = 0; i < tiers.Length; i++)
         {
-            Instantiate(tierPrefab, storeContainer).text = "Tier " + (i+1);
+            TextMeshProUGUI tierText = Instantiate(tierPrefab, storeContainer);
+            tierText.text = "Tier " + (i + 1) + "(" + currentSchool.TierQuantity(i + 1) + "/" + currentSchool.UpgradeDatabase.maxUpgradesPerTier + ")";
+            tiersOnScreen.Add(tierText);
+
+            tiersOnScreen[i].gameObject.SetActive(currentSchool.currentTier >= i + 1);
 
             bool isCurrentTier = (i + 1) == currentSchool.currentTier;
 
 
             for (int l = 0; l < tiers[i].upgrades.Length; l++)
             {
-                nodesOnScreen.Add(Instantiate(buyPrefab, storeContainer));
+                BuyNode buyNode = Instantiate(buyPrefab, storeContainer);
+                nodesOnScreen.Add(buyNode);
                 nodesOnScreen[l + i * 3].Initialize(currentSchool.GetUpgrade(tiers[i].upgrades[l].nameID), currentSchool.priceScaling);
+
+                bool isEnabled = currentSchool.UpgradeDatabase.GetTierFromUpgrade(buyNode.Upgrade.nameID) <= currentSchool.currentTier;
+
+                buyNode.gameObject.SetActive(isEnabled);
 
                 if (tiers[i].upgrades[l].currentQuantity == tiers[i].upgrades[l].maxQuantity) 
                     isCurrentTier = false;
 
 
+                nodesOnScreen[l + i * 3].onButtonClickCallback += ()=>
+                {
+                    if(currentSchool.IsTierCompleted(currentSchool.currentTier))
+                    {
+                        currentSchool.currentTier++;
+                    }
+                };
                 nodesOnScreen[l + i * 3].onButtonClickCallback += UpdateBuyNodes;
                 nodesOnScreen[l + i * 3].interactable = isCurrentTier;
             }
@@ -61,13 +79,20 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
     }
     protected override void UpdateBuyNodes()
     {
+        for (int i = 0; i < tiersOnScreen.Count; i++)
+        {
+            tiersOnScreen[i].gameObject.SetActive(currentSchool.currentTier >= i + 1);
+            tiersOnScreen[i].text = "Tier " + (i + 1) + "(" + currentSchool.TierQuantity(i + 1) + "/" + currentSchool.UpgradeDatabase.maxUpgradesPerTier + ")";
+        }
+
         for (int i = 0; i < nodesOnScreen.Count; i++)
         {
             bool isCurrentTier = currentSchool.UpgradeDatabase.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
-            
-            if(isCurrentTier && currentSchool.IsTierCompleted(currentSchool.currentTier))
+            bool isEnabled = currentSchool.UpgradeDatabase.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) <= currentSchool.currentTier;            
+
+            nodesOnScreen[i].gameObject.SetActive(isEnabled);
+            if (isCurrentTier && currentSchool.IsTierCompleted(currentSchool.currentTier))
             {
-                currentSchool.currentTier++;
                 isCurrentTier = currentSchool.UpgradeDatabase.GetTierFromUpgrade(nodesOnScreen[i].Upgrade.nameID) == currentSchool.currentTier;
             }
             nodesOnScreen[i].Initialize(currentSchool.GetUpgrade(nodesOnScreen[i].Upgrade.nameID), currentSchool.priceScaling);
@@ -76,7 +101,6 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
                 isCurrentTier = false;
                 
             nodesOnScreen[i].interactable = isCurrentTier;
-        
         }
     }
 

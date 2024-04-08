@@ -21,8 +21,18 @@ MonoBehaviour:
       costBase: 10
       costGrowth: 1.04
       upgradeType: 0
+      increaseType: 1
+      increaseValue: 10
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Alcione2
+      nameID: ALCIENE2
+      maxQuantity: 6
+      costBase: 10
+      costGrowth: 1.04
+      upgradeType: 2
       increaseType: 0
-      increaseValue: 0
+      increaseValue: 3
       triggerAutomatic: 0
       currentQuantity: 0
     prize:

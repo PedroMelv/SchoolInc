@@ -7,6 +7,8 @@ using UnityEngine;
 public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.CurrencyData>
 {
     public string debug_StartMoney;
+    public string currencyToOneAscended_string;
+    public double currencyToOneAscendedMultiplier;
 
     private BigInteger coinCurrency;
     public BigInteger CoinCurrency
@@ -14,6 +16,7 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
         get => coinCurrency;
         set
         {
+            data.coinCurrency = value.ToString();
             coinCurrency = value;
             OnCurrencyChanged?.Invoke(coinCurrency, coinCurrency);
             OnCurrencyChanged_String?.Invoke(CurrencyString, CoinCurrencyString);
@@ -36,6 +39,11 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
         }
     }
 
+    private BigInteger totalCurrency;
+    private BigInteger currencyToOneAscended;
+
+
+
     public Action<BigInteger, BigInteger> OnCurrencyChanged;
     public Action<string, string> OnCurrencyChanged_String;
 
@@ -56,12 +64,24 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
     {
         data.currency = currency.ToString();
         data.coinCurrency = coinCurrency.ToString();
+        data.currencyToOneAscended = currencyToOneAscended.ToString();
+        data.totalCurrency = totalCurrency.ToString();
+
+        while(currencyToOneAscended < totalCurrency)
+        {
+            AddCurrencyAscended(new BigInteger(1));
+            currencyToOneAscended += currencyToOneAscended;
+            currencyToOneAscended = new BigInteger((double)currencyToOneAscended * currencyToOneAscendedMultiplier);
+        }
+
         if (Input.GetKey(KeyCode.Alpha1)) AddCurrency(10d);
+        if (Input.GetKey(KeyCode.Alpha2)) coinCurrency += 10;
     }
 
     public void AddCurrency(BigInteger value)
     {
         Currency += value;
+        totalCurrency += value;
     }
     public void AddCurrency(double value)
     {
@@ -90,12 +110,52 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
         Currency -= value;
         onSuccessBuy?.Invoke();
     }
+    
+
+    public void AddCurrencyAscended(BigInteger value)
+    {
+        CoinCurrency += value;
+    }
+    public void AddCurrencyAscended(double value)
+    {
+        AddCurrencyAscended(new BigInteger(value));
+    }
+    public void RemoveCurrencyAscended(BigInteger value)
+    {
+        RemoveCurrencyAscended(value, null, null);
+    }
+    public void RemoveCurrencyAscended(double value)
+    {
+        RemoveCurrencyAscended(new BigInteger(value), null, null);
+    }
+    public void RemoveCurrencyAscended(double value, Action onFailBuy, Action onSuccessBuy)
+    {
+        RemoveCurrencyAscended(new BigInteger(value), onFailBuy, onSuccessBuy);
+    }
+    public void RemoveCurrencyAscended(BigInteger value, Action onFailBuy, Action onSuccessBuy)
+    {
+        if (coinCurrency - value < 0)
+        {
+            onFailBuy?.Invoke();
+            return;
+        }
+        CoinCurrency -= value;
+        onSuccessBuy?.Invoke();
+    }
+
+
 
     public void Bind(CurrencyData data)
     {
         this.data = data;
         this.data.Id = Id;
-        if (BigInteger.TryParse(data.currency, out BigInteger currency))
+
+        if (BigInteger.TryParse(data.totalCurrency, out BigInteger currency))
+            totalCurrency = currency;
+        else
+            totalCurrency = 0;
+
+        if (BigInteger.TryParse(data.currency, out currency))
             Currency = currency;
         else 
             Currency = 0;
@@ -104,6 +164,18 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
             CoinCurrency = currency;
         else 
             CoinCurrency = 0;
+
+        if (BigInteger.TryParse(data.currencyToOneAscended, out currency))
+            currencyToOneAscended = currency;
+        else
+            if (BigInteger.TryParse(currencyToOneAscended_string, out currency))
+                currencyToOneAscended = currency;
+            
+    }
+
+    public void ResetData()
+    {
+        data.Reset();
     }
 
     [Serializable]
@@ -112,11 +184,19 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
         [field: SerializeField] public SerializableGuid Id { get; set; }
         public string currency;
         public string coinCurrency;
-
+        public string currencyToOneAscended;
+        public string totalCurrency;
         public void Reset()
         {
             currency = "reseted";
             coinCurrency = "reseted";
+            currencyToOneAscended = "reseted";
+            totalCurrency = "reseted";
+        }
+
+        public void Reset_Ascended()
+        {
+            currency = "reseted";
         }
     }
 }

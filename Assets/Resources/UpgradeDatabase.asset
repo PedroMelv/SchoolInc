@@ -18,7 +18,7 @@ MonoBehaviour:
     - name: More Chairs
       nameID: MORECHAIRS
       maxQuantity: 6
-      costBase: 50
+      costBase: 20
       costGrowth: 1.232
       upgradeType: 2
       increaseType: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
     - name: Better Materials
       nameID: BETTERMATERIALS
       maxQuantity: 6
-      costBase: 80
+      costBase: 40
       costGrowth: 1.16
       upgradeType: 1
       increaseType: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
     - name: Adapted Content
       nameID: ADAPTEDCONTENT
       maxQuantity: 6
-      costBase: 50
+      costBase: 35
       costGrowth: 1.1
       upgradeType: 4
       increaseType: 1
@@ -62,7 +62,7 @@ MonoBehaviour:
     - name: Bigger Classrooms
       nameID: BIGGERCLASSROOMS
       maxQuantity: 6
-      costBase: 0
+      costBase: 150
       costGrowth: 1.1
       upgradeType: 2
       increaseType: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
     - name: Intensity
       nameID: INTENSITY
       maxQuantity: 4
-      costBase: 0
+      costBase: 125
       costGrowth: 1.1
       upgradeType: 6
       increaseType: 0
@@ -82,7 +82,7 @@ MonoBehaviour:
     - name: Bigger Safes
       nameID: BIGGERSAFES
       maxQuantity: 4
-      costBase: 0
+      costBase: 175
       costGrowth: 1.1
       upgradeType: 5
       increaseType: 1
@@ -106,7 +106,7 @@ MonoBehaviour:
     - name: Professors
       nameID: PROFESSOR
       maxQuantity: 6
-      costBase: 0
+      costBase: 430
       costGrowth: 1.1
       upgradeType: 3
       increaseType: 1
@@ -116,7 +116,7 @@ MonoBehaviour:
     - name: Tecnologic Materials
       nameID: TECNOLOGICMATERIALS
       maxQuantity: 4
-      costBase: 0
+      costBase: 870
       costGrowth: 1.1
       upgradeType: 1
       increaseType: 1
@@ -126,7 +126,7 @@ MonoBehaviour:
     - name: Insentive
       nameID: INSENTIVE
       maxQuantity: 6
-      costBase: 0
+      costBase: 650
       costGrowth: 1.1
       upgradeType: 7
       increaseType: 1
@@ -150,7 +150,7 @@ MonoBehaviour:
     - name: Emotional Support
       nameID: EMOTIONALSUPPORT
       maxQuantity: 4
-      costBase: 0
+      costBase: 4200
       costGrowth: 1.1
       upgradeType: 6
       increaseType: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
     - name: Ultra Big Safes
       nameID: ULTRABIGSAFES
       maxQuantity: 4
-      costBase: 0
+      costBase: 5600
       costGrowth: 1.1
       upgradeType: 5
       increaseType: 1
@@ -170,7 +170,7 @@ MonoBehaviour:
     - name: Renegotiation
       nameID: RENEGOTIATION
       maxQuantity: 3
-      costBase: 0
+      costBase: 8000
       costGrowth: 1.1
       upgradeType: 0
       increaseType: 2
@@ -194,7 +194,7 @@ MonoBehaviour:
     - name: Super Class
       nameID: SUPERCLASS
       maxQuantity: 4
-      costBase: 0
+      costBase: 10500
       costGrowth: 1.1
       upgradeType: 1
       increaseType: 1
@@ -204,7 +204,7 @@ MonoBehaviour:
     - name: Super Classrooms
       nameID: SUPERCLASSROOMS
       maxQuantity: 6
-      costBase: 0
+      costBase: 14500
       costGrowth: 1.1
       upgradeType: 2
       increaseType: 0
@@ -214,7 +214,7 @@ MonoBehaviour:
     - name: Super Professors
       nameID: SUPERPROFESSORS
       maxQuantity: 5
-      costBase: 0
+      costBase: 12000
       costGrowth: 1.1
       upgradeType: 4
       increaseType: 1

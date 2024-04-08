@@ -23,7 +23,7 @@ public class FileDataService : IDataService
         return Path.Combine(dataPath, string.Concat(fileName, ".", fileExtension));
     }
 
-    public void Save(GameData data, bool overwrite = true)
+    public GameData Save(GameData data, bool overwrite = true)
     {
         string fileLocation = GetPathToFile(data.Name);
         if (File.Exists(fileLocation) && !overwrite)
@@ -32,6 +32,8 @@ public class FileDataService : IDataService
         }
 
         File.WriteAllText(fileLocation, _serializer.Serialize(data));
+
+        return Load(data.Name);
     }
 
     public GameData Load(string name)

@@ -6,7 +6,9 @@ using UnityEngine;
 public class SchoolVisual : MonoBehaviour
 {
     [HideInInspector]public bool editOffset;
-
+    [SerializeField] private GameObject schoolModel;
+    [SerializeField] private GameObject constructionModel;
+    [Space]
     [SerializeField] private TextMeshPro costTextPrefab;
     [SerializeField] private WorldButton collectMoneyButtonPrefab;
     [SerializeField] private GameObject progressionSliderPrefab;
@@ -67,6 +69,12 @@ public class SchoolVisual : MonoBehaviour
         SetProgressionSlider(data.isUnlocked);
 
         SetCollectButtonActive(false);
+    }
+
+    public void SetIsUnlocked(bool isUnlocked)
+    {
+        schoolModel.SetActive(isUnlocked);
+        constructionModel.SetActive(!isUnlocked);
     }
 
     public void SetCostText(bool visible)

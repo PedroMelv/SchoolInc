@@ -26,6 +26,7 @@ public enum IncreaseType
 [CreateAssetMenu(fileName = "UpgradeDatabase", menuName = "UpgradeDatabase")]
 public class UpgradeDatabase : ScriptableObject
 {
+    public int maxUpgradesPerTier = 6;
     public Upgrades[] tiers;
 
     public Upgrades[] GetUpgrades()

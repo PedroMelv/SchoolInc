@@ -19,8 +19,6 @@ public class TappableSchool : TappableObject
     private SchoolData data;
     private SchoolVisual visual;
 
-    
-
     public Action<int, int> OnTapCountChanged;
 
     protected override void Awake()
@@ -31,6 +29,7 @@ public class TappableSchool : TappableObject
     }
     protected override void Start()
     {
+        
         base.Start();
         onComplete += CalculateMoney;
         onComplete += () => visual.SetCollectButtonActive(true, MoneyUtils.MoneyString(data.holdingMoney, "$"));
@@ -100,6 +99,7 @@ public class TappableSchool : TappableObject
         //TODO: SFX e Efeitos visuais de compra
         visual.SetCostText(false);
         visual.SetProgressionSlider(true);
+        visual.SetIsUnlocked(true);
         data.isUnlocked = true;
 
         SchoolsManager.Instance.SchoolSelected = data;
