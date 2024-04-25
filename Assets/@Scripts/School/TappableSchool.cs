@@ -10,8 +10,10 @@ public class TappableSchool : TappableObject
 {
     private float fillCurrent;
     private int tapCount;
+    public int TapCount { get => tapCount; set => tapCount = value; }
 
     private float tapTimer = 1f;
+    public float TapTimer { get => tapTimer; set => tapTimer = value; }
 
     private float tapRecoverTimer = 1;
     private bool tapCooldown = false;
@@ -29,9 +31,8 @@ public class TappableSchool : TappableObject
     }
     protected override void Start()
     {
-        
         base.Start();
-        onComplete += CalculateMoney;
+        onComplete += data.EarnMoney;
         onComplete += () => visual.SetCollectButtonActive(true, MoneyUtils.MoneyString(data.holdingMoney, "$"));
         visual.AddCollectButtonEvent(CollectMoney);
     }
@@ -106,6 +107,21 @@ public class TappableSchool : TappableObject
         SchoolsManager.Instance.boughtSchools.Add(data);
     }
 
+
+    public void CalculateTime(double seconds)
+    {
+        float timeToFill = 1f / data.tapBoostFillSpeed;
+
+        double timesFilled = seconds / timeToFill;
+
+        int filledAmount = Mathf.FloorToInt((float)timesFilled);
+        float extraFilled = (float)timesFilled - filledAmount;
+
+        tapCount -= filledAmount;
+        if(tapCount < 0) tapCount = 0;
+        
+    }
+
     #region Income_Generators
     public override void Tap(bool useShrink = true)
     {
@@ -160,33 +176,18 @@ public class TappableSchool : TappableObject
         visual.SetProgressionSlider(fillPercentage);
     }
 
-    private void CalculateMoney()
-    {
-        if (data.holdingMoney == data.maxMoneyHold) return;
-
-        BigInteger moneyMade = 
-            (BigInteger)data.initialRevenue * data.studentsCount;
-
-        moneyMade = new BigInteger((double)moneyMade * data.incomeMultiplier);
-
-        if (data.holdingMoney + moneyMade > data.maxMoneyHold)
-        {
-            data.holdingMoney = data.maxMoneyHold;
-            return;
-        }
-
-        data.holdingMoney += moneyMade;
-    }
+    
 
     public void CollectMoney()
     {
-        if (UnityEngine.Random.value < .25f)
+        if (UnityEngine.Random.value < .05f)
         {
             DoubleMoneyWindow.Instance.OfferDoubleMoney((double)data.holdingMoney);
             data.holdingMoney = 0;
             visual.SetCollectButtonActive(false);
             return;
         }
+        Debug.Log("Collecting Money: " + data.holdingMoney);
         GameCurrency.Instance.AddCurrency(data.holdingMoney);
         data.holdingMoney = 0;
         visual.SetCollectButtonActive(false);

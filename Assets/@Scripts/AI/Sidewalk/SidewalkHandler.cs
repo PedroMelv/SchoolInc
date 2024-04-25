@@ -13,8 +13,18 @@ public class SidewalkHandler : StaticInstance<SidewalkHandler>
         _sidewalks = GetComponentsInChildren<SidewalkPoint>();
     }
 
-    private void Update()
+
+    public static Vector3 GetRandomPointLerp()
     {
+        if(Instance._sidewalks.Length == 0)
+        {
+            Instance._sidewalks = Instance.GetComponentsInChildren<SidewalkPoint>();
+        }
+
+        SidewalkPoint startPos = Instance._sidewalks[Random.Range(0, Instance._sidewalks.Length)];
+        SidewalkInfo endPos = startPos.GetRandomSidewalk();
+
+        return Vector3.Lerp(startPos.transform.position, endPos.point.transform.position, Random.value);
     }
 
     public static void GetPath(Vector3 start, Vector3 target, out Queue<SidewalkPoint> path)

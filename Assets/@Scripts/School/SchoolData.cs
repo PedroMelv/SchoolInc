@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 
-public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
+public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITimeListener
 {
     [SerializeField] private SchoolsManager schoolsManager;
     public SchoolsManager SchoolsManager { get => schoolsManager; }
@@ -130,6 +130,8 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
         data.tapBoostMax = tapBoostMax;
         data.tapBoostFillSpeed = tapBoostFillSpeed;
         data.fillTimeSpeed = fillTimeSpeed;
+        data.tapBoostCurrent = tappable.TapCount;
+        data.tapTimer = tappable.TapTimer;
     }
 
     public UpgradeDatabase.Upgrade GetUpgrade(string upgradeName)
@@ -283,6 +285,36 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
         return value;
     }
 
+    public void EarnMoney()
+    {
+        if (holdingMoney == maxMoneyHold) return;
+
+        BigInteger moneyMade = (BigInteger)initialRevenue * studentsCount;
+
+        moneyMade = new BigInteger((double)moneyMade * incomeMultiplier);
+
+        if (holdingMoney + moneyMade > maxMoneyHold)
+        {
+            holdingMoney = maxMoneyHold;
+            return;
+        }
+
+        holdingMoney += moneyMade;
+    }
+
+    public void EarnMoney(BigInteger earned)
+    {
+        if (holdingMoney == maxMoneyHold) return;
+
+        if (holdingMoney + earned > maxMoneyHold)
+        {
+            holdingMoney = maxMoneyHold;
+            return;
+        }
+
+        holdingMoney += earned;
+    }
+
     public void Bind(SchoolDataSave data)
     {
         this.data = data;
@@ -318,6 +350,9 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
         tapBoostStrength = data.tapBoostStrength != 0 ? data.tapBoostStrength : tapBoostStrength;
         tapBoostMax = data.tapBoostMax != 0 ? data.tapBoostMax : tapBoostMax;
         tapBoostFillSpeed = data.tapBoostFillSpeed != 0 ? data.tapBoostFillSpeed : tapBoostFillSpeed;
+        tappable.TapCount = data.tapBoostCurrent;
+        tappable.TapTimer = data.tapTimer;
+
         fillTimeSpeed = data.fillTimeSpeed != 0 ? data.fillTimeSpeed : fillTimeSpeed;
         currentTier = data.currentTier != 0 ? data.currentTier : currentTier;
 
@@ -348,6 +383,26 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
         data.Reset();
     }
 
+    public void CalculateTime(double seconds)
+    {
+        if (isUnlocked == false) return;
+
+        if (IsAutomatic)
+        {
+
+            double trueTimeToFill = timeToFillInSeconds / fillTimeSpeed;
+            Debug.Log("Time passed: " + (seconds / trueTimeToFill));
+
+            BigInteger moneyMade = (BigInteger)initialRevenue * studentsCount;
+
+            moneyMade = new BigInteger((double)moneyMade * incomeMultiplier * (seconds / trueTimeToFill));
+
+            EarnMoney(moneyMade);
+        }
+
+        tappable.CalculateTime(seconds);
+    }
+
     [Serializable]
     public class SchoolDataSave : ISaveable
     {
@@ -366,6 +421,8 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
 
         public float tapBoostStrength;
         public int tapBoostMax;
+        public int tapBoostCurrent;
+        public float tapTimer;
 
         public float tapBoostFillSpeed;
 
@@ -392,6 +449,8 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>
             tapBoostFillSpeed = 0;
             fillTimeSpeed = 0;
             currentTier = 0;
+            tapBoostCurrent = 0;
+            tapTimer = 1f;
             savedUpgrades = null;
         }
 

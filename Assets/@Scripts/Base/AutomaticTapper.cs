@@ -68,4 +68,5 @@ public class AutomaticTapper : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
+
 }

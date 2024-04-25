@@ -12,12 +12,15 @@ using UnityEngine.SceneManagement;
 public class GameData
 {
     public string Name;
+    public HomeworkHandler.HomeworkData homeworkData;
+    public TimeHandler.TimeData timeData;
     public GameCurrency.CurrencyData currencyData;
     public AscendedHandler.AscendedUpgradeData ascendedData;
     public List<SchoolData.SchoolDataSave> schoolData = new List<SchoolData.SchoolDataSave>();
 
     public void ResetAscended()
     {
+        homeworkData.Reset_Ascended();
         currencyData.Reset_Ascended();
         ascendedData.Reset_Ascended();
         schoolData.ForEach(s => s.Reset_Ascended());
@@ -25,6 +28,7 @@ public class GameData
 
     public void Reset()
     {
+        homeworkData.Reset();
         currencyData.Reset();
         ascendedData.Reset();
         schoolData.ForEach(s => s.Reset());
@@ -109,6 +113,8 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
         Bind<GameCurrency, GameCurrency.CurrencyData>(gameData.currencyData);
         Bind<SchoolData, SchoolData.SchoolDataSave>(gameData.schoolData);
         Bind<AscendedHandler, AscendedHandler.AscendedUpgradeData>(gameData.ascendedData);
+        Bind<HomeworkHandler, HomeworkHandler.HomeworkData>(gameData.homeworkData);
+        Bind<TimeHandler, TimeHandler.TimeData>(gameData.timeData);
     }
 
     private void OnDisable()
@@ -150,7 +156,11 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
     {
         gameData = new GameData
         {
-            Name = newGameName
+            Name = newGameName,
+            timeData = new TimeHandler.TimeData
+            {
+                savedTime = new TimeHandler.TimeInfo(DateTime.Now)
+            }
         };
 
         SceneManager.LoadScene("GameScene");
@@ -180,6 +190,10 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
         }
     }
 
+    public void DeleteGame()
+    {
+        _dataService.Delete(gameData.Name);
+    }
     public void DeleteGame(string gameName)
     {
         _dataService.Delete(gameName);

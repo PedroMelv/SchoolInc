@@ -93,6 +93,11 @@ public class SidewalkPoint : MonoBehaviour
         return closest;
     }
 
+    public SidewalkInfo GetRandomSidewalk()
+    {
+        return connected[Random.Range(0, connected.Count)];
+    }
+
     private void OnValidate()
     {
         for (int i = 0; i < connected.Count; i++) 

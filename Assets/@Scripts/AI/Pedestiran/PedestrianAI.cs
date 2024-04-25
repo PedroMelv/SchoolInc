@@ -16,6 +16,7 @@ public class PedestrianAI : MonoBehaviour
 
     private void Start()
     {
+        transform.position = SidewalkHandler.GetRandomPointLerp();
         StartCoroutine(EGetPath());
     }
 

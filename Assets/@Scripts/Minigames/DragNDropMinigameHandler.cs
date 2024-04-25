@@ -49,11 +49,6 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
 
     private double monetaryPrize;
 
-    private void Start()
-    {
-        InitializeMinigame(Random.Range(1000, 100000));
-    }
-
     private void Update()
     {
         if(!playingMinigame) return;
