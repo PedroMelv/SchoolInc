@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TimeHandler : MonoBehaviour, IBind<TimeHandler.TimeData>
+public class TimeHandler : StaticInstance<TimeHandler>, IBind<TimeHandler.TimeData>
 {
     [SerializeField] private TimeData timeData;
     [SerializeField] private TimeInfo currentTime;
@@ -27,6 +27,15 @@ public class TimeHandler : MonoBehaviour, IBind<TimeHandler.TimeData>
         TriggerTime(DateTime.Now);
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            currentTime = timeData.savedTime;
+
+            TriggerTime(DateTime.Now);
+        }
+    }
     private void TriggerTime(DateTime timeNow)
     {
         double seconds = (new TimeInfo(timeNow) - currentTime).TotalSeconds;
