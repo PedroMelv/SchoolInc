@@ -80,14 +80,10 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
 
         public void Reset()
         {
-            homeworkTimer = 300f;
-            homeworkCount = 0;
         }
 
         public void Reset_Ascended()
         {
-            homeworkTimer = 300f;
-            homeworkCount = 0;
         }
     }
 }
