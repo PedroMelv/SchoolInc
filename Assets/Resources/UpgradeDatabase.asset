@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e581f146e754f4fbce0b24198db91a, type: 3}
   m_Name: UpgradeDatabase
   m_EditorClassIdentifier: 
+  maxUpgradesPerTier: 6
   tiers:
   - upgradesBrought: 0
     upgrades:
     - name: More Chairs
       nameID: MORECHAIRS
       maxQuantity: 6
-      costBase: 20
-      costGrowth: 1.232
+      costBase: 40
+      costGrowth: 1.5
       upgradeType: 2
       increaseType: 0
       increaseValue: 3
@@ -29,20 +30,20 @@ MonoBehaviour:
       nameID: BETTERMATERIALS
       maxQuantity: 6
       costBase: 40
-      costGrowth: 1.16
+      costGrowth: 1.5
       upgradeType: 1
       increaseType: 1
-      increaseValue: 33
+      increaseValue: 45
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Adapted Content
       nameID: ADAPTEDCONTENT
       maxQuantity: 6
-      costBase: 35
-      costGrowth: 1.1
+      costBase: 40
+      costGrowth: 1.5
       upgradeType: 4
       increaseType: 1
-      increaseValue: 50
+      increaseValue: 65
       triggerAutomatic: 0
       currentQuantity: 0
     prize:
@@ -55,7 +56,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 1
-      currentQuantity: 1
+      currentQuantity: 3
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -63,30 +64,30 @@ MonoBehaviour:
       nameID: BIGGERCLASSROOMS
       maxQuantity: 6
       costBase: 150
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 2
       increaseType: 0
-      increaseValue: 3
+      increaseValue: 5
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Intensity
       nameID: INTENSITY
       maxQuantity: 4
       costBase: 125
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 6
       increaseType: 0
-      increaseValue: 2
+      increaseValue: 3
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Bigger Safes
       nameID: BIGGERSAFES
       maxQuantity: 4
       costBase: 175
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 5
       increaseType: 1
-      increaseValue: 25
+      increaseValue: 85
       triggerAutomatic: 0
       currentQuantity: 0
     prize:
@@ -99,7 +100,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 0
-      currentQuantity: 1
+      currentQuantity: 2
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -107,7 +108,7 @@ MonoBehaviour:
       nameID: PROFESSOR
       maxQuantity: 6
       costBase: 430
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 3
       increaseType: 1
       increaseValue: 10
@@ -117,7 +118,7 @@ MonoBehaviour:
       nameID: TECNOLOGICMATERIALS
       maxQuantity: 4
       costBase: 870
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 1
       increaseType: 1
       increaseValue: 100
@@ -127,7 +128,7 @@ MonoBehaviour:
       nameID: INSENTIVE
       maxQuantity: 6
       costBase: 650
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 7
       increaseType: 1
       increaseValue: 10
@@ -143,7 +144,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 0
-      currentQuantity: 1
+      currentQuantity: 2
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -151,7 +152,7 @@ MonoBehaviour:
       nameID: EMOTIONALSUPPORT
       maxQuantity: 4
       costBase: 4200
-      costGrowth: 1.1
+      costGrowth: 1
       upgradeType: 6
       increaseType: 0
       increaseValue: 3
@@ -161,17 +162,17 @@ MonoBehaviour:
       nameID: ULTRABIGSAFES
       maxQuantity: 4
       costBase: 5600
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 5
       increaseType: 1
-      increaseValue: 33
+      increaseValue: 300
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Renegotiation
       nameID: RENEGOTIATION
       maxQuantity: 3
       costBase: 8000
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 0
       increaseType: 2
       increaseValue: 2
@@ -187,7 +188,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 0
-      currentQuantity: 1
+      currentQuantity: 2
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -195,7 +196,7 @@ MonoBehaviour:
       nameID: SUPERCLASS
       maxQuantity: 4
       costBase: 10500
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 1
       increaseType: 1
       increaseValue: 150
@@ -205,7 +206,7 @@ MonoBehaviour:
       nameID: SUPERCLASSROOMS
       maxQuantity: 6
       costBase: 14500
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 2
       increaseType: 0
       increaseValue: 10
@@ -215,7 +216,7 @@ MonoBehaviour:
       nameID: SUPERPROFESSORS
       maxQuantity: 5
       costBase: 12000
-      costGrowth: 1.1
+      costGrowth: 1.5
       upgradeType: 4
       increaseType: 1
       increaseValue: 20
