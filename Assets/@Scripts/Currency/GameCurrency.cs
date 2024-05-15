@@ -24,7 +24,7 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
     }
     public string CoinCurrencyString
     {
-        get => MoneyUtils.MoneyString(coinCurrency);
+        get => MoneyUtils.MoneyString(coinCurrency, "L$");
     }
     
     private BigInteger currency;
@@ -49,7 +49,7 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
 
     public string CurrencyString
     {
-        get => MoneyUtils.MoneyString(currency, "$");
+        get => MoneyUtils.MoneyString(currency, "R$");
     }
     [field: SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
     [SerializeField] private CurrencyData data;

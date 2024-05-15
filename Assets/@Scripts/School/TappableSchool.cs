@@ -11,6 +11,7 @@ public class TappableSchool : TappableObject
     private float fillCurrent;
     private int tapCount;
     public int TapCount { get => tapCount; set => tapCount = value; }
+    public float TapFillCurrent {  get => Mathf.Floor(((float)tapCount / data.tapBoostMax) * 100f) / 100f; }
 
     private float tapTimer = 1f;
     public float TapTimer { get => tapTimer; set => tapTimer = value; }
@@ -39,6 +40,7 @@ public class TappableSchool : TappableObject
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.D)) OnSucceedBuy();
         RegenerateTaps();
     }
 
@@ -93,7 +95,7 @@ public class TappableSchool : TappableObject
     private void OnFailBuy()
     {
         //TODO: Criar o método caso a compra venha a falhar
-        Debug.LogError("Not enought cash. Cost: " + data.initialCost);
+        
     }
     private void OnSucceedBuy()
     {
@@ -147,7 +149,7 @@ public class TappableSchool : TappableObject
         OnTapCountChanged?.Invoke(tapCount, data.tapBoostMax);
         UpdateSlider();
 
-        if(tapCount == data.tapBoostMax) tapCooldown = true;
+        
     }
 
     public override void TapWithTime()

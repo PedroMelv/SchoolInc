@@ -17,6 +17,7 @@ public class GameData
     public GameCurrency.CurrencyData currencyData;
     public AscendedHandler.AscendedUpgradeData ascendedData;
     public List<SchoolData.SchoolDataSave> schoolData = new List<SchoolData.SchoolDataSave>();
+    public SuperPowersData superPowersData;
 
     public void ResetAscended()
     {
@@ -61,10 +62,7 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
         _dataService = new FileDataService(new JsonSerializer());
     }
 
-    private void Start()
-    {
-        NewOrLoadGame("Retro");
-    }
+
 
     private void Update()
     {
@@ -115,6 +113,7 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
         Bind<AscendedHandler, AscendedHandler.AscendedUpgradeData>(gameData.ascendedData);
         Bind<HomeworkHandler, HomeworkHandler.HomeworkData>(gameData.homeworkData);
         Bind<TimeHandler, TimeHandler.TimeData>(gameData.timeData);
+        Bind<SuperPowers, SuperPowersData>(gameData.superPowersData);
     }
 
     private void OnDisable()
@@ -188,6 +187,8 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
         {
             NewGame(gameName);
         }
+
+        InvokeRepeating(nameof(SaveGame), 60, 60);
     }
 
     public void DeleteGame()

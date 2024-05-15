@@ -33,6 +33,11 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
     [SerializeField] private string _iOSBannerId = "Banner_iOS";
     private string _adBannerId = null;
 
+    [Header("Intersistial")]
+    [SerializeField] string _androidAdIntersistialId = "Interstitial_Android";
+    [SerializeField] string _iOsAdIntersistialId = "Interstitial_iOS";
+    string _adIntersistialId;
+
     [Header("Rewarded")]
     [SerializeField] private string _androidRewardedId = "Rewarded_Android";
     [SerializeField] private string _iOSRewardedId = "Rewarded_iOS";
@@ -61,10 +66,12 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
             _gameId = _iOSGameId;
             _adBannerId = _iOSBannerId;
             _adRewardedId = _iOSRewardedId;
+            _adIntersistialId = _iOsAdIntersistialId;
 #elif UNITY_ANDROID
         _gameId = _androidGameId;
         _adBannerId = _androidBannerId;
         _adRewardedId = _androidRewardedId;
+        _adIntersistialId = _androidAdIntersistialId;
 #elif UNITY_EDITOR
             _gameId = _androidGameId; //Only for testing the functionality in the Editor
 #endif
@@ -149,6 +156,15 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
     void OnBannerHidden() { }
     #endregion
 
+    #region Intersistial
+
+    public static void PlayIntersistial()
+    {
+        Advertisement.Load(Instance._adIntersistialId, Instance);
+    }
+
+    #endregion
+
     #region Rewarded
 
     private UnityEvent onRewardedComplete;
@@ -178,13 +194,14 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
     {
         if (adUnitId.Equals(_adRewardedId))
         {
-            ShowAd();
+            Advertisement.Show(_adRewardedId, this);
         }
-    }
 
-    public void ShowAd()
-    {
-        Advertisement.Show(_adRewardedId, this);
+        if(adUnitId.Equals(_adIntersistialId))
+        {
+            Advertisement.Show(_adIntersistialId, this);
+        }
+
         HideBannerAd();
     }
 

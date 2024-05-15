@@ -6,48 +6,24 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
+public class DragNDropMinigameHandler : MinigameHandler<DragNDropMinigameHandler>
 {
-    [SerializeField] private GameCurrency gameCurrency;
-    [Space]
-    [SerializeField] private RectTransform minigamePanel;
-    [Space]
     [SerializeField] private AlphabetObject iconPrefab;
     [SerializeField] private AlphabetObject dropPrefab;
     [Space]
     [SerializeField] private Transform iconPlacement;
     [SerializeField] private Transform dropPlacement;
-    [Space]
-    [SerializeField] private GameObject minigameDefeatUI;
-    [SerializeField] private Button minigameDefeatCloseButton;
-    [SerializeField] private Button minigameTryAgainButton;
-    [Space]
-    [SerializeField] private GameObject minigameVictoryUI;
-    [SerializeField] private Button minigameVictoryCloseButton;
-    [SerializeField] private Button minigameDoubleButton;
-    [SerializeField] private TextMeshProUGUI victoryMoneyText;
-    [Space]
-    [SerializeField] private float minigameDuration = 15;
-    [SerializeField] private Image timerImage;
-
-    private bool closeMinigameInput = false;
-    private bool playingMinigame = false;
-    private float minigameTimer = 0;
+    
 
     private char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
     private List<char> letters = new List<char>();
 
     private List<AlphabetObject> allObjects = new List<AlphabetObject>();
 
-    private UnityEvent onDefeat;
-    private UnityEvent onVictory;
-
-    private UnityAction onDefeatCallback;
-    private UnityAction onVictoryCallback;
-
-    private Coroutine resultCoroutine;
-
-    private double monetaryPrize;
+    private void Start()
+    {
+        
+    }
 
     private void Update()
     {
@@ -61,11 +37,11 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
         }
     }
 
-    public void InitializeMinigame(UnityAction victoryCallback, UnityAction defeatCallback, double monetaryPrize = 0)
+    public override void InitializeMinigame(UnityAction victoryCallback, UnityAction defeatCallback, double monetaryPrize = 0)
     {
         ClearObjects();
 
-        minigamePanel.gameObject.SetActive(true);
+        
 
         letters = new List<char>(alphabet);
 
@@ -89,24 +65,14 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
             allObjects.Add(obj);
         }
 
-        if (onVictory == null) onVictory = new UnityEvent();
-        else onVictory.RemoveAllListeners();
-
-        if (onDefeat == null) onDefeat = new UnityEvent();
-        else onDefeat.RemoveAllListeners();
-
-        if (victoryCallback != null) onVictory.AddListener(victoryCallback);
-        if (defeatCallback != null) onDefeat.AddListener(defeatCallback);
-
-        onVictoryCallback = victoryCallback;
-        onDefeatCallback = defeatCallback;
+        base.InitializeMinigame(victoryCallback, defeatCallback);
 
         closeMinigameInput = false;
         this.monetaryPrize = monetaryPrize;
         minigameTimer = minigameDuration;
         playingMinigame = true;
     }
-    public void InitializeMinigame(double monetaryPrize = 0)
+    public override void InitializeMinigame(double monetaryPrize = 0)
     {
         InitializeMinigame(onVictoryCallback, onDefeatCallback, monetaryPrize);
     }
@@ -186,7 +152,7 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
     {
         this.monetaryPrize += monetaryPrize;
     }
-    private void Defeat()
+    protected override void Defeat()
     {
         ShowResult(false);
         
@@ -194,7 +160,7 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
         playingMinigame = false;
         
     }
-    private void Victory()
+    protected override void Victory()
     {
         ShowResult(true);
         
@@ -202,12 +168,12 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
         playingMinigame = false;
     }
 
-    private void ShowResult(bool result)
+    protected override void ShowResult(bool result)
     {
         resultCoroutine = StartCoroutine(result ? EShowVictory() : EShowDefeat());
     }
 
-    private IEnumerator EShowVictory()
+    protected override IEnumerator EShowVictory()
     {
         minigameVictoryUI.SetActive(true);
         onVictory?.Invoke();
@@ -223,7 +189,7 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
         minigamePanel.gameObject.SetActive(false);
     }
 
-    private IEnumerator EShowDefeat()
+    protected override IEnumerator EShowDefeat()
     {
         minigameDefeatUI.SetActive(true);
         onDefeat?.Invoke();
@@ -234,7 +200,7 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
         minigamePanel.gameObject.SetActive(false);
     }
 
-    public void DoublePrizeButton()
+    public override void DoublePrizeButton()
     {
         minigameDoubleButton.interactable = false;
         minigameVictoryCloseButton.interactable = false;
@@ -243,7 +209,7 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
             //Completed
             monetaryPrize *= 2;
             BigInteger winPrize = new BigInteger(monetaryPrize);
-            victoryMoneyText.SetText(MoneyUtils.MoneyString(winPrize, "+$"));
+            victoryMoneyText.SetText(MoneyUtils.MoneyString(winPrize, "+R$"));
             minigameVictoryCloseButton.interactable = true;
         },
         ()=>{
@@ -253,7 +219,7 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
         });
     }
 
-    public void TryAgainButton()
+    public override void TryAgainButton()
     {
         minigameTryAgainButton.interactable = false;
         minigameDefeatCloseButton.interactable = false;
@@ -269,9 +235,9 @@ public class DragNDropMinigameHandler : StaticInstance<DragNDropMinigameHandler>
         });
     }
 
-    public void CloseMinigame()
+    public override void CloseMinigame(bool showAd)
     {
-        //TODO: Show Intersistial
+        if(showAd)AdsSystem.PlayIntersistial();
         closeMinigameInput = true;
     }
 }
