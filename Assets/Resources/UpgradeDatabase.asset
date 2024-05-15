@@ -56,7 +56,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 1
-      currentQuantity: 3
+      currentQuantity: 5
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -91,16 +91,16 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     prize:
-      name: 
-      nameID: 
-      maxQuantity: 0
+      name: Safe1
+      nameID: Safe1
+      maxQuantity: 1
       costBase: 0
       costGrowth: 0
-      upgradeType: 0
-      increaseType: 0
-      increaseValue: 0
-      triggerAutomatic: 0
-      currentQuantity: 2
+      upgradeType: 5
+      increaseType: 1
+      increaseValue: 85
+      triggerAutomatic: 1
+      currentQuantity: 4
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -144,51 +144,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 0
-      currentQuantity: 2
-    prizeGot: 0
-  - upgradesBrought: 0
-    upgrades:
-    - name: Emotional Support
-      nameID: EMOTIONALSUPPORT
-      maxQuantity: 4
-      costBase: 4200
-      costGrowth: 1
-      upgradeType: 6
-      increaseType: 0
-      increaseValue: 3
-      triggerAutomatic: 0
-      currentQuantity: 0
-    - name: Ultra Big Safes
-      nameID: ULTRABIGSAFES
-      maxQuantity: 4
-      costBase: 5600
-      costGrowth: 1.5
-      upgradeType: 5
-      increaseType: 1
-      increaseValue: 300
-      triggerAutomatic: 0
-      currentQuantity: 0
-    - name: Renegotiation
-      nameID: RENEGOTIATION
-      maxQuantity: 3
-      costBase: 8000
-      costGrowth: 1.5
-      upgradeType: 0
-      increaseType: 2
-      increaseValue: 2
-      triggerAutomatic: 0
-      currentQuantity: 0
-    prize:
-      name: 
-      nameID: 
-      maxQuantity: 0
-      costBase: 0
-      costGrowth: 0
-      upgradeType: 0
-      increaseType: 0
-      increaseValue: 0
-      triggerAutomatic: 0
-      currentQuantity: 2
+      currentQuantity: 5
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -199,7 +155,7 @@ MonoBehaviour:
       costGrowth: 1.5
       upgradeType: 1
       increaseType: 1
-      increaseValue: 150
+      increaseValue: 100
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Super Classrooms
@@ -232,5 +188,49 @@ MonoBehaviour:
       increaseType: 2
       increaseValue: 5
       triggerAutomatic: 0
-      currentQuantity: 1
+      currentQuantity: 4
+    prizeGot: 0
+  - upgradesBrought: 0
+    upgrades:
+    - name: Emotional Support
+      nameID: EMOTIONALSUPPORT
+      maxQuantity: 4
+      costBase: 4200
+      costGrowth: 1
+      upgradeType: 6
+      increaseType: 0
+      increaseValue: 3
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Ultra Big Safes
+      nameID: ULTRABIGSAFES
+      maxQuantity: 4
+      costBase: 5600
+      costGrowth: 1.5
+      upgradeType: 5
+      increaseType: 1
+      increaseValue: 170
+      triggerAutomatic: 0
+      currentQuantity: 0
+    - name: Renegotiation
+      nameID: RENEGOTIATION
+      maxQuantity: 3
+      costBase: 8000
+      costGrowth: 1.5
+      upgradeType: 0
+      increaseType: 2
+      increaseValue: 1.2
+      triggerAutomatic: 0
+      currentQuantity: 0
+    prize:
+      name: 
+      nameID: 
+      maxQuantity: 0
+      costBase: 0
+      costGrowth: 0
+      upgradeType: 0
+      increaseType: 0
+      increaseValue: 0
+      triggerAutomatic: 0
+      currentQuantity: 5
     prizeGot: 0
