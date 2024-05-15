@@ -30,7 +30,10 @@ public class AscendedStoreUI : StoreUI<AscendedStoreUI>
                 nodesOnScreen.Add(Instantiate(buyPrefab, storeContainer));
                 nodesOnScreen[l + i * 3].Initialize(handler.GetUpgrade(tiers[i].upgrades[l].nameID), 1f);
 
+                int indexA = l;
+                int indexB = i;
 
+                nodesOnScreen[l + i * 3].onButtonClickCallback += () => OnBuy(nodesOnScreen[indexA + indexB * 3]);
                 nodesOnScreen[l + i * 3].onButtonClickCallback += UpdateBuyNodes;
                 nodesOnScreen[l + i * 3].interactable = true;
             }

@@ -34,18 +34,40 @@ public class SchoolsManager : StaticInstance<SchoolsManager>
     }
 
     [SerializeField] private Button tapButton;
+    [SerializeField] private Image tapButtonFill;
     [SerializeField] private TextMeshProUGUI tapCountText;
-
-    private void Start()
-    {
-        UpdateTapButton();
-    }
 
     public void TapButton()
     {
+        if(SuperPowers.Instance.CanSuperTap)
+        {
+            for (int i = 0; i < boughtSchools.Count; i++)
+            {
+                boughtSchools[i].Tappable.Tap(true);
+            }
+            return;
+        }
         if (SchoolSelected == null) return;
 
         SchoolSelected.Tappable.Tap(true);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Y))
+        {
+            SchoolData[] allSchools = FindObjectsOfType<SchoolData>();
+
+            for (int i = 0; i < allSchools.Length; i++)
+            {
+                allSchools[i].Tappable.Tap();
+            }
+        }
+
+        if(schoolSelected != null)
+        {
+            tapButtonFill.fillAmount = schoolSelected.Tappable.TapFillCurrent;
+        }
     }
 
     private void UpdateTapButton()

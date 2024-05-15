@@ -406,7 +406,6 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
     [Serializable]
     public class SchoolDataSave : ISaveable
     {
-        //TODO: TapBoost está resetando toda vez que o jogo fecha e abre, precisa trackear quantos ele tinha quando fechou e quantos ele recuperou enquanto o app estava fechado
         [field: SerializeField]public SerializableGuid Id { get; set; }
 
         public bool isUnlocked;
