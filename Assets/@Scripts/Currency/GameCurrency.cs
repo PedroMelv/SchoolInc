@@ -69,7 +69,6 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
 
         while(currencyToOneAscended < totalCurrency)
         {
-            Debug.Log("Adding ascended currency");
             AddCurrencyAscended(new BigInteger(1));
             currencyToOneAscended += currencyToOneAscended;
             currencyToOneAscended = new BigInteger((double)currencyToOneAscended * currencyToOneAscendedMultiplier);
@@ -81,7 +80,6 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
 
     public void AddCurrency(BigInteger value)
     {
-        Debug.Log("Adding currency");
         Currency += value;
         totalCurrency += value;
     }

@@ -92,6 +92,10 @@ public class InputHandler : Singleton<InputHandler>
 
     private void Update()
     {
+#if UNITY_EDITOR
+        EditorInput();
+        #endif
+
         foreach (var touch in Input.touches)
         {
             SingleTouch(touch);
@@ -182,7 +186,7 @@ public class InputHandler : Singleton<InputHandler>
         }
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
 
     private void EditorInput()
     {
@@ -216,5 +220,5 @@ public class InputHandler : Singleton<InputHandler>
         onMouseWheel?.Invoke(Input.mouseScrollDelta.y);
     }
 
-    #endif  
+#endif
 }
