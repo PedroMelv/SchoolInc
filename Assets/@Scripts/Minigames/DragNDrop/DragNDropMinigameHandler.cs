@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class DragNDropMinigameHandler : MinigameHandler<DragNDropMinigameHandler>
+public class DragNDropMinigameHandler : MinigameHandler
 {
     [SerializeField] private AlphabetObject iconPrefab;
     [SerializeField] private AlphabetObject dropPrefab;

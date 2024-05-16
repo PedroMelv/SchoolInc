@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class SelectWordHandler : MinigameHandler<SelectWordHandler>
+public class SelectWordHandler : MinigameHandler
 {
     private LibraWordSO[] words;
     [SerializeField] private Button[] responseButtons;
@@ -17,8 +17,6 @@ public class SelectWordHandler : MinigameHandler<SelectWordHandler>
     private void Start()
     {
         words = Resources.LoadAll<LibraWordSO>("LibraWords");
-
-        InitializeMinigame(null,null,0);
     }
 
     private void Update()
@@ -31,6 +29,11 @@ public class SelectWordHandler : MinigameHandler<SelectWordHandler>
         {
             Defeat();
         }
+    }
+
+    public override void InitializeMinigame(double monetaryPrize = 0)
+    {
+        InitializeMinigame(null,null,monetaryPrize);
     }
 
     public override void InitializeMinigame(UnityAction victoryCallback, UnityAction defeatCallback, double monetaryPrize = 0)

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class MinigameHandler<T> : StaticInstance<MinigameHandler<T>> where T : MonoBehaviour
+public class MinigameHandler : StaticInstance<MinigameHandler>
 {
     [SerializeField] protected GameCurrency gameCurrency;
     [Space]
