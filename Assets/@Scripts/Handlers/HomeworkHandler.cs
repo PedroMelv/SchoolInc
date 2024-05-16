@@ -15,6 +15,8 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
 
     [SerializeField] private TextMeshProUGUI homeworkCountText;
 
+    [SerializeField] private MinigameHandler[] minigames;
+
     [field: SerializeField]public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
 
     private void Start()
@@ -42,7 +44,8 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
     {
         if (homeworkCount <= 0) return;
 
-        DragNDropMinigameHandler.Instance.InitializeMinigame(Random.Range(100,1000));
+        minigames[Random.Range(0, minigames.Length)].InitializeMinigame(Random.Range(100, 1000));
+
         homeworkCount--;
     }
 
