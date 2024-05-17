@@ -19,28 +19,28 @@ MonoBehaviour:
     - name: More Chairs
       nameID: MORECHAIRS
       maxQuantity: 6
-      costBase: 40
-      costGrowth: 2
+      costBase: 25
+      costGrowth: 2.75
       upgradeType: 2
       increaseType: 0
-      increaseValue: 3
+      increaseValue: 2
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Better Materials
       nameID: BETTERMATERIALS
       maxQuantity: 6
-      costBase: 40
-      costGrowth: 2
+      costBase: 25
+      costGrowth: 2.75
       upgradeType: 1
       increaseType: 1
-      increaseValue: 45
+      increaseValue: 35
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Adapted Content
       nameID: ADAPTEDCONTENT
       maxQuantity: 6
-      costBase: 40
-      costGrowth: 2
+      costBase: 25
+      costGrowth: 2.25
       upgradeType: 4
       increaseType: 1
       increaseValue: 65
@@ -56,7 +56,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 1
-      currentQuantity: 6
+      currentQuantity: 13
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -64,30 +64,30 @@ MonoBehaviour:
       nameID: BIGGERCLASSROOMS
       maxQuantity: 6
       costBase: 150
-      costGrowth: 2
+      costGrowth: 3
       upgradeType: 2
       increaseType: 0
-      increaseValue: 5
+      increaseValue: 4
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Intensity
       nameID: INTENSITY
       maxQuantity: 4
-      costBase: 125
-      costGrowth: 2
+      costBase: 200
+      costGrowth: 2.5
       upgradeType: 6
       increaseType: 0
-      increaseValue: 3
+      increaseValue: 4
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Bigger Safes
       nameID: BIGGERSAFES
       maxQuantity: 4
-      costBase: 175
+      costBase: 200
       costGrowth: 2
       upgradeType: 5
       increaseType: 0
-      increaseValue: 10000
+      increaseValue: 5000
       triggerAutomatic: 0
       currentQuantity: 0
     prize:
@@ -100,39 +100,39 @@ MonoBehaviour:
       increaseType: 1
       increaseValue: 85
       triggerAutomatic: 1
-      currentQuantity: 5
+      currentQuantity: 10
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
     - name: Professors
       nameID: PROFESSOR
       maxQuantity: 6
-      costBase: 430
+      costBase: 2500
       costGrowth: 2
       upgradeType: 3
       increaseType: 1
-      increaseValue: 10
+      increaseValue: 65
       triggerAutomatic: 1
       currentQuantity: 0
     - name: Tecnologic Materials
       nameID: TECNOLOGICMATERIALS
       maxQuantity: 4
-      costBase: 870
-      costGrowth: 2
+      costBase: 4000
+      costGrowth: 2.75
       upgradeType: 1
       increaseType: 1
-      increaseValue: 75
+      increaseValue: 35
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Insentive
       nameID: INSENTIVE
       maxQuantity: 6
-      costBase: 650
-      costGrowth: 2
+      costBase: 3000
+      costGrowth: 1.75
       upgradeType: 7
       increaseType: 1
-      increaseValue: 10
-      triggerAutomatic: 0
+      increaseValue: 45
+      triggerAutomatic: 1
       currentQuantity: 0
     prize:
       name: Safe2
@@ -144,38 +144,38 @@ MonoBehaviour:
       increaseType: 1
       increaseValue: 75
       triggerAutomatic: 0
-      currentQuantity: 6
+      currentQuantity: 10
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
     - name: Super Class
       nameID: SUPERCLASS
-      maxQuantity: 4
-      costBase: 10500
-      costGrowth: 2
+      maxQuantity: 3
+      costBase: 10000
+      costGrowth: 2.25
       upgradeType: 1
       increaseType: 1
-      increaseValue: 100
+      increaseValue: 33
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Super Classrooms
       nameID: SUPERCLASSROOMS
       maxQuantity: 6
-      costBase: 14500
+      costBase: 12000
       costGrowth: 2
       upgradeType: 2
       increaseType: 0
-      increaseValue: 10
+      increaseValue: 20
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Super Professors
       nameID: SUPERPROFESSORS
-      maxQuantity: 5
-      costBase: 12000
+      maxQuantity: 4
+      costBase: 11000
       costGrowth: 2
       upgradeType: 4
       increaseType: 1
-      increaseValue: 20
+      increaseValue: 45
       triggerAutomatic: 1
       currentQuantity: 0
     prize:
@@ -185,52 +185,52 @@ MonoBehaviour:
       costBase: 0
       costGrowth: 0
       upgradeType: 0
-      increaseType: 2
-      increaseValue: 5
+      increaseType: 1
+      increaseValue: 33
       triggerAutomatic: 0
-      currentQuantity: 5
+      currentQuantity: 7
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
     - name: Emotional Support
       nameID: EMOTIONALSUPPORT
       maxQuantity: 4
-      costBase: 4200
-      costGrowth: 2
+      costBase: 30000
+      costGrowth: 1.5
       upgradeType: 6
       increaseType: 0
-      increaseValue: 3
+      increaseValue: 8
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Ultra Big Safes
       nameID: ULTRABIGSAFES
       maxQuantity: 4
-      costBase: 5600
-      costGrowth: 2
+      costBase: 32000
+      costGrowth: 1.5
       upgradeType: 5
       increaseType: 1
-      increaseValue: 170
+      increaseValue: 75
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Renegotiation
       nameID: RENEGOTIATION
       maxQuantity: 3
-      costBase: 8000
+      costBase: 35000
       costGrowth: 2
       upgradeType: 0
       increaseType: 2
-      increaseValue: 1.2
+      increaseValue: 1.5
       triggerAutomatic: 0
       currentQuantity: 0
     prize:
-      name: 
-      nameID: 
-      maxQuantity: 0
+      name: Safe3
+      nameID: Safe3
+      maxQuantity: 1
       costBase: 0
       costGrowth: 0
-      upgradeType: 0
-      increaseType: 0
-      increaseValue: 0
+      upgradeType: 5
+      increaseType: 2
+      increaseValue: 2
       triggerAutomatic: 0
-      currentQuantity: 6
+      currentQuantity: 8
     prizeGot: 0
