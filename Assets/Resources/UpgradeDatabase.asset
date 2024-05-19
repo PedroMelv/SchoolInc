@@ -56,7 +56,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 1
-      currentQuantity: 13
+      currentQuantity: 18
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -100,7 +100,7 @@ MonoBehaviour:
       increaseType: 1
       increaseValue: 85
       triggerAutomatic: 1
-      currentQuantity: 10
+      currentQuantity: 13
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -144,7 +144,7 @@ MonoBehaviour:
       increaseType: 1
       increaseValue: 75
       triggerAutomatic: 0
-      currentQuantity: 10
+      currentQuantity: 13
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -188,7 +188,7 @@ MonoBehaviour:
       increaseType: 1
       increaseValue: 33
       triggerAutomatic: 0
-      currentQuantity: 7
+      currentQuantity: 10
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -196,7 +196,7 @@ MonoBehaviour:
       nameID: EMOTIONALSUPPORT
       maxQuantity: 4
       costBase: 30000
-      costGrowth: 1.5
+      costGrowth: 2.5
       upgradeType: 6
       increaseType: 0
       increaseValue: 8
@@ -206,7 +206,7 @@ MonoBehaviour:
       nameID: ULTRABIGSAFES
       maxQuantity: 4
       costBase: 32000
-      costGrowth: 1.5
+      costGrowth: 2.5
       upgradeType: 5
       increaseType: 1
       increaseValue: 75
@@ -216,7 +216,7 @@ MonoBehaviour:
       nameID: RENEGOTIATION
       maxQuantity: 3
       costBase: 35000
-      costGrowth: 2
+      costGrowth: 2.5
       upgradeType: 0
       increaseType: 2
       increaseValue: 1.5
@@ -232,5 +232,5 @@ MonoBehaviour:
       increaseType: 2
       increaseValue: 2
       triggerAutomatic: 0
-      currentQuantity: 8
+      currentQuantity: 10
     prizeGot: 0
