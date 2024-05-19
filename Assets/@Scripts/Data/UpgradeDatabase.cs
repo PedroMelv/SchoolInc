@@ -82,7 +82,7 @@ public class UpgradeDatabase : ScriptableObject
         public string nameID = "UPGRADE";
         public int maxQuantity = 100;
         public double costBase = 1;
-        [Range(1f,1.5f)]public float costGrowth = 1f;
+        [Range(1f,3f)]public float costGrowth = 1f;
 
         [Space]
         public UpgradeType upgradeType;
