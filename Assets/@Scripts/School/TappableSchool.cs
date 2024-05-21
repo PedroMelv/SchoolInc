@@ -144,7 +144,7 @@ public class TappableSchool : TappableObject
 
         base.Tap(useShrink);
 
-        fillCurrent += 1 + data.TimeToFill * data.tapBoostStrength;
+        fillCurrent += 1 + data.TimeToFill * data.tapBoostStrength * (SuperPowers.Instance.CanSuperTap ? 2f : 1f);
         tapCount++;
         OnTapCountChanged?.Invoke(tapCount, data.tapBoostMax);
         UpdateSlider();

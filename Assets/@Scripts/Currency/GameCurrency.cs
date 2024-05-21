@@ -102,13 +102,22 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
     }
     public void RemoveCurrency(BigInteger value, Action onFailBuy, Action onSuccessBuy)
     {
+        
         if (currency - value < 0)
         {
             onFailBuy?.Invoke();
             return;
         }
+
         Currency -= value;
+
+        data.currency = currency.ToString();
+        data.coinCurrency = coinCurrency.ToString();
+        data.currencyToOneAscended = currencyToOneAscended.ToString();
+        data.totalCurrency = totalCurrency.ToString();
+
         onSuccessBuy?.Invoke();
+
     }
     
 

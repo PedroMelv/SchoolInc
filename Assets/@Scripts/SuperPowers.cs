@@ -10,8 +10,11 @@ public class SuperPowers : StaticInstance<SuperPowers>, IBind<SuperPowersData>, 
 
     [Header("Super Tap")]
     [SerializeField]private bool superTap_enabled = false;
-
     [SerializeField]private float superTap_duration = 0f;
+    [SerializeField] private Color superTapColor = Color.blue;
+    [SerializeField] private Color tapColor = Color.red;
+
+    [SerializeField] private UnityEngine.UI.Image tapButton;
 
     [SerializeField] private SuperPowersData data;
 
@@ -21,11 +24,16 @@ public class SuperPowers : StaticInstance<SuperPowers>, IBind<SuperPowersData>, 
 
         data.superTap_enabled = superTap_enabled;
         data.superTap_duration = superTap_duration;
+
+        tapButton.color = CanSuperTap ? superTapColor : tapColor;
     }
 
     public void BuySuperTap()
     {
         superTap_enabled = true;
+        superTap_enabled = data.superTap_enabled;
+
+        SaveLoadSystem.Instance.SaveGame();
     }
 
     public void BuySuperTapDuration(float duration)

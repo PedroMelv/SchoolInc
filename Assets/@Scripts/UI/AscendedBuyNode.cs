@@ -16,5 +16,7 @@ public class AscendedBuyNode : BuyNode
         AscendedHandler data = FindObjectOfType<AscendedHandler>();
 
         data.OnBuy(upgrade);
+
+        //SaveLoadSystem.Instance.SaveGame();
     }
 }

@@ -62,6 +62,9 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
 
     public void InitializeAds()
     {
+#if UNITY_WEBGL
+        return;
+#endif
 #if UNITY_IOS
             _gameId = _iOSGameId;
             _adBannerId = _iOSBannerId;
@@ -73,7 +76,7 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
         _adRewardedId = _androidRewardedId;
         _adIntersistialId = _androidAdIntersistialId;
 #elif UNITY_EDITOR
-            _gameId = _androidGameId; //Only for testing the functionality in the Editor
+        _gameId = _androidGameId; //Only for testing the functionality in the Editor
 #endif
 
         if (!Advertisement.isInitialized && Advertisement.isSupported)
@@ -94,10 +97,16 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
 
     private void OnEnable()
     {
+#if UNITY_WEBGL
+        return;
+#endif
         SceneManager.activeSceneChanged += OnSceneLoaded;
     }
     private void OnDisable()
     {
+#if UNITY_WEBGL
+        return;
+#endif
         SceneManager.activeSceneChanged -= OnSceneLoaded;
     }
 
@@ -160,6 +169,9 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
 
     public static void PlayIntersistial()
     {
+#if UNITY_WEBGL
+        return;
+#endif
         Advertisement.Load(Instance._adIntersistialId, Instance);
     }
 
@@ -172,6 +184,8 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
 
     public static void PlayRewarded(UnityAction completeCallback = null, UnityAction failCallback = null)
     {
+
+
         if (Instance.onRewardedComplete == null) Instance.onRewardedComplete = new UnityEvent();
         else Instance.onRewardedComplete.RemoveAllListeners();
 
@@ -181,6 +195,11 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
         else Instance.onRewardedFailed.RemoveAllListeners();
 
         Instance.onRewardedFailed.AddListener(failCallback);
+
+#if UNITY_WEBGL
+        Instance.onRewardedComplete?.Invoke();
+        return;
+#endif
 
         Instance.LoadAd();
     }

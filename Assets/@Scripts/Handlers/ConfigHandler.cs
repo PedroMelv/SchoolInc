@@ -2,20 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConfigHandler : MonoBehaviour
+public class ConfigHandler : WindowHandler
 {
-    [SerializeField] private GameObject _configWindow;
-
-    public void SwapConfigWindow()
-    {
-        _configWindow.SetActive(!_configWindow.activeSelf);
-    }
-
     public void DeleteSaveButton()
     {
         SaveLoadSystem.Instance.ResetGame();
         SaveLoadSystem.Instance.DeleteGame();
+        SaveLoadSystem.Instance.NewGame("Retro");
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 }

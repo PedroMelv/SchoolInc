@@ -22,7 +22,7 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
     public BigInteger maxMoneyHold;
     public BigInteger holdingMoney;
 
-    private bool appliedAscended;
+    public bool appliedAscended;
 
     public bool isAutomatic = false;
 
@@ -61,7 +61,7 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
     public SchoolVisual Visual { get { return visual; } }
 
     [field: SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
-    [SerializeField] private SchoolDataSave data;
+    [SerializeField] public SchoolDataSave data;
 
     private void Awake()
     {
@@ -76,31 +76,37 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
         {
             upgrades = upgradeDatabase.GetUpgrades();
         }
-        
-        yield return new WaitForEndOfFrame();
 
-        
+        yield return new WaitForEndOfFrame();
 
         AscendedHandler ascendedHandler = FindObjectOfType<AscendedHandler>();
 
-        while(ascendedHandler == null)
+        while (ascendedHandler == null)
         {
             ascendedHandler = FindObjectOfType<AscendedHandler>();
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
-        if(appliedAscended == false)
+        if (appliedAscended == false)
         {
+            Debug.Log("ApplyingAscended");
             studentsCount += ascendedHandler.studentsStartCount;
             initialRevenue = Mathf.CeilToInt(initialRevenue * ascendedHandler.revenueMultiplier);
             fillTimeSpeed *= ascendedHandler.fillTimeSpeedReducer;
             incomeMultiplier *= ascendedHandler.incomeMultiplier;
             base_maxMoneyHold += ascendedHandler.maxMoneyHoldIncrease;
 
+            maxMoneyHold = base_maxMoneyHold;
+
             appliedAscended = true;
         }
 
-        if (maxMoneyHold <= 0) maxMoneyHold += base_maxMoneyHold;
+
+        if (maxMoneyHold <= 0) 
+        {
+            maxMoneyHold += base_maxMoneyHold;
+            Debug.Log("Setting maxMoney Start: " + maxMoneyHold);
+        }
 
         visual.SetIsUnlocked(isUnlocked);
 
@@ -117,6 +123,11 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
 
     private void Update()
     {
+        ApplyData(false);
+    }
+
+    public void ApplyData(bool saveUps = true)
+    {
         data.appliedAscended = appliedAscended;
         data.currentTier = currentTier;
         data.isAutomatic = isAutomatic;
@@ -132,6 +143,20 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
         data.fillTimeSpeed = fillTimeSpeed;
         data.tapBoostCurrent = tappable.TapCount;
         data.tapTimer = tappable.TapTimer;
+
+        if (!saveUps) return;
+
+        if(data.savedUpgrades == null || data.savedUpgrades.Length != upgrades.Length)
+            data.savedUpgrades = new UpgradeSave[upgrades.Length];
+
+        for (int i = 0; i < data.savedUpgrades.Length; i++)
+        {
+            data.savedUpgrades[i] = new UpgradeSave(new int[upgrades[i].upgrades.Length]);
+            for (int j = 0; j < data.savedUpgrades[i].purchasedAmount.Length; j++)
+            {
+                data.savedUpgrades[i].purchasedAmount[j] = upgrades[i].upgrades[j].currentQuantity;
+            }
+        }
     }
 
     public UpgradeDatabase.Upgrade GetUpgrade(string upgradeName)
@@ -231,7 +256,8 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
                 break;
         }
 
-        data.savedUpgrades = new UpgradeSave[upgrades.Length];
+        if (data.savedUpgrades == null || data.savedUpgrades.Length != upgrades.Length)
+            data.savedUpgrades = new UpgradeSave[upgrades.Length];
 
         for (int i = 0; i < data.savedUpgrades.Length; i++)
         {
@@ -241,6 +267,24 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
                 data.savedUpgrades[i].purchasedAmount[j] = upgrades[i].upgrades[j].currentQuantity;
             }
         }
+
+        data.appliedAscended = appliedAscended;
+        data.currentTier = currentTier;
+        data.isAutomatic = isAutomatic;
+        data.isUnlocked = isUnlocked;
+        data.studentsCount = studentsCount;
+        data.initialRevenue = initialRevenue;
+        data.incomeMultiplier = incomeMultiplier;
+        data.maxMoneyHold = maxMoneyHold.ToString();
+        data.holdingMoney = holdingMoney.ToString();
+        data.tapBoostStrength = tapBoostStrength;
+        data.tapBoostMax = tapBoostMax;
+        data.tapBoostFillSpeed = tapBoostFillSpeed;
+        data.fillTimeSpeed = fillTimeSpeed;
+        data.tapBoostCurrent = tappable.TapCount;
+        data.tapTimer = tappable.TapTimer;
+
+        SaveLoadSystem.Instance.SaveGame();
     }
 
     private BigInteger HandleIncrease(BigInteger value, UpgradeDatabase.Upgrade upgrade)
@@ -322,6 +366,9 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
 
         if(isUnlocked == false)
             isUnlocked = data.isUnlocked;
+
+
+        Debug.Log("Data: " + data.studentsCount);
         studentsCount = data.studentsCount != 0 ? data.studentsCount : studentsCount;
         initialRevenue = data.initialRevenue != 0 ? data.initialRevenue : initialRevenue;
         incomeMultiplier = data.incomeMultiplier != 0 ? data.incomeMultiplier : incomeMultiplier;
@@ -336,6 +383,7 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
         else
         {
             maxMoneyHold = base_maxMoneyHold;
+            Debug.Log("Setting maxMoney Bind: " + maxMoneyHold);
         }
 
         if (BigInteger.TryParse(data.holdingMoney, out moneyHold))
@@ -356,6 +404,7 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
         fillTimeSpeed = data.fillTimeSpeed != 0 ? data.fillTimeSpeed : fillTimeSpeed;
         currentTier = data.currentTier != 0 ? data.currentTier : currentTier;
 
+
         if (data != null && data.savedUpgrades != null)
         {
             upgrades = upgradeDatabase.GetUpgrades();
@@ -370,7 +419,12 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
                 upgrades[l].upgradesBrought = data.savedUpgrades[l].TotalPurchased();
                 for (int y = 0; y < upgrades[l].upgrades.Length; y++)
                 {
-                    data.savedUpgrades[l] = new UpgradeSave(new int[upgrades[l].upgrades.Length]);
+                    //data.savedUpgrades[l] = new UpgradeSave(new int[upgrades[l].upgrades.Length]);
+                    if (data.savedUpgrades[l].purchasedAmount == null)
+                    {
+                        data.savedUpgrades[l].purchasedAmount = new int[upgrades[l].upgrades.Length];
+                    }
+                    
                     upgrades[l].upgrades[y].currentQuantity = data.savedUpgrades[l].purchasedAmount[y];
                 }
             }
@@ -447,7 +501,7 @@ public class SchoolData : MonoBehaviour, IBind<SchoolData.SchoolDataSave>, ITime
             tapBoostMax = 0;
             tapBoostFillSpeed = 0;
             fillTimeSpeed = 0;
-            currentTier = 0;
+            currentTier = 1;
             tapBoostCurrent = 0;
             tapTimer = 1f;
             savedUpgrades = null;

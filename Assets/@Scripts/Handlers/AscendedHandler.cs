@@ -19,15 +19,8 @@ public class AscendedHandler : Singleton<AscendedHandler>, IBind<AscendedHandler
     private UpgradeDatabase.Upgrades[] upgrades;
 
     [field: SerializeField] public SerializableGuid Id { get; set; } = SerializableGuid.NewGuid();
-    private AscendedUpgradeData data;
+    [SerializeField] public AscendedUpgradeData data;
 
-    private void Start()
-    {
-        if (upgrades == null || upgrades.Length == 0)
-        {
-            upgrades = upgradeDatabase.GetUpgrades();
-        }
-    }
 
     public void Ascend()
     {
@@ -43,9 +36,6 @@ public class AscendedHandler : Singleton<AscendedHandler>, IBind<AscendedHandler
         data.maxMoneyHoldIncrease = maxMoneyHoldIncrease;
 
         SaveLoadSystem.Instance.ResetAscendGame();
-
-        SaveLoadSystem.Instance.SaveGame();
-
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
@@ -67,6 +57,8 @@ public class AscendedHandler : Singleton<AscendedHandler>, IBind<AscendedHandler
 
     public void OnBuy(UpgradeDatabase.Upgrade upgrade)
     {
+        
+
         upgrade.currentQuantity++;
 
         switch (upgrade.upgradeType)
@@ -112,6 +104,14 @@ public class AscendedHandler : Singleton<AscendedHandler>, IBind<AscendedHandler
                 data.savedUpgrades[i].purchasedAmount[j] = upgrades[i].upgrades[j].currentQuantity;
             }
         }
+
+        data.revenueMultiplier = revenueMultiplier;
+        data.incomeMultiplier = incomeMultiplier;
+        data.studentsStartCount = studentsStartCount;
+        data.fillTimeSpeedReducer = fillTimeSpeedReducer;
+        data.maxMoneyHoldIncrease = maxMoneyHoldIncrease;
+
+        SaveLoadSystem.Instance.SaveGame();
     }
 
     private BigInteger HandleIncrease(BigInteger value, UpgradeDatabase.Upgrade upgrade)
@@ -183,6 +183,17 @@ public class AscendedHandler : Singleton<AscendedHandler>, IBind<AscendedHandler
         return value;
     }
 
+
+    private void Update()
+    {
+        data.revenueMultiplier = revenueMultiplier;
+        data.incomeMultiplier = incomeMultiplier;
+        data.studentsStartCount = studentsStartCount;
+        data.fillTimeSpeedReducer = fillTimeSpeedReducer;
+        data.maxMoneyHoldIncrease = maxMoneyHoldIncrease;
+
+    }
+
     public void Bind(AscendedUpgradeData data)
     {
         this.data = data;
@@ -192,7 +203,29 @@ public class AscendedHandler : Singleton<AscendedHandler>, IBind<AscendedHandler
         incomeMultiplier = data.incomeMultiplier == 0 ? 1 : data.incomeMultiplier;
         studentsStartCount = data.studentsStartCount;
         fillTimeSpeedReducer = data.fillTimeSpeedReducer == 0 ? 1 : data.fillTimeSpeedReducer;
-        maxMoneyHoldIncrease = data.maxMoneyHoldIncrease == 0 ? 1 : data.maxMoneyHoldIncrease;
+        maxMoneyHoldIncrease = data.maxMoneyHoldIncrease == 0 ? 0 : data.maxMoneyHoldIncrease;
+
+        if (upgrades == null || upgrades.Length == 0)
+        {
+            upgrades = upgradeDatabase.GetUpgrades();
+        }
+
+        if(data.savedUpgrades == null || data.savedUpgrades.Length == 0)
+        {
+            data.savedUpgrades = new UpgradeSave[upgrades.Length];
+            for (int i = 0; i < data.savedUpgrades.Length; i++)
+            {
+                data.savedUpgrades[i] = new UpgradeSave(new int[upgrades[i].upgrades.Length]);
+            }
+        }
+
+        for (int i = 0; i < data.savedUpgrades.Length; i++)
+        {
+            for (int j = 0; j < upgrades[i].upgrades.Length; j++)
+            {
+                upgrades[i].upgrades[j].currentQuantity = data.savedUpgrades[i].purchasedAmount[j];
+            }
+        }
 
     }
 
@@ -212,11 +245,16 @@ public class AscendedHandler : Singleton<AscendedHandler>, IBind<AscendedHandler
         public void Reset()
         {
             savedUpgrades = null;
+            revenueMultiplier = 0;
+            incomeMultiplier = 0;
+            studentsStartCount = 0;
+            fillTimeSpeedReducer = 0;
+            maxMoneyHoldIncrease = 0;
         }
 
         public void Reset_Ascended()
         {
-            savedUpgrades = null;
+           // savedUpgrades = null;
         }
     }
 }

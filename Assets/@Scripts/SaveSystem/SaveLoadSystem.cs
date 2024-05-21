@@ -74,7 +74,7 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
 #if UNITY_EDITOR
         EditorApplication.playModeStateChanged += EditorPlayModeChanged; ;
 #else
-        Application.quitting += SaveGame;
+        Application.quitting += () =>SaveGame(false);
 #endif
 
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -107,6 +107,11 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
 #endif
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BindData();
+    }
+
+    private void BindData()
     {
         Bind<GameCurrency, GameCurrency.CurrencyData>(gameData.currencyData);
         Bind<SchoolData, SchoolData.SchoolDataSave>(gameData.schoolData);
@@ -165,9 +170,11 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
         SceneManager.LoadScene("GameScene");
     }
 
-    public void SaveGame()
+    public void SaveGame(bool bind = true)
     {
         gameData = _dataService.Save(gameData);
+
+        if(bind) BindData();
     }
 
     public void LoadGame(string gameName)
@@ -208,6 +215,8 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
     public void ResetAscendGame()
     {
         gameData.ResetAscended();
+
+        SaveGame(false);
     }
 }
 

@@ -25,12 +25,10 @@ public class FileDataService : IDataService
 
     public GameData Save(GameData data, bool overwrite = true)
     {
-#if UNITY_ANDROID || UNITY_IOS
-
         PlayerPrefs.SetString("SAVEGAME_" + data.Name, _serializer.Serialize(data));
 
         return Load(data.Name);
-        #endif
+
 
         string fileLocation = GetPathToFile(data.Name);
         if (File.Exists(fileLocation) && !overwrite)
@@ -45,11 +43,7 @@ public class FileDataService : IDataService
 
     public GameData Load(string name)
     {
-#if UNITY_ANDROID || UNITY_IOS
-
         return _serializer.Deserialize<GameData>(PlayerPrefs.GetString("SAVEGAME_" + name));
-
-        #endif
 
         string fileLocation = GetPathToFile(name);
 
@@ -63,13 +57,11 @@ public class FileDataService : IDataService
 
     public void Delete(string name)
     {
-#if UNITY_ANDROID || UNITY_IOS
-
+        Debug.Log(PlayerPrefs.HasKey("SAVEGAME_" + name));
         PlayerPrefs.DeleteKey("SAVEGAME_" + name);
-
+        Debug.Log(PlayerPrefs.HasKey("SAVEGAME_" + name));
         return;
 
-#endif
         string fileLocation = GetPathToFile(name);
 
         if(File.Exists(fileLocation))
@@ -96,9 +88,8 @@ public class FileDataService : IDataService
 
     public bool Contains(string name)
     {
-#if UNITY_ANDROID || UNITY_IOS
         return PlayerPrefs.HasKey("SAVEGAME_" + name);
-#endif
+
         return File.Exists(GetPathToFile(name));
     }
 }
