@@ -56,7 +56,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 1
-      currentQuantity: 22
+      currentQuantity: 36
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -97,17 +97,17 @@ MonoBehaviour:
       costBase: 0
       costGrowth: 0
       upgradeType: 5
-      increaseType: 1
-      increaseValue: 150
+      increaseType: 2
+      increaseValue: 3
       triggerAutomatic: 1
-      currentQuantity: 17
+      currentQuantity: 30
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
     - name: Professors
       nameID: PROFESSOR
       maxQuantity: 4
-      costBase: 2500
+      costBase: 1750
       costGrowth: 2.75
       upgradeType: 3
       increaseType: 1
@@ -117,7 +117,7 @@ MonoBehaviour:
     - name: Tecnologic Materials
       nameID: TECNOLOGICMATERIALS
       maxQuantity: 4
-      costBase: 4000
+      costBase: 2350
       costGrowth: 2.75
       upgradeType: 1
       increaseType: 1
@@ -127,7 +127,7 @@ MonoBehaviour:
     - name: Insentive
       nameID: INSENTIVE
       maxQuantity: 4
-      costBase: 3000
+      costBase: 1800
       costGrowth: 2.75
       upgradeType: 7
       increaseType: 1
@@ -135,16 +135,16 @@ MonoBehaviour:
       triggerAutomatic: 1
       currentQuantity: 0
     prize:
-      name: Safe2
-      nameID: Safe2
+      name: Revenue1
+      nameID: Revenue1
       maxQuantity: 1
       costBase: 0
       costGrowth: 0
-      upgradeType: 5
+      upgradeType: 0
       increaseType: 1
-      increaseValue: 80
+      increaseValue: 33
       triggerAutomatic: 0
-      currentQuantity: 15
+      currentQuantity: 28
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -179,16 +179,16 @@ MonoBehaviour:
       triggerAutomatic: 1
       currentQuantity: 0
     prize:
-      name: Revenue1
-      nameID: Revenue1
-      maxQuantity: 0
+      name: Safe2
+      nameID: Safe2
+      maxQuantity: 1
       costBase: 0
       costGrowth: 0
-      upgradeType: 0
-      increaseType: 1
-      increaseValue: 33
+      upgradeType: 5
+      increaseType: 2
+      increaseValue: 3
       triggerAutomatic: 0
-      currentQuantity: 11
+      currentQuantity: 24
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -223,14 +223,14 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     prize:
-      name: Safe3
-      nameID: Safe3
+      name: TapAmt1
+      nameID: TapAmt1
       maxQuantity: 1
       costBase: 0
       costGrowth: 0
-      upgradeType: 5
+      upgradeType: 6
       increaseType: 2
-      increaseValue: 2.5
+      increaseValue: 2
       triggerAutomatic: 0
-      currentQuantity: 10
+      currentQuantity: 23
     prizeGot: 0
