@@ -15,11 +15,13 @@ public class TapHandler : MonoBehaviour
     private void InitializeInput()
     {
         inputHandler.onTap += HandleTap;
+        inputHandler.onBeginDrag += HandleTap;
     }
 
     private void OnDisable()
     {
         inputHandler.onTap -= HandleTap;
+        inputHandler.onBeginDrag -= HandleTap;
     }
 
     private void HandleTap(Touch touch)

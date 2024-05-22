@@ -8,11 +8,11 @@ public class DoubleMoneyWindow : StaticInstance<DoubleMoneyWindow>
     [SerializeField] private GameCurrency gameCurrency;
     private double moneyAmount;
     public double MoneyAmount { 
-        get => moneyAmount;
+        get => moneyAmount;//
         set
         {
             moneyAmount = value;
-            moneyText.text = "You earned " + MoneyUtils.MoneyString(moneyAmount, "+$") + " do you want to double?";
+            moneyText.text = "Você ganhou " + MoneyUtils.MoneyString(moneyAmount, "+R$") + " deseja dobrar?";
         }
     }
 

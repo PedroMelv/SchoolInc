@@ -44,7 +44,7 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
     {
         if (homeworkCount <= 0) return;
 
-        minigames[Random.Range(0, minigames.Length)].InitializeMinigame(Random.Range(100, 1000));
+        minigames[0].InitializeMinigame(Random.Range(100, 1000));
 
         homeworkCount--;
     }
@@ -83,6 +83,8 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
 
         public void Reset()
         {
+            homeworkCount = 0;
+            homeworkTimer = 0f;
         }
 
         public void Reset_Ascended()

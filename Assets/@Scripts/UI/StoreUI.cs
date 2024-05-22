@@ -45,6 +45,6 @@ public abstract class StoreUI<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnBuy(BuyNode node)
     {
-        SaveLoadSystem.Instance.SaveGame();
+        SchoolsManager.Instance.SchoolSelected.ApplyData(false);
     }
 }
