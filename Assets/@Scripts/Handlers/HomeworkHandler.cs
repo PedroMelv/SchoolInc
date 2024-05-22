@@ -44,7 +44,7 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
     {
         if (homeworkCount <= 0) return;
 
-        minigames[0].InitializeMinigame(Random.Range(100, 1000));
+        minigames[Random.Range(0,minigames.Length)].InitializeMinigame(Mathf.Pow(Random.Range(1f,50f), SchoolsManager.Instance.boughtSchools.Count));
 
         homeworkCount--;
     }
