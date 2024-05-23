@@ -31,7 +31,7 @@ public class SuperPowers : StaticInstance<SuperPowers>, IBind<SuperPowersData>, 
     public void BuySuperTap()
     {
         superTap_enabled = true;
-        superTap_enabled = data.superTap_enabled;
+        data.superTap_enabled = superTap_enabled;
 
         SaveLoadSystem.Instance.SaveGame();
     }

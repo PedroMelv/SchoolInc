@@ -5,10 +5,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class SelectWordHandler : MinigameHandler
 {
     private LibraWordSO[] words;
+    [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private Button[] responseButtons;
     private TextMeshProUGUI[] responseTexts;
 
@@ -39,7 +41,13 @@ public class SelectWordHandler : MinigameHandler
     public override void InitializeMinigame(UnityAction victoryCallback, UnityAction defeatCallback, double monetaryPrize = 0)
     {
         base.InitializeMinigame(victoryCallback, defeatCallback, monetaryPrize);
-        if(responseTexts == null || responseTexts.Length == 0)
+
+        for (int i = 0; i < responseButtons.Length; i++)
+        {
+            responseButtons[i].gameObject.SetActive(true);
+        }
+
+        if (responseTexts == null || responseTexts.Length == 0)
         {
             responseTexts = new TextMeshProUGUI[4];
             for (int i = 0; i < responseButtons.Length; i++)
@@ -62,6 +70,11 @@ public class SelectWordHandler : MinigameHandler
             incorrects.RemoveAt(randomWord);
         }
 
+        minigameTimer = minigameDuration + 1;
+
+        videoPlayer.clip = word.video;
+        videoPlayer.Play();
+
         for (int i = 0; i < responseButtons.Length; i++)
         {
             responseButtons[i].onClick.AddListener((i == wordIndex) ? Victory : Defeat);
@@ -75,7 +88,7 @@ public class SelectWordHandler : MinigameHandler
         {
             responseButtons[i].gameObject.SetActive(false);
         }
-
+        videoPlayer.Stop();
         base.Victory();
     }
 
@@ -85,6 +98,7 @@ public class SelectWordHandler : MinigameHandler
         {
             responseButtons[i].gameObject.SetActive(false);
         }
+        videoPlayer.Stop();
         base.Defeat();
     }
 

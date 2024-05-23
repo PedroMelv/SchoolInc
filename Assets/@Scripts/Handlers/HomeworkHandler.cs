@@ -9,7 +9,7 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
     private int homeworkCount = 0;
 
     [SerializeField] private float homeworkFillTimer = 300f;
-    private float homeworkTimer = 1f;
+    [SerializeField] private float homeworkTimer = 1f;
 
     [SerializeField] private HomeworkData data;
 
@@ -51,23 +51,24 @@ public class HomeworkHandler : MonoBehaviour, ITimeListener, IBind<HomeworkHandl
 
     public void CalculateTime(double seconds)
     {
-        double timesFilled = (double)seconds / homeworkFillTimer;
+        //double timesFilled = (double)seconds / homeworkFillTimer;
 
-        homeworkCount += Mathf.FloorToInt((float)timesFilled);
-        if(homeworkCount > maxHomeworks)
-        {
-            homeworkCount = maxHomeworks;
-        }
+        //homeworkCount += Mathf.FloorToInt((float)timesFilled);
+        //if(homeworkCount > maxHomeworks)
+        //{
+        //    homeworkCount = maxHomeworks;
+        //}
 
-        float timePassed = (float)timesFilled - Mathf.FloorToInt((float)timesFilled);
+        //float timePassed = (float)timesFilled - Mathf.FloorToInt((float)timesFilled);
 
-        homeworkTimer = homeworkFillTimer - (timePassed * homeworkFillTimer);
+        //homeworkTimer = homeworkFillTimer - (timePassed * homeworkFillTimer);
     }
 
     public void Bind(HomeworkData data)
     {
         this.data = data;
         this.data.Id = data.Id;
+
 
         homeworkCount = data.homeworkCount;
         homeworkTimer = data.homeworkTimer;
