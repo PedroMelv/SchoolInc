@@ -5,14 +5,28 @@ using UnityEngine;
 
 public class AscendedStoreUI : StoreUI<AscendedStoreUI>
 {
+    [SerializeField] private GameObject ascendedWarning;
     [SerializeField] private TextMeshProUGUI ascendedCoinsText;
     public override void InitializeArea()
     {
-        base.InitializeArea();
+        ascendedWarning.SetActive(true);
+
+        
+    }
+
+    public void ConfirmWarning()
+    {
+        ascendedWarning.SetActive(false);
+        storeObject.SetActive(true);
 
         ascendedCoinsText.text = GameCurrency.Instance.CoinCurrencyString;
 
         UpdateStoreContainer();
+    }
+
+    public void CancelWarning()
+    {
+        ascendedWarning.SetActive(false);
     }
 
     protected override void InitializeBuyNodes()
@@ -26,8 +40,9 @@ public class AscendedStoreUI : StoreUI<AscendedStoreUI>
 
             for (int l = 0; l < tiers[i].upgrades.Length; l++)
             {
-                Debug.Log("Instancing");
-                nodesOnScreen.Add(Instantiate(buyPrefab, storeContainer));
+                BuyNode buyNode = Instantiate(buyPrefab, storeContainer);
+                buyNode.suffix = "L$";
+                nodesOnScreen.Add(buyNode);
                 nodesOnScreen[l + i * 3].Initialize(handler.GetUpgrade(tiers[i].upgrades[l].nameID), 1f);
 
                 int indexA = l;

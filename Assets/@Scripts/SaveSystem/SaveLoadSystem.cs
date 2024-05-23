@@ -18,6 +18,7 @@ public class GameData
     public AscendedHandler.AscendedUpgradeData ascendedData;
     public List<SchoolData.SchoolDataSave> schoolData = new List<SchoolData.SchoolDataSave>();
     public SuperPowersData superPowersData;
+    public TutorialData tutorialData;
 
     public void ResetAscended()
     {
@@ -33,6 +34,7 @@ public class GameData
         currencyData.Reset();
         ascendedData.Reset();
         schoolData.ForEach(s => s.Reset());
+        tutorialData.Reset();
     }
 }
 
@@ -119,6 +121,7 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
         Bind<HomeworkHandler, HomeworkHandler.HomeworkData>(gameData.homeworkData);
         Bind<TimeHandler, TimeHandler.TimeData>(gameData.timeData);
         Bind<SuperPowers, SuperPowersData>(gameData.superPowersData);
+        Bind<TutorialHandler, TutorialData>(gameData.tutorialData);
     }
 
     private void OnDisable()

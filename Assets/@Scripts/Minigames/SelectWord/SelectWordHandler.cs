@@ -19,6 +19,12 @@ public class SelectWordHandler : MinigameHandler
     private void Start()
     {
         words = Resources.LoadAll<LibraWordSO>("LibraWords");
+        videoPlayer.prepareCompleted += VideoPlayer_prepareCompleted;
+    }
+
+    private void VideoPlayer_prepareCompleted(VideoPlayer source)
+    {
+        source.Play();
     }
 
     private void Update()
@@ -73,10 +79,11 @@ public class SelectWordHandler : MinigameHandler
         minigameTimer = minigameDuration + 1;
 
         videoPlayer.clip = word.video;
-        videoPlayer.Play();
+        videoPlayer.Prepare();
 
         for (int i = 0; i < responseButtons.Length; i++)
         {
+            responseButtons[i].onClick.RemoveAllListeners();
             responseButtons[i].onClick.AddListener((i == wordIndex) ? Victory : Defeat);
         }
 

@@ -189,7 +189,6 @@ public class TappableSchool : TappableObject
             visual.SetCollectButtonActive(false);
             return;
         }
-        Debug.Log("Collecting Money: " + data.holdingMoney);
         GameCurrency.Instance.AddCurrency(data.holdingMoney);
         data.holdingMoney = 0;
         visual.SetCollectButtonActive(false);

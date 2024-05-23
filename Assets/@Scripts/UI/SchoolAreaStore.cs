@@ -54,6 +54,7 @@ public class SchoolAreaStore : StoreUI<SchoolAreaStore>
             for (int l = 0; l < tiers[i].upgrades.Length; l++)
             {
                 BuyNode buyNode = Instantiate(buyPrefab, storeContainer);
+                buyNode.suffix = "R$";
                 nodesOnScreen.Add(buyNode);
                 nodesOnScreen[l + i * 3].Initialize(currentSchool.GetUpgrade(tiers[i].upgrades[l].nameID), currentSchool.priceScaling);
 

@@ -11,6 +11,8 @@ public abstract class StoreUI<T> : MonoBehaviour where T : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI tierPrefab;
     [SerializeField] protected BuyNode buyPrefab;
 
+    public bool isOpened => storeObject.activeSelf;
+
     protected List<BuyNode> nodesOnScreen = new List<BuyNode>();
     protected List<TextMeshProUGUI> tiersOnScreen = new List<TextMeshProUGUI>();
 
@@ -20,7 +22,7 @@ public abstract class StoreUI<T> : MonoBehaviour where T : MonoBehaviour
     }
     public virtual void CloseArea()
     {
-
+        storeObject.SetActive(false);
     }
     public virtual void UpdateStoreContainer()
     {

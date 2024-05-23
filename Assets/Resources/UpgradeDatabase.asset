@@ -16,7 +16,7 @@ MonoBehaviour:
   tiers:
   - upgradesBrought: 0
     upgrades:
-    - name: More Chairs
+    - name: Mais cadeiras
       nameID: MORECHAIRS
       maxQuantity: 4
       costBase: 25
@@ -26,7 +26,7 @@ MonoBehaviour:
       increaseValue: 2
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Better Materials
+    - name: Materiais melhores
       nameID: BETTERMATERIALS
       maxQuantity: 4
       costBase: 25
@@ -36,7 +36,7 @@ MonoBehaviour:
       increaseValue: 35
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Adapted Content
+    - name: "Conte\xFAdo adaptado"
       nameID: ADAPTEDCONTENT
       maxQuantity: 4
       costBase: 25
@@ -60,7 +60,7 @@ MonoBehaviour:
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
-    - name: Bigger Classrooms
+    - name: Salas de aula maiores
       nameID: BIGGERCLASSROOMS
       maxQuantity: 4
       costBase: 150
@@ -70,7 +70,7 @@ MonoBehaviour:
       increaseValue: 4
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Intensity
+    - name: Intensidade
       nameID: INTENSITY
       maxQuantity: 4
       costBase: 200
@@ -80,7 +80,7 @@ MonoBehaviour:
       increaseValue: 50
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Bigger Safes
+    - name: Cofres maiores
       nameID: BIGGERSAFES
       maxQuantity: 4
       costBase: 200
@@ -104,7 +104,7 @@ MonoBehaviour:
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
-    - name: Professors
+    - name: Professores
       nameID: PROFESSOR
       maxQuantity: 4
       costBase: 1750
@@ -114,7 +114,7 @@ MonoBehaviour:
       increaseValue: 30
       triggerAutomatic: 1
       currentQuantity: 0
-    - name: Tecnologic Materials
+    - name: "Material tecnol\xF3gico"
       nameID: TECNOLOGICMATERIALS
       maxQuantity: 4
       costBase: 2350
@@ -124,7 +124,7 @@ MonoBehaviour:
       increaseValue: 35
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Insentive
+    - name: Incentivo
       nameID: INSENTIVE
       maxQuantity: 4
       costBase: 1800
@@ -148,7 +148,7 @@ MonoBehaviour:
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
-    - name: Super Class
+    - name: Super Aulas
       nameID: SUPERCLASS
       maxQuantity: 3
       costBase: 10000
@@ -158,7 +158,7 @@ MonoBehaviour:
       increaseValue: 33
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Super Classrooms
+    - name: Super salas de aula
       nameID: SUPERCLASSROOMS
       maxQuantity: 4
       costBase: 12000
@@ -168,7 +168,7 @@ MonoBehaviour:
       increaseValue: 20
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Super Professors
+    - name: Super Professores
       nameID: SUPERPROFESSORS
       maxQuantity: 4
       costBase: 11000

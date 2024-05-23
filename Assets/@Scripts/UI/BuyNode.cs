@@ -14,6 +14,7 @@ public class BuyNode : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI nameText;
     [SerializeField] protected TextMeshProUGUI priceText;
     [SerializeField] protected SliderUI quantitySlider;
+    public string suffix = "$";
 
     protected float scaling;
     public bool interactable 
@@ -61,7 +62,7 @@ public class BuyNode : MonoBehaviour
     protected virtual void UpdateNodeUI()
     {
         string quantity = upgrade.currentQuantity + "x";
-        string price = MoneyUtils.MoneyString(new BigInteger((double)upgrade.Price * scaling), "$");
+        string price = MoneyUtils.MoneyString(new BigInteger((double)upgrade.Price * scaling), suffix);
         bool isMaxed = upgrade.currentQuantity >= upgrade.maxQuantity;
 
         nameText.SetText(upgrade.name);
@@ -71,7 +72,7 @@ public class BuyNode : MonoBehaviour
         if (isMaxed)
         {
             quantitySlider.SetFill(1f);
-            priceText.SetText("Maxed");
+            priceText.SetText("Máximo");
             return;
         }
 

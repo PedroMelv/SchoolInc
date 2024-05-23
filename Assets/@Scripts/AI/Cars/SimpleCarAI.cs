@@ -6,9 +6,17 @@ public class SimpleCarAI : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5;
     [SerializeField] private float safeSpeed;
+
+
     private float targetSpeed;
     private float currentSpeed;
     [SerializeField] private float speedChangeMultiplier = 2f;
+
+    [Space]
+
+    private bool stressed;
+    private float stoppedLimit = 8f;
+    [SerializeField] private float stoppedLimitMax = 8;
 
     [SerializeField] private Vector3 carOffset = new Vector2(0,0);
     [SerializeField] private Vector2 carSize = new Vector2(1f,1f);
@@ -21,25 +29,44 @@ public class SimpleCarAI : MonoBehaviour
     private bool stopping;
     private bool isOnSafeSpeed;
 
+    private void Start()
+    {
+        stoppedLimit = stoppedLimitMax;
+    }
+
     private void Update()
     {
         CheckForStop();
 
-        if(stopping)
+        if(stressed)
         {
-            targetSpeed = 0;
+            stoppedLimit += Time.deltaTime;
+
+            if(stoppedLimit >= stoppedLimitMax)
+            {
+                stressed = false;
+            }
         }
         else
         {
-            if(isOnSafeSpeed)
+            if (stoppedLimit <= 0)
+                stressed = true;
+            if (stopping)
             {
-                targetSpeed = safeSpeed;
+                stoppedLimit -= Time.deltaTime;
+                targetSpeed = 0;
             }
             else
             {
-                targetSpeed = moveSpeed;
+                //stoppedLimit -= Time.deltaTime;
+                if (isOnSafeSpeed)
+                {
+                    targetSpeed = safeSpeed;
+                }
             }
         }
+
+        if ((!stopping && !isOnSafeSpeed) || stressed) targetSpeed = moveSpeed;
 
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * speedChangeMultiplier);
 
