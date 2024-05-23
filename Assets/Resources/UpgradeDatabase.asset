@@ -56,7 +56,7 @@ MonoBehaviour:
       increaseType: 0
       increaseValue: 0
       triggerAutomatic: 1
-      currentQuantity: 36
+      currentQuantity: 42
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -75,9 +75,9 @@ MonoBehaviour:
       maxQuantity: 4
       costBase: 200
       costGrowth: 2.75
-      upgradeType: 6
-      increaseType: 0
-      increaseValue: 4
+      upgradeType: 8
+      increaseType: 1
+      increaseValue: 50
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Bigger Safes
@@ -100,7 +100,7 @@ MonoBehaviour:
       increaseType: 2
       increaseValue: 3
       triggerAutomatic: 1
-      currentQuantity: 30
+      currentQuantity: 36
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -130,8 +130,8 @@ MonoBehaviour:
       costBase: 1800
       costGrowth: 2.75
       upgradeType: 7
-      increaseType: 1
-      increaseValue: 75
+      increaseType: 0
+      increaseValue: 0.1
       triggerAutomatic: 1
       currentQuantity: 0
     prize:
@@ -144,7 +144,7 @@ MonoBehaviour:
       increaseType: 1
       increaseValue: 33
       triggerAutomatic: 0
-      currentQuantity: 28
+      currentQuantity: 34
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -188,7 +188,7 @@ MonoBehaviour:
       increaseType: 2
       increaseValue: 3
       triggerAutomatic: 0
-      currentQuantity: 24
+      currentQuantity: 30
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
@@ -232,5 +232,5 @@ MonoBehaviour:
       increaseType: 2
       increaseValue: 2
       triggerAutomatic: 0
-      currentQuantity: 23
+      currentQuantity: 29
     prizeGot: 0
