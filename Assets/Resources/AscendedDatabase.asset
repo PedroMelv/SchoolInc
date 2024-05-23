@@ -17,6 +17,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Melhoria no rendimento
+      desc: "M\xFAltiplica o seu rendimento de todas as escolas em <color=green>2x</color>"
       nameID: RevenueIncrease
       maxQuantity: 100000000
       costBase: 10
@@ -27,6 +28,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Mais toques
+      desc: Aumenta a quantidade de Tap Boost em todas as escolas em <color=green>10</color>
       nameID: TapAmt
       maxQuantity: 100000000
       costBase: 10
@@ -38,6 +40,7 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: 
+      desc: 
       nameID: 
       maxQuantity: 0
       costBase: 0

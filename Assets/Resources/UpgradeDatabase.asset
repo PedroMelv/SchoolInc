@@ -17,6 +17,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Mais cadeiras
+      desc: Aumenta a quantidade de alunos em <color=green>2</color>.
       nameID: MORECHAIRS
       maxQuantity: 4
       costBase: 25
@@ -27,6 +28,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Materiais melhores
+      desc: Aumenta o lucro em <color=green>35%</color>.
       nameID: BETTERMATERIALS
       maxQuantity: 4
       costBase: 25
@@ -37,6 +39,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: "Conte\xFAdo adaptado"
+      desc: Aumenta a velocidade da barra em <color=green>65%</color>.
       nameID: ADAPTEDCONTENT
       maxQuantity: 4
       costBase: 25
@@ -48,6 +51,7 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Teacher
+      desc: 
       nameID: TEACHER
       maxQuantity: 1
       costBase: 0
@@ -61,6 +65,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Salas de aula maiores
+      desc: Aumenta a quantidade de alunos em <color=green>4</color>.
       nameID: BIGGERCLASSROOMS
       maxQuantity: 4
       costBase: 150
@@ -71,6 +76,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Intensidade
+      desc: "Torna a regenera\xE7\xE3o do toque mais r\xE1pida, aumentando em <color=green>50%</color>."
       nameID: INTENSITY
       maxQuantity: 4
       costBase: 200
@@ -81,6 +87,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Cofres maiores
+      desc: Aumenta o tamanho do cofre da escola em <color=green>5000</color>.
       nameID: BIGGERSAFES
       maxQuantity: 4
       costBase: 200
@@ -92,6 +99,7 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Safe1
+      desc: 
       nameID: Safe1
       maxQuantity: 1
       costBase: 0
@@ -105,6 +113,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Professores
+      desc: Aumenta a velocidade da barra em Aumenta o lucro em <color=green>30%</color>.
       nameID: PROFESSOR
       maxQuantity: 4
       costBase: 1750
@@ -115,6 +124,7 @@ MonoBehaviour:
       triggerAutomatic: 1
       currentQuantity: 0
     - name: "Material tecnol\xF3gico"
+      desc: Aumenta o lucro em <color=green>35%</color>.
       nameID: TECNOLOGICMATERIALS
       maxQuantity: 4
       costBase: 2350
@@ -125,6 +135,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Incentivo
+      desc: "Aumenta a for\xE7a do Tap Boost em adicionais <color=green>10%</color>."
       nameID: INSENTIVE
       maxQuantity: 4
       costBase: 1800
@@ -136,6 +147,7 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Revenue1
+      desc: 
       nameID: Revenue1
       maxQuantity: 1
       costBase: 0
@@ -149,6 +161,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Super Aulas
+      desc: Aumenta o lucro em <color=green>33%</color>.
       nameID: SUPERCLASS
       maxQuantity: 3
       costBase: 10000
@@ -159,6 +172,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Super salas de aula
+      desc: Aumenta a quantidade de alunos em <color=green>20</color>.
       nameID: SUPERCLASSROOMS
       maxQuantity: 4
       costBase: 12000
@@ -169,6 +183,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Super Professores
+      desc: Acelera a barra da escola em <color=green>45%</color>.
       nameID: SUPERPROFESSORS
       maxQuantity: 4
       costBase: 11000
@@ -180,6 +195,7 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Safe2
+      desc: 
       nameID: Safe2
       maxQuantity: 1
       costBase: 0
@@ -193,6 +209,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Emotional Support
+      desc: "Aumenta a quantidade de Tap Boost poss\xEDveis em <color=green>8</color>."
       nameID: EMOTIONALSUPPORT
       maxQuantity: 4
       costBase: 30000
@@ -203,6 +220,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Ultra Big Safes
+      desc: "Aumenta o tamanho do c\xF3fre da escola em <color=green>75%</color>."
       nameID: ULTRABIGSAFES
       maxQuantity: 4
       costBase: 32000
@@ -213,6 +231,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Renegotiation
+      desc: "M\xFAltiplica os l\xFAcros finais em <color=green>1.5x</color>."
       nameID: RENEGOTIATION
       maxQuantity: 3
       costBase: 35000
@@ -224,6 +243,7 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: TapAmt1
+      desc: 
       nameID: TapAmt1
       maxQuantity: 1
       costBase: 0

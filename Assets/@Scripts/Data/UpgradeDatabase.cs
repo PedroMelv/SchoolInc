@@ -79,6 +79,7 @@ public class UpgradeDatabase : ScriptableObject
     public class Upgrade
     {
         public string name = "New Upgrade";
+        [TextArea]public string desc = "Description";
         public string nameID = "UPGRADE";
         public int maxQuantity = 100;
         public double costBase = 1;
@@ -97,6 +98,7 @@ public class UpgradeDatabase : ScriptableObject
         public Upgrade(Upgrade copy)
         {
             name = copy.name;
+            desc = copy.desc;
             nameID = copy.nameID;
             maxQuantity = copy.maxQuantity;
             costBase = copy.costBase;

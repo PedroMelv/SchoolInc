@@ -85,4 +85,8 @@ public class BuyNode : MonoBehaviour
         
     }
 
+    public virtual void ShowDescription()
+    {
+        DescriptionHandler.Instance.ShowDescription(upgrade.name, upgrade.desc);
+    }
 }
