@@ -58,6 +58,9 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
 
     IDataService _dataService;
 
+    private bool autoSaving;
+    private float saveTimer = 60f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -69,6 +72,19 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.K)) NewOrLoadGame("Retro");
+
+        if(autoSaving)
+        {
+            if(saveTimer <= 0)
+            {
+                SaveGame();
+                
+            }
+            else
+            {
+                saveTimer -= Time.deltaTime;
+            }
+        }
     }
 
     private void OnEnable()
@@ -175,6 +191,8 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
 
     public void SaveGame(bool bind = true)
     {
+        saveTimer = 60f;
+
         gameData = _dataService.Save(gameData);
 
         if(bind) BindData();
@@ -198,7 +216,7 @@ public class SaveLoadSystem : SingletonPersistent<SaveLoadSystem>
             NewGame(gameName);
         }
 
-        InvokeRepeating(nameof(SaveGame), 60, 60);
+        autoSaving = true;
     }
 
     public void DeleteGame()
