@@ -142,6 +142,8 @@ public class SelectWordHandler : MinigameHandler
         monetaryPrize = 0;
         minigameVictoryUI.SetActive(false);
         minigamePanel.gameObject.SetActive(false);
+
+        SaveLoadSystem.Instance.SaveGame();
     }
 
     protected override IEnumerator EShowDefeat()
@@ -153,5 +155,30 @@ public class SelectWordHandler : MinigameHandler
 
         minigameDefeatUI.SetActive(false);
         minigamePanel.gameObject.SetActive(false);
+    }
+
+    public override void TryAgainButton()
+    {
+        minigameTryAgainButton.interactable = false;
+        minigameDefeatCloseButton.interactable = false;
+        AdsSystem.PlayRewarded(() =>
+        {
+            if (resultCoroutine != null) StopCoroutine(resultCoroutine);
+            minigameDefeatUI.SetActive(false);
+            InitializeMinigame(monetaryPrize);
+        },
+        () =>
+        {
+            minigameDefeatCloseButton.interactable = true;
+        });
+    }
+
+    public override void CloseMinigame(bool showAd)
+    {
+        if (showAd) AdsSystem.PlayIntersistial();
+
+        
+
+        closeMinigameInput = true;
     }
 }

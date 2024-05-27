@@ -82,6 +82,11 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
     {
         Currency += value;
         totalCurrency += value;
+
+        data.currency = currency.ToString();
+        data.coinCurrency = coinCurrency.ToString();
+        data.currencyToOneAscended = currencyToOneAscended.ToString();
+        data.totalCurrency = totalCurrency.ToString();
     }
     public void AddCurrency(double value)
     {
@@ -124,6 +129,11 @@ public class GameCurrency : Singleton<GameCurrency>, IBind<GameCurrency.Currency
     public void AddCurrencyAscended(BigInteger value)
     {
         CoinCurrency += value;
+
+        data.currency = currency.ToString();
+        data.coinCurrency = coinCurrency.ToString();
+        data.currencyToOneAscended = currencyToOneAscended.ToString();
+        data.totalCurrency = totalCurrency.ToString();
     }
     public void AddCurrencyAscended(double value)
     {

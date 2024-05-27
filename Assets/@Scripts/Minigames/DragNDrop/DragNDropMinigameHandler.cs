@@ -187,6 +187,8 @@ public class DragNDropMinigameHandler : MinigameHandler
         monetaryPrize = 0;
         minigameVictoryUI.SetActive(false);
         minigamePanel.gameObject.SetActive(false);
+
+        SaveLoadSystem.Instance.SaveGame();
     }
 
     protected override IEnumerator EShowDefeat()
@@ -238,6 +240,9 @@ public class DragNDropMinigameHandler : MinigameHandler
     public override void CloseMinigame(bool showAd)
     {
         if(showAd)AdsSystem.PlayIntersistial();
+
+
+
         closeMinigameInput = true;
     }
 }
