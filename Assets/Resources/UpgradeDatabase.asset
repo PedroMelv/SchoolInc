@@ -17,6 +17,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Mais cadeiras
+      icon: {fileID: -1483333411, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta a quantidade de alunos em <color=green>2</color>.
       nameID: MORECHAIRS
       maxQuantity: 4
@@ -28,6 +29,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Materiais melhores
+      icon: {fileID: 1877085265, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta o lucro em <color=green>35%</color>.
       nameID: BETTERMATERIALS
       maxQuantity: 4
@@ -39,6 +41,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: "Conte\xFAdo adaptado"
+      icon: {fileID: -1269643059, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta a velocidade da barra em <color=green>65%</color>.
       nameID: ADAPTEDCONTENT
       maxQuantity: 4
@@ -51,11 +54,12 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Teacher
+      icon: {fileID: 0}
       desc: 
       nameID: TEACHER
       maxQuantity: 1
       costBase: 0
-      costGrowth: 0
+      costGrowth: 1
       upgradeType: 1
       increaseType: 0
       increaseValue: 0
@@ -65,6 +69,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Salas de aula maiores
+      icon: {fileID: -630367510, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta a quantidade de alunos em <color=green>4</color>.
       nameID: BIGGERCLASSROOMS
       maxQuantity: 4
@@ -76,6 +81,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Intensidade
+      icon: {fileID: -2143691852, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: "Torna a regenera\xE7\xE3o do toque mais r\xE1pida, aumentando em <color=green>50%</color>."
       nameID: INTENSITY
       maxQuantity: 4
@@ -87,6 +93,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Cofres maiores
+      icon: {fileID: -1304963450, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta o tamanho do cofre da escola em <color=green>5000</color>.
       nameID: BIGGERSAFES
       maxQuantity: 4
@@ -99,11 +106,12 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Safe1
+      icon: {fileID: 0}
       desc: 
       nameID: Safe1
       maxQuantity: 1
       costBase: 0
-      costGrowth: 0
+      costGrowth: 1
       upgradeType: 5
       increaseType: 2
       increaseValue: 3
@@ -113,6 +121,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Professores
+      icon: {fileID: -197261235, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta a velocidade da barra em Aumenta o lucro em <color=green>30%</color>.
       nameID: PROFESSOR
       maxQuantity: 4
@@ -124,6 +133,7 @@ MonoBehaviour:
       triggerAutomatic: 1
       currentQuantity: 0
     - name: "Material tecnol\xF3gico"
+      icon: {fileID: 558600042, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta o lucro em <color=green>35%</color>.
       nameID: TECNOLOGICMATERIALS
       maxQuantity: 4
@@ -135,6 +145,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Incentivo
+      icon: {fileID: 1208215581, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: "Aumenta a for\xE7a do Tap Boost em adicionais <color=green>10%</color>."
       nameID: INSENTIVE
       maxQuantity: 4
@@ -147,11 +158,12 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Revenue1
+      icon: {fileID: 0}
       desc: 
       nameID: Revenue1
       maxQuantity: 1
       costBase: 0
-      costGrowth: 0
+      costGrowth: 1
       upgradeType: 0
       increaseType: 1
       increaseValue: 33
@@ -161,6 +173,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Super Aulas
+      icon: {fileID: -630367510, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta o lucro em <color=green>33%</color>.
       nameID: SUPERCLASS
       maxQuantity: 3
@@ -172,6 +185,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Super salas de aula
+      icon: {fileID: 1817197330, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta a quantidade de alunos em <color=green>20</color>.
       nameID: SUPERCLASSROOMS
       maxQuantity: 4
@@ -183,6 +197,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Super Professores
+      icon: {fileID: 2013499092, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Acelera a barra da escola em <color=green>45%</color>.
       nameID: SUPERPROFESSORS
       maxQuantity: 4
@@ -195,11 +210,12 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: Safe2
+      icon: {fileID: 0}
       desc: 
       nameID: Safe2
       maxQuantity: 1
       costBase: 0
-      costGrowth: 0
+      costGrowth: 1
       upgradeType: 5
       increaseType: 2
       increaseValue: 3
@@ -208,7 +224,8 @@ MonoBehaviour:
     prizeGot: 0
   - upgradesBrought: 0
     upgrades:
-    - name: Emotional Support
+    - name: Suporte Emocional
+      icon: {fileID: 1881207758, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: "Aumenta a quantidade de Tap Boost poss\xEDveis em <color=green>8</color>."
       nameID: EMOTIONALSUPPORT
       maxQuantity: 4
@@ -219,7 +236,8 @@ MonoBehaviour:
       increaseValue: 8
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Ultra Big Safes
+    - name: Ultra cofres maiores
+      icon: {fileID: -1657374999, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: "Aumenta o tamanho do c\xF3fre da escola em <color=green>75%</color>."
       nameID: ULTRABIGSAFES
       maxQuantity: 4
@@ -230,7 +248,8 @@ MonoBehaviour:
       increaseValue: 75
       triggerAutomatic: 0
       currentQuantity: 0
-    - name: Renegotiation
+    - name: "Renegocia\xE7\xE3o"
+      icon: {fileID: 1233274223, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: "M\xFAltiplica os l\xFAcros finais em <color=green>1.5x</color>."
       nameID: RENEGOTIATION
       maxQuantity: 3
@@ -243,11 +262,12 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: TapAmt1
+      icon: {fileID: 0}
       desc: 
       nameID: TapAmt1
       maxQuantity: 1
       costBase: 0
-      costGrowth: 0
+      costGrowth: 1
       upgradeType: 6
       increaseType: 2
       increaseValue: 2

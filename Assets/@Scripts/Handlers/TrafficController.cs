@@ -5,16 +5,16 @@ public class TrafficController : MonoBehaviour
 {
     [SerializeField] private Transform[] streetPoints;   
     [SerializeField]private GameObject[] simpleCars;
-    private PooledObject[] pooledCars;
+    private ObjectPool[] pooledCars;
 
     private float spawnRate = 0f;
 
     private void Start()
     {
-        pooledCars = new PooledObject[simpleCars.Length];
+        pooledCars = new ObjectPool[simpleCars.Length];
         for (int i = 0; i < simpleCars.Length; i++)
         {
-            pooledCars[i] = PooledObject.CreateOrFind(simpleCars[i]);
+            pooledCars[i] = ObjectPool.CreatePool(simpleCars[i]);
         }
     }
 
@@ -43,9 +43,9 @@ public class TrafficController : MonoBehaviour
             if (streetPoints[i] != streetPoint) inversePoint = streetPoints[i];
         }
 
-        GameObject carSpawned = pooledCars[randomCar].Instantiate(streetPoint.position, streetPoint.rotation);
+        PooledObject carSpawned = pooledCars[randomCar].Instantiate(streetPoint.position, streetPoint.rotation);
 
-        StartCoroutine(CheckCar(carSpawned, inversePoint, pooledCars[randomCar]));
+        StartCoroutine(CheckCar(carSpawned.gameObject, inversePoint, carSpawned));
     }
 
     private IEnumerator CheckCar(GameObject car, Transform inversePoint, PooledObject pool)
@@ -55,6 +55,6 @@ public class TrafficController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        pool.Return(car);
+        pool.Destroy();
     }
 }

@@ -57,7 +57,6 @@ public class SidewalkHandler : StaticInstance<SidewalkHandler>
 
             if (amountOfSidewalks == 0)
             {
-                Debug.Log("Dequeuing, " + stackPath.Count , stackPath.Peek());
                 blacklist.Add(stackPath.Pop());
                 currentPoint = stackPath.Peek();
                 blacklist.Remove(currentPoint);

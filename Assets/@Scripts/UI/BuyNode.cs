@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class BuyNode : MonoBehaviour
 {
     [SerializeField] protected Button buyButton;
+    [SerializeField] protected Image icon;
     [SerializeField] protected TextMeshProUGUI nameText;
     [SerializeField] protected TextMeshProUGUI priceText;
     [SerializeField] protected SliderUI quantitySlider;
@@ -42,6 +43,8 @@ public class BuyNode : MonoBehaviour
     {
         this.scaling = scaling;
         this.upgrade = upgrade;
+
+        icon.sprite = upgrade.icon;
 
         bool isMaxed = upgrade.currentQuantity >= upgrade.maxQuantity;
 

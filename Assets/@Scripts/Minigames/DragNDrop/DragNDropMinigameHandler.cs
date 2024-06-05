@@ -216,7 +216,7 @@ public class DragNDropMinigameHandler : MinigameHandler
         },
         ()=>{
             //Failed
-            minigameDoubleButton.interactable = true;
+            //minigameDoubleButton.interactable = true;
             minigameVictoryCloseButton.interactable = true;
         });
     }

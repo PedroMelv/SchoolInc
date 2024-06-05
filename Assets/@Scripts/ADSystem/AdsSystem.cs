@@ -81,7 +81,7 @@ public class AdsSystem : SingletonPersistent<AdsSystem>, IUnityAdsInitialization
 
         if (!Advertisement.isInitialized && Advertisement.isSupported)
         {
-            Advertisement.Initialize(_gameId, true, this);
+            Advertisement.Initialize(_gameId, false, this);
         }
     }
     public void OnInitializationComplete()

@@ -17,6 +17,7 @@ MonoBehaviour:
   - upgradesBrought: 0
     upgrades:
     - name: Melhoria no rendimento
+      icon: {fileID: 1817197330, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: "M\xFAltiplica o seu rendimento de todas as escolas em <color=green>2x</color>"
       nameID: RevenueIncrease
       maxQuantity: 100000000
@@ -28,6 +29,7 @@ MonoBehaviour:
       triggerAutomatic: 0
       currentQuantity: 0
     - name: Mais toques
+      icon: {fileID: -51150404, guid: 252b144264648764da8f39cb140e52f6, type: 3}
       desc: Aumenta a quantidade de Tap Boost em todas as escolas em <color=green>10</color>
       nameID: TapAmt
       maxQuantity: 100000000
@@ -40,6 +42,7 @@ MonoBehaviour:
       currentQuantity: 0
     prize:
       name: 
+      icon: {fileID: 0}
       desc: 
       nameID: 
       maxQuantity: 0

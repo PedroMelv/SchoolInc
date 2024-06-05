@@ -1,70 +1,183 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PooledObject
+public class ObjectPool
 {
-    //public static List<PooledObject> allPools = new List<PooledObject>();
+    public static List<ObjectPool> All_Pools = new List<ObjectPool>();
 
-    public const int DEFAULT_POOL_SIZE = 10;
+    public static string POOLFOLDERPATH = "PooledObjects/";
+    public static int POOL_SIZE = 15;
 
-    private List<GameObject> unavailable = new List<GameObject>();
-    private Queue<GameObject> available = new Queue<GameObject>();
+    private GameObject poolObjectReference;
 
-    private GameObject prefab;
+    private string objectName;
+    public string ObjectName => objectName;
+    private string fullPath => POOLFOLDERPATH + objectName;
 
-    public static PooledObject CreateOrFind(GameObject prefab)
+    private PooledObject[] pool;
+
+    public static ObjectPool CreatePool(GameObject objectRef)
     {
-        //if(allPools.Count > 0)
-        //{
-        //    for (int i = 0; i < allPools.Count; i++)
-        //    {
-        //        if (allPools[i].prefab == prefab) return allPools[i];
-        //    }
-        //}
-        return new PooledObject(prefab);
-    }
-
-    public PooledObject(GameObject prefab)
-    {
-        this.prefab = prefab;
-
-        IncreasePool();
-        //allPools.Add(this);
-    }
-
-    private void IncreasePool()
-    {
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++)
+        for (int i = 0; i < All_Pools.Count; i++)
         {
-            GameObject obj = GameObject.Instantiate(prefab, new Vector3(1000,-1000,1000), Quaternion.identity);
-            obj.gameObject.SetActive(false);
-            available.Enqueue(obj);
-        }
-    }
-
-    public GameObject Instantiate(Vector3 position, Quaternion rotation)
-    {
-        if (available.Count == 0)
-        {
-            IncreasePool();
+            if (All_Pools[i].poolObjectReference == objectRef)
+            {
+                return All_Pools[i];
+            }
         }
 
-        GameObject pooledObject = available.Dequeue();
-        unavailable.Add(pooledObject);
-        
-        pooledObject.transform.position = position;
-        pooledObject.transform.rotation = rotation;
+        ObjectPool pooledObject = new ObjectPool();
 
-        pooledObject.gameObject.SetActive(true);
+        return pooledObject.CreatePool_Internal(objectRef);
+    }
 
+    private ObjectPool CreatePool_Internal(GameObject objectRef)
+    {
+        for (int i = 0; i < All_Pools.Count; i++)
+        {
+            if (All_Pools[i].poolObjectReference == objectRef)
+            {
+                return All_Pools[i];
+            }
+        }
+
+        poolObjectReference = objectRef;
+
+        InitializePool();
+
+        return this;
+    }
+
+    public static ObjectPool CreatePool(string objectName)
+    {
+        for (int i = 0; i < All_Pools.Count; i++)
+        {
+            if (All_Pools[i].ObjectName == objectName)
+            {
+                return All_Pools[i];
+            }
+        }
+
+        ObjectPool pooledObject = new ObjectPool();
+
+        return pooledObject.CreatePool_Internal(objectName);
+    }
+    private ObjectPool CreatePool_Internal(string objectName)
+    {
+        for (int i = 0; i < All_Pools.Count; i++)
+        {
+            if (All_Pools[i].ObjectName == objectName)
+            {
+                return All_Pools[i];
+            }
+        }
+
+        this.objectName = objectName;
+
+        poolObjectReference = Resources.Load<GameObject>(fullPath);
+
+        InitializePool();
+
+        return this;
+    }
+
+    private void InitializePool()
+    {
+        pool = new PooledObject[POOL_SIZE];
+
+        for (int i = 0; i < POOL_SIZE; i++)
+        {
+            pool[i] = CreatePoolObject();
+        }
+
+        All_Pools.Add(this);
+    }
+    private void IncreasePoolSize()
+    {
+        PooledObject[] newPool = new PooledObject[pool.Length + POOL_SIZE];
+
+        for (int i = 0; i < pool.Length; i++)
+        {
+            newPool[i] = pool[i];
+        }
+
+        for (int i = pool.Length; i < newPool.Length; i++)
+        {
+            newPool[i] = CreatePoolObject();
+        }
+
+        pool = newPool;
+    }
+
+    private PooledObject CreatePoolObject()
+    {
+        GameObject obj = GameObject.Instantiate(poolObjectReference);
+        obj.SetActive(false);
+        //obj.hideFlags = HideFlags.HideInHierarchy;
+
+        PooledObject pooledObject = new PooledObject(obj);
 
         return pooledObject;
     }
 
-    public void Return(GameObject obj)
+    public bool TryGetPooledObject(GameObject obj, out PooledObject pooled)
     {
-        obj.gameObject.SetActive(false);
-        unavailable.Remove(obj);
-        available.Enqueue(obj);
+        pooled = GetPooledObject(obj);
+
+        return pooled != null;
+    }
+
+    public PooledObject GetPooledObject(GameObject obj)
+    {
+        for (int i = 0; i < pool.Length; i++)
+        {
+            if (pool[i].gameObject == obj)
+            {
+                return pool[i];
+            }
+        }
+
+        return null;
+    }
+    public bool IsOnPool(GameObject obj)
+    {
+        return GetPooledObject(obj) != null;
+    }
+
+    public PooledObject Instantiate(Vector3 position, Quaternion rotation)
+    {
+        for (int i = 0; i < pool.Length; i++)
+        {
+            if (!pool[i].isUsed)
+            {
+                pool[i].gameObject.SetActive(true);
+                pool[i].gameObject.transform.position = position;
+                pool[i].gameObject.transform.rotation = rotation;
+                pool[i].isUsed = true;
+                return pool[i];
+            }
+        }
+
+        IncreasePoolSize();
+
+        return Instantiate(position,rotation);
+    }
+}
+public class PooledObject
+{
+    public GameObject gameObject;
+    public bool isUsed = false;
+
+    public PooledObject(GameObject gameObject)
+    {
+        this.gameObject = gameObject;
+    }
+
+    public void Destroy()
+    {
+        gameObject.SetActive(false);
+        gameObject.transform.position = Vector3.zero;
+        isUsed = false;
     }
 }
